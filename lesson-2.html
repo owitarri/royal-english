@@ -450,7 +450,7 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
 </section>
 
 <footer class="credits">
-  Real photos come from Wikimedia Commons (free licences): <span id="photoCredits"></span>. The other pictures were drawn for this lesson; the cartoon people are not real likenesses. The facts about the King's day come from royal writers and newspapers; "people say" stories are legends.
+  Real photos come from Wikimedia Commons (free licences): <span id="photoCredits"></span>. Only the clock faces are drawn for this lesson. The facts about the King's day come from royal writers and newspapers; "people say" stories are legends.
 </footer>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -483,19 +483,43 @@ const PH={
  rHarry:{f:'Prince Harry at the 2016 Invictus Games Symposium on Invisible Wounds (26292600724) (cropped).jpg',c:'Prince Harry: EJ Hersom / U.S. Department of Defense, public domain',av:'harry',pos:'50% 20%'},
  dBalcony:{f:'Royal Family Platinum Jubilee Balcony Appearance 2022.jpg',c:'Platinum Jubilee balcony: No 10 Downing Street, CC BY 2.0',av:'eliz',pos:'50% 40%'},
  dRiding:{f:'President Ronald Reagan Riding Horses with Queen Elizabeth Ii During Visit to Windsor Castle - DPLA - 934bb1fd137bd8789fa9648e928f9ded.jpg',c:'Queen Elizabeth and President Reagan: White House photo, public domain',av:'eliz',pos:'50% 40%'},
+ wakeup:{f:'Yawning Infant, August 2018.jpg',c:'Yawning baby: Martin Falbisoner, CC BY-SA 4.0',id:'p_wakeup'},
+ getup:{f:'Analog Clock.jpg',c:'Clock: KH Fajla Rabby, CC BY-SA 4.0',id:'p_getup'},
+ teeth:{f:'Annoyed Girl Brushing Teeth.jpg',c:'Brushing teeth: Poppy Thomas-Hill, CC BY 2.0',id:'p_teeth'},
+ dressed:{f:'Twin sisters wearing school uniform in Si Phan Don.jpg',c:'School uniform: Basile Morin, CC BY-SA 4.0',pos:'50% 35%',id:'p_dressed'},
+ breakfast:{f:'Granola oatmeal with soymilk flickr user daisybush.jpg',c:'Breakfast: daisybush, CC BY 2.0',id:'p_breakfast'},
+ school:{f:'A girl walking to school in Cebu.jpg',c:'Girl walking to school: Øyvind Holmstad, CC BY-SA 4.0',pos:'50% 45%',id:'p_school'},
+ work:{f:'President Ronald Reagan During a Meeting to Sign The Transmittal Papers for The Agenda for The Future and The "Economic Report of The President" in The Oval Office - DPLA - c6a10f108dee2b65a96339b608ae26c5.jpg',c:'Man signing papers at his desk: White House photographer, public domain',pos:'50% 30%',id:'p_work'},
+ lunch:{f:'Heart shaped sandwich lunch box with cumcumbers and hummus (8459976360).jpg',c:'Lunch box: Melissa, CC BY 2.0',id:'p_lunch'},
+ homework:{f:'Child engaged in homework with glass of water on table.jpg',c:'Homework: Shixart1985, CC BY 2.0',id:'p_homework'},
+ walkdog:{f:'Girl Walking Dog in New Albany, Ohio.jpg',c:'Girl walking a dog: Lisa Hinson, CC BY-SA 4.0',pos:'50% 60%',id:'p_walkdog'},
+ bed:{f:'Young blonde white girl sleeping on the side.jpg',c:'Sleeping girl: Alexandre Bernier Marceau, CC BY-SA 4.0',id:'p_bed'},
+ dinner:{f:'Family eating meal.jpg',c:'Family dinner: National Cancer Institute, public domain',id:'p_dinner'},
+ clock:{f:'Clock analog clock.jpg',c:'Clock: Paolo Neo, public domain',id:'p_clock'},
+ morning:{f:'Morning sky shortly after sunrise, High Desert, California.jpg',c:'Morning sky: Jessie Eastland, CC BY-SA 3.0',pos:'50% 60%',id:'p_morning'},
+ eggs:{f:'Boiled eggs.jpg',c:'Boiled eggs: Michail Jungierek, Paddy and Crux, CC BY-SA 3.0',id:'p_eggs'},
+ present:{f:'Christmas presents under the tree (11483648553).jpg',c:'Christmas presents: James Petts, CC BY-SA 2.0',id:'p_present'},
+ scales:{f:'Balance scale IMGP9722.jpg',c:'Scales: Nikodem Nijaki, CC BY-SA 3.0',id:'p_scales'},
+ handbag:{f:'Queen Elizabeth II 2015 HO1 (cropped to handbag).jpg',c:'Queen Elizabeth\'s handbag: UK Home Office, CC BY 2.0',id:'p_handbag'},
+ puppies:{f:'Black and tan cocker spaniel.jpg',c:'Cocker spaniel: Praseodymium-141, CC BY-SA 4.0',pos:'50% 30%',id:'p_puppies'},
+ crown:{f:'Imperial State Crown.png',c:'Imperial State Crown: public domain',id:'crown'},
+ palace:{f:'Buckingham Palace London Morning 2020 01 (cropped).jpg',c:'Buckingham Palace: Wikimedia Commons, free licence',id:'palace'},
+ corgi:{f:'Welchcorgipembroke.JPG',c:'Corgi: Wikimedia Commons, free licence',id:'corgi'},
  dCarriage:{f:'Queen\'s Platinum Jubilee 2022-0695 (52118365405).jpg',c:'Royal carriage, Platinum Jubilee: John Pannell, CC BY 2.0',av:'princess',pos:'50% 40%'}
 };
+const AL={nolunch:'king',charlotte:'rCharlotte',william:'rWilliam',george:'rGeorge',guard:'guardShout',louis:'rLouis'};
 function photoBack(k){const p=PH[k]||{};return A2[k]||ART[k]||(p.av&&ART.p?ART.p(p.av):'')}
 function fillImg(el){
   const k=el.dataset.art, p=PH[k]; if(!p)return;
-  el.innerHTML=photoBack(k);
+  el.innerHTML='';
   const img=new Image(); img.alt=p.c; img.decoding='async'; img.className='photo';
   img.style.objectPosition=p.pos||'50% 50%';
+  let step=0;
   img.onload=()=>{img.classList.add('on')};
-  img.onerror=()=>{img.remove()};
-  img.src=IMG(p.f,500); el.appendChild(img);
+  img.onerror=()=>{ if(step===0){step=1; img.src=IMG(p.f,500)} else {img.remove(); el.innerHTML=photoBack(k)} };
+  img.src=(p.id||k).replace(/^/,'ph-')+'.jpg'; el.appendChild(img);
 }
-const PHOTO=k=>PH[k]?'<div class="ph-box" data-img="1" data-art="'+k+'"></div>':PIC(k);
+const PHOTO=k=>{k=AL[k]||k;return PH[k]?'<div class="ph-box" data-img="1" data-art="'+k+'"></div>':PIC(k)};
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 const norm=s=>String(s).toLowerCase().replace(/[’‘`´]/g,"'").replace(/\s+/g,' ').trim().replace(/[.!?,]+$/,'').trim();
 const FLAG='<svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Union Flag"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="2"/><path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/></svg>';
@@ -774,7 +798,7 @@ function tileGame(container,sec,units,label,sep,onWin){
  {p:'palace',q:'Where does the King live in London?',o:['Buckingham Palace','Windsor Castle','a school'],a:'Buckingham Palace'},
  {p:'corgi',q:'Queen Elizabeth\'s favourite dogs were …',o:['poodles','corgis','cats'],a:'corgis'},
  {p:'william',q:'Prince William … football.',o:['like','likes','liking'],a:'likes'}
-].forEach((x,i)=>optCard($('#review'),'m1',{head:'<div class="qimg">'+(ART[x.p]||ART.p(x.p))+'</div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
+].forEach((x,i)=>optCard($('#review'),'m1',{head:'<div class="qimg">'+PHOTO(x.p)+'</div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
 
 /* ---------- 2 vocab ---------- */
 const vocab=[
@@ -791,7 +815,7 @@ const vocab=[
  {w:'walk the dog',tr:'гулять с собакой',ex:'I walk the dog in the park.',a:'walkdog'},
  {w:'go to bed',tr:'ложиться спать',ex:'I go to bed at nine o\'clock.',a:'bed'}
 ];
-$('#vocab').innerHTML=vocab.map(v=>'<div class="vcard" role="button" tabindex="0" aria-label="'+v.w+'"><div class="vin"><div class="vf"><div class="pic">'+PIC(v.a)+'</div><div class="w">'+v.w+'</div><button class="say" type="button" data-say="'+v.w+'">🔊</button></div><div class="vb"><div class="tr">'+v.tr+'</div><div class="ex">'+v.ex+'</div><button class="say" type="button" data-say="'+esc(v.ex)+'">🔊 sentence</button></div></div></div>').join('');
+$('#vocab').innerHTML=vocab.map(v=>'<div class="vcard" role="button" tabindex="0" aria-label="'+v.w+'"><div class="vin"><div class="vf"><div class="pic">'+PHOTO(v.a)+'</div><div class="w">'+v.w+'</div><button class="say" type="button" data-say="'+v.w+'">🔊</button></div><div class="vb"><div class="tr">'+v.tr+'</div><div class="ex">'+v.ex+'</div><button class="say" type="button" data-say="'+esc(v.ex)+'">🔊 sentence</button></div></div></div>').join('');
 $('#vocab').addEventListener('click',e=>{const c=e.target.closest('.vcard'); if(c)c.classList.toggle('flip')});
 $('#vocab').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('vcard')){e.preventDefault();e.target.classList.toggle('flip')}});
 
@@ -804,7 +828,7 @@ $('#vocab').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.
  ['dressed','get dressed',['have breakfast','work','get dressed']],
  ['wakeup','wake up',['wake up','have dinner','go to school']],
  ['tea','have tea',['get dressed','have tea','go to bed']]
-].forEach((m,i)=>optCard($('#vmatch'),'m2',{head:'<div class="qimg">'+PIC(m[0])+'</div>',q:'<span class="n">'+(i+1)+'</span> She is going to …',o:m[2],a:m[1],say:m[1]}));
+].forEach((m,i)=>optCard($('#vmatch'),'m2',{head:'<div class="qimg">'+PHOTO(m[0])+'</div>',q:'<span class="n">'+(i+1)+'</span> She is going to …',o:m[2],a:m[1],say:m[1]}));
 
 [
  ['___ breakfast','have',['have','do','go']],
@@ -865,7 +889,7 @@ tileGame($('#dayorder'),'m4',['gets up','has breakfast','reads his papers','has 
  ['The King','eat lunch.','doesn\'t','king'],['I','go to school on Sunday.','don\'t','school'],['The guards','smile at work.','don\'t','guard'],
  ['Charlotte','have a sister.','doesn\'t','charlotte'],['We','live in a palace.','don\'t','palace'],['Orla the dog','go to school.','doesn\'t','puppies'],
  ['My parents','drink coffee at night.','don\'t','tea'],['My cat','like water.','doesn\'t','swan']
-].forEach((g,i)=>optCard($('#dont'),'m6',{head:'<span class="mini">'+(PIC(g[3])||ART.p(g[3]))+'</span>',q:'<span class="n">'+(i+1)+'</span> '+g[0]+' ____ '+g[1],o:['don\'t','doesn\'t'],a:g[2],say:g[0]+' '+g[2]+' '+g[1],
+].forEach((g,i)=>optCard($('#dont'),'m6',{head:'<span class="mini">'+PHOTO(g[3])+'</span>',q:'<span class="n">'+(i+1)+'</span> '+g[0]+' ____ '+g[1],o:['don\'t','doesn\'t'],a:g[2],say:g[0]+' '+g[2]+' '+g[1],
   after:d=>{d.querySelector('.qtext').innerHTML='<span class="n">'+(i+1)+'</span> '+g[0]+' <b>'+g[2]+'</b> '+g[1]}},'line'));
 [
  {q:'Does the King eat lunch?',o:['Yes, he does.','No, he doesn\'t.','No, he isn\'t.'],a:'No, he doesn\'t.',p:'nolunch'},
@@ -874,7 +898,7 @@ tileGame($('#dayorder'),'m4',['gets up','has breakfast','reads his papers','has 
  {q:'Does George go to Eton?',o:['Yes, he does.','Yes, he do.','No, he doesn\'t.'],a:'Yes, he does.',p:'george'},
  {q:'Do you live in a palace?',o:['Yes, I am.','No, I don\'t.','No, I doesn\'t.'],a:'No, I don\'t.',p:'palace'},
  {q:'Does the King have afternoon tea?',o:['No, he doesn\'t.','Yes, he has.','Yes, he does.'],a:'Yes, he does.',p:'tea'}
-].forEach((x,i)=>optCard($('#short'),'m6',{head:'<div class="rid-row"><span class="mini">'+(PIC(x.p)||ART.p(x.p))+'</span><button class="say" type="button" data-say="'+esc(x.q)+'">🔊</button></div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a,say:x.a}));
+].forEach((x,i)=>optCard($('#short'),'m6',{head:'<div class="rid-row"><span class="mini">'+PHOTO(x.p)+'</span><button class="say" type="button" data-say="'+esc(x.q)+'">🔊</button></div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a,say:x.a}));
 ['Does the King eat lunch?','Do you like tea?','Does Louis go to school?'].forEach((s,i)=>tileGame($('#buildq'),'m6',s.split(' '),'<span class="n">'+(i+1)+'</span> Make a question',' ',()=>speak(s)));
 
 /* ---------- 6 secrets ---------- */
@@ -951,7 +975,7 @@ secrets.forEach((s,i)=>{const d=document.createElement('div'); d.className='secr
 
 /* ---------- 7 listening ---------- */
 const story='Hello! My name is Biscuit. I am a corgi and I live in a palace. I wake up at seven o\'clock. I have breakfast at quarter past seven. I love sausages, but I don\'t eat vegetables. At ten o\'clock I walk in the garden with the gardener. I don\'t go to school! At one o\'clock I sleep under the King\'s desk. At five o\'clock the Queen has tea, and she gives me a biscuit. That is why my name is Biscuit! I go to bed at nine o\'clock. Goodnight!';
-$('#biscuitPic').innerHTML=ART.corgi; $('#storyText').textContent=story;
+$('#biscuitPic').innerHTML=PHOTO('corgi'); $('#storyText').textContent=story;
 $('#playStory').addEventListener('click',e=>{e.stopPropagation(); speak(story,e.currentTarget)});
 $('#showStory').addEventListener('click',()=>{const t=$('#storyText'); t.hidden=!t.hidden; $('#showStory').textContent=t.hidden?'Show text':'Hide text'});
 [
@@ -970,7 +994,7 @@ $('#showStory').addEventListener('click',()=>{const t=$('#storyText'); t.hidden=
 
 /* ---------- 8 spelling ---------- */
 [['LUNCH','обед','lunch'],['CLOCK','часы','clock'],['TEETH','зубы','teeth'],['DINNER','ужин','dinner'],['SCHOOL','школа','school'],['MORNING','утро','wakeup'],['HOMEWORK','домашнее задание','homework'],['BREAKFAST','завтрак','breakfast']]
-.forEach((w,i)=>tileGame($('#scramble'),'m9',w[0].split(''),'<div class="sc-pic">'+(w[2]==='clock'?A2.clock(3,0):PIC(w[2]))+'</div><span class="n">'+(i+1)+'</span> '+w[1],'',()=>speak(w[0].toLowerCase())));
+.forEach((w,i)=>tileGame($('#scramble'),'m9',w[0].split(''),'<div class="sc-pic">'+PHOTO(w[2])+'</div><span class="n">'+(i+1)+'</span> '+w[1],'',()=>speak(w[0].toLowerCase())));
 
 /* ---------- 9 speaking ---------- */
 [
@@ -979,7 +1003,7 @@ $('#showStory').addEventListener('click',()=>{const t=$('#storyText'); t.hidden=
  {k:'What do you have for breakfast?',o:['I has porridge.','I have porridge and tea.','I am porridge.'],a:'I have porridge and tea.'},
  {k:'Does your mum work?',o:['Yes, she do.','Yes, she is work.','Yes, she does.'],a:'Yes, she does.'},
  {k:'What time do you go to bed?',o:['I go to bed at half past nine.','I go bed at nine half.','I going to bed.'],a:'I go to bed at half past nine.'}
-].forEach((x,i)=>optCard($('#interview'),'m10',{head:'<div class="rid-row"><span class="mini">'+ART.king+'</span><div><b>The King:</b> “'+esc(x.k)+'” <button class="say" type="button" data-say="'+esc(x.k)+'">🔊</button></div></div>',q:'You say:',o:x.o,a:x.a,say:x.a},'q'));
+].forEach((x,i)=>optCard($('#interview'),'m10',{head:'<div class="rid-row"><span class="mini">'+PHOTO('king')+'</span><div><b>The King:</b> “'+esc(x.k)+'” <button class="say" type="button" data-say="'+esc(x.k)+'">🔊</button></div></div>',q:'You say:',o:x.o,a:x.a,say:x.a},'q'));
 const hrs=['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'];
 const times=[]; for(let hh=6;hh<=11;hh++){const H=hrs[hh-1],N=hrs[hh%12]; times.push(H+' o\'clock','quarter past '+H,'half past '+H,'quarter to '+N)}
 const fillSel=(id,def)=>{const s=$('#'+id); s.innerHTML=times.map(t=>'<option'+(t===def?' selected':'')+'>'+t+'</option>').join('')};
@@ -992,16 +1016,16 @@ $('#readDiary').addEventListener('click',e=>{e.stopPropagation(); speak(diaryTex
 /* ---------- 10 final ---------- */
 [
  {h:A2.clock(7,30),q:'What time is it?',o:['half past seven','seven o\'clock','quarter to seven'],a:'half past seven'},
- {h:PIC('nolunch'),q:'The King … eat lunch.',o:['don\'t','doesn\'t','isn\'t'],a:'doesn\'t'},
- {h:ART.p('charlotte'),q:'… Charlotte go to school?',o:['Do','Is','Does'],a:'Does'},
- {h:PIC('teeth'),q:'I … my teeth every morning.',o:['brush','do','have'],a:'brush'},
- {h:PIC('raven'),q:'Where do the ravens live?',o:['at Windsor Castle','at the Tower of London','at Eton'],a:'at the Tower of London'},
- {h:PIC('tea'),q:'What time is the King\'s afternoon tea?',o:['at five o\'clock','at one o\'clock','at midnight'],a:'at five o\'clock'},
+ {h:PHOTO('nolunch'),q:'The King … eat lunch.',o:['don\'t','doesn\'t','isn\'t'],a:'doesn\'t'},
+ {h:PHOTO('charlotte'),q:'… Charlotte go to school?',o:['Do','Is','Does'],a:'Does'},
+ {h:PHOTO('teeth'),q:'I … my teeth every morning.',o:['brush','do','have'],a:'brush'},
+ {h:PHOTO('raven'),q:'Where do the ravens live?',o:['at Windsor Castle','at the Tower of London','at Eton'],a:'at the Tower of London'},
+ {h:PHOTO('tea'),q:'What time is the King\'s afternoon tea?',o:['at five o\'clock','at one o\'clock','at midnight'],a:'at five o\'clock'},
  {h:A2.clock(7,45),q:'"Quarter to eight" is …',o:['8:15','7:45','8:45'],a:'7:45'},
- {h:ART.p('louis'),q:'Does Louis like football? — Yes, he …',o:['is','do','does'],a:'does'}
+ {h:PHOTO('louis'),q:'Does Louis like football? — Yes, he …',o:['is','do','does'],a:'does'}
 ].forEach((x,i)=>optCard($('#final'),'m11',{head:'<div class="qimg">'+x.h+'</div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
 
-$('#certArt').innerHTML='<span>'+A2.clock(5,0)+'</span><span class="c">'+A2.bigben+'</span><span>'+A2.tea+'</span>';
+$('#certArt').innerHTML='<span>'+PHOTO('tea')+'</span><span class="c">'+PHOTO('bigben')+'</span><span>'+PHOTO('king')+'</span>';
 document.querySelectorAll('.ph-box[data-img]').forEach(fillImg);
 (function(){$('#photoCredits').textContent=Object.values(PH).map(p=>p.c).join('; ')})();
 setName(); updStars();
