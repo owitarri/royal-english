@@ -4,7 +4,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;800&display=swap">
 <style>
-/* Layout: Royal English series, lesson 2 — a sticky star bar, ten missions through one royal day, certificate at the end */
+/* Layout: Royal English series, lesson 2 — a sticky star bar, eleven missions through one royal day, certificate at the end */
 :root{
   --bg:#EEF2FA; --card:#FFFFFF; --ink:#1A2346; --muted:#59618A; --line:#D6DCEE;
   --royal:#23308F; --royal-soft:#E2E6FA; --gold:#B8861E; --gold-soft:#FBF0D6;
@@ -186,6 +186,22 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
 .cert-art{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin-bottom:12px}
 .cert-art span{width:70px;height:70px;border-radius:12px;overflow:hidden;display:block}
 .cert-art span.c{width:96px;height:128px}
+.kingpic{margin:0 0 10px;text-align:center}.kingpic .kp{width:100%;max-width:200px;aspect-ratio:3/4;margin:0 auto;border-radius:14px;overflow:hidden;border:3px solid var(--gold);background:var(--royal-soft)}.kingpic figcaption{font-size:.8rem;color:var(--muted)}
+.ph-box{position:relative;width:100%;height:100%;overflow:hidden;background:var(--royal-soft)}
+.ph-box>svg{position:absolute;inset:0;width:100%;height:100%}
+.ph-box img.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s}
+.ph-box img.photo.on{opacity:1}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.royal{background:var(--card);border:2px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.royal .rp{position:relative;aspect-ratio:4/3}
+.royal .rname{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 8px;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;font-family:var(--f-head);font-size:1.15rem;line-height:1.15;z-index:2}
+.royal .rname small{display:block;font-family:var(--f-body);font-size:.8rem;font-weight:700;opacity:.9}
+.royal .rb{padding:10px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.royal .rb ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.royal .rb li{line-height:1.35}
+.royal .rb li b{color:var(--royal)}
+.royal .born{font-size:.8rem;color:var(--muted);font-weight:700}
+.royal .rb .tag.ps{margin-left:4px}
 .credits{margin-top:40px;font-size:.78rem;color:var(--muted)}
 .toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-weight:800;opacity:0;transition:opacity .25s;pointer-events:none;z-index:20;white-space:nowrap}
 .toast.on{opacity:1}
@@ -209,9 +225,9 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
 <div class="wrap">
 <header class="hero">
   <div>
-    <div class="eyebrow">Lesson 2 · Time and my day · 45–60 minutes</div>
+    <div class="eyebrow">Lesson 2 · Time and my day · 50–60 minutes</div>
     <h1>A Royal Day</h1>
-    <p>Last time you met the royal family. Today you will find out what the King does every day, learn to tell the time, and hear some royal secrets. Collect stars ★ for your second Royal Certificate!</p>
+    <p>Last time you met the royal family. Today you will find out what the King does every day, learn to tell the time, meet the real royal family in photos, and hear some royal secrets. Collect stars ★ for your second Royal Certificate!</p>
     <div class="name-row">
       <label for="kidname"><b>What is your name?</b></label>
       <input id="kidname" placeholder="My name is…" autocomplete="off" autocapitalize="words">
@@ -289,6 +305,7 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
       <button class="say" data-read="read1">🔊 Listen to the whole text</button>
     </div>
     <div class="side">
+      <figure class="kingpic"><div class="kp" id="kingPic"></div><figcaption>King Charles III</figcaption></figure>
       <div class="daytl" id="daytl"></div>
       <div class="gloss"><b>New words</b>
         <div><span>busy</span><span>занятой</span></div>
@@ -312,7 +329,23 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
 </section>
 
 <section class="mission" id="m5">
-  <div class="mhead"><span class="eyebrow">Mission 5 · Grammar</span><span class="time">⏱ 8 min</span><span class="mstar" data-sec="m5"></span></div>
+  <div class="mhead"><span class="eyebrow">Mission 5 · Meet the Royal Family</span><span class="time">⏱ 12 min</span><span class="mstar" data-sec="m5"></span></div>
+  <h2>Who's who in the royal family?</h2>
+  <p class="task">These are <i>real photos</i>. Read about each royal and tap 🔊 to listen. Remember the facts: you need them for the games below!</p>
+  <span class="ru">Это настоящие фотографии. Прочитай про каждого члена королевской семьи и нажми 🔊, чтобы послушать. Запоминай факты: они понадобятся в играх ниже!</span>
+  <div class="rgrid" id="royals"></div>
+  <h3 class="sub">Who is it?</h3>
+  <p class="task">Read the clue. <i>Who is it?</i></p>
+  <span class="ru">Прочитай подсказку. Кто это?</span>
+  <div class="qgrid" id="whois"></div>
+  <h3 class="sub">Photo detective</h3>
+  <p class="task">Look at the photo carefully and <i>answer the question</i>.</p>
+  <span class="ru">Внимательно посмотри на фото и ответь на вопрос.</span>
+  <div class="qgrid" id="detect"></div>
+</section>
+
+<section class="mission" id="m6">
+  <div class="mhead"><span class="eyebrow">Mission 6 · Grammar</span><span class="time">⏱ 8 min</span><span class="mstar" data-sec="m6"></span></div>
   <h2>The King doesn't eat lunch</h2>
   <div class="rule">
     <b>I / you / we / they</b> → <b>don't</b>: I <b>don't</b> live in a palace.<br>
@@ -330,8 +363,8 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
   <div class="scr words" id="buildq"></div>
 </section>
 
-<section class="mission" id="m6">
-  <div class="mhead"><span class="eyebrow">Mission 6 · Royal secrets</span><span class="time">⏱ 8 min</span><span class="mstar" data-sec="m6"></span></div>
+<section class="mission" id="m7">
+  <div class="mhead"><span class="eyebrow">Mission 7 · Royal secrets</span><span class="time">⏱ 8 min</span><span class="mstar" data-sec="m7"></span></div>
   <h2>Fact or myth?</h2>
   <p class="task">Read the royal secret. Is it <i>TRUE</i> or <i>NOT TRUE</i>? Make a guess, then read the answer. Some stories are old legends: we say <b>"People say…"</b>.</p>
   <span class="ru">Прочитай королевский «секрет». Правда или нет? Угадай и прочитай ответ. Здесь звёзд нет, но потом будет квиз!</span>
@@ -342,8 +375,8 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
   <div class="qgrid" id="squiz"></div>
 </section>
 
-<section class="mission" id="m7">
-  <div class="mhead"><span class="eyebrow">Mission 7 · Listening</span><span class="time">⏱ 6 min</span><span class="mstar" data-sec="m7"></span></div>
+<section class="mission" id="m8">
+  <div class="mhead"><span class="eyebrow">Mission 8 · Listening</span><span class="time">⏱ 6 min</span><span class="mstar" data-sec="m8"></span></div>
   <h2>A day in the life of Biscuit</h2>
   <p class="task">Biscuit is a palace corgi. <span class="story-tag">made-up story</span> <i>Listen to the story</i> two times, then answer.</p>
   <span class="ru">Бисквит — корги из дворца (это придуманная история). Послушай два раза и ответь на вопросы. Если звука нет — нажми «Show text».</span>
@@ -362,16 +395,16 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
   <div class="list" id="dict"></div>
 </section>
 
-<section class="mission" id="m8">
-  <div class="mhead"><span class="eyebrow">Mission 8 · Spelling</span><span class="time">⏱ 4 min</span><span class="mstar" data-sec="m8"></span></div>
+<section class="mission" id="m9">
+  <div class="mhead"><span class="eyebrow">Mission 9 · Spelling</span><span class="time">⏱ 4 min</span><span class="mstar" data-sec="m9"></span></div>
   <h2>Mixed-up letters</h2>
   <p class="task"><i>Tap the letters</i> in the right order. Tap a letter in the top row to take it back.</p>
   <span class="ru">Собери слово из букв. Подсказка — картинка и перевод.</span>
   <div class="scr" id="scramble"></div>
 </section>
 
-<section class="mission" id="m9">
-  <div class="mhead"><span class="eyebrow">Mission 9 · Speaking and writing</span><span class="time">⏱ 10 min</span><span class="mstar" data-sec="m9"></span></div>
+<section class="mission" id="m10">
+  <div class="mhead"><span class="eyebrow">Mission 10 · Speaking and writing</span><span class="time">⏱ 10 min</span><span class="mstar" data-sec="m10"></span></div>
   <h2>The King wants to know about your day</h2>
   <p class="task">The King asks you questions. <i>Choose the best answer.</i> Then press 🔊 again and answer <i>out loud about you</i>.</p>
   <span class="ru">Король задаёт вопросы. Выбери лучший ответ. Потом включи вопрос ещё раз и ответь вслух про себя.</span>
@@ -395,8 +428,8 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
   </div>
 </section>
 
-<section class="mission" id="m10">
-  <div class="mhead"><span class="eyebrow">Mission 10 · Final quiz</span><span class="time">⏱ 4 min</span><span class="mstar" data-sec="m10"></span></div>
+<section class="mission" id="m11">
+  <div class="mhead"><span class="eyebrow">Mission 11 · Final quiz</span><span class="time">⏱ 4 min</span><span class="mstar" data-sec="m11"></span></div>
   <h2>The big royal day quiz</h2>
   <p class="task">Show what you know!</p>
   <span class="ru">Финальная проверка по всему уроку.</span>
@@ -417,7 +450,7 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
 </section>
 
 <footer class="credits">
-  All pictures were drawn for this lesson. The people are friendly cartoons, not real likenesses. The facts about the King's day come from royal writers and newspapers; "people say" stories are legends.
+  Real photos come from Wikimedia Commons (free licences): <span id="photoCredits"></span>. The other pictures were drawn for this lesson; the cartoon people are not real likenesses. The facts about the King's day come from royal writers and newspapers; "people say" stories are legends.
 </footer>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -426,6 +459,43 @@ h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--
 (function(){
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const IMG=(f,w)=>'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(f)+'?width='+(w||500);
+const PH={
+ bigben:{f:'Big Ben Elizabeth Tower London 2023 01.jpg',c:'Big Ben: Julian Herzog, CC BY 4.0'},
+ cake:{f:'Trooping the Colour (Hurley) 2025-06-14-11-00-B.jpg',c:'Trooping the Colour: Lauren Hurley / No 10 Downing Street, OGL v3.0'},
+ swan:{f:'Mute swans (Cygnus olor) and cygnets.jpg',c:'Swans: Charles J. Sharp, CC BY-SA 4.0'},
+ raven:{f:'Tower Raven (Poppy) closeup.jpg',c:'Raven: Bastique, CC BY 4.0'},
+ tailcoat:{f:'MK17792 Eton College Chapel.jpg',c:'Eton College: Martin Kraft, CC BY-SA 3.0'},
+ guardShout:{f:'Guard of Buckingham Palace - 01.jpg',c:'King\'s Guard: Carlos Delgado, CC BY-SA 3.0'},
+ tea:{f:'Scones and tea.jpg',c:'Tea and scones: AlphaLemur, CC BY-SA 4.0'},
+ redbox:{f:'Scottish Secretary Alister Jack with Red Box.jpg',c:'Red box: UK Government, OGL v3.0',pos:'15% 60%'},
+ king:{f:'King Charles III (July 2023).jpg',c:'King Charles III: The White House, public domain',av:'charles',pos:'50% 20%'},
+ rCharles:{f:'King Charles III 2023 Coronation Balcony (cropped).jpg',c:'King Charles III at his coronation: HM Government, OGL v3.0',av:'charles',pos:'50% 15%'},
+ rCamilla:{f:'Queen Camilla 2023 Coronation Balcony (cropped).jpg',c:'Queen Camilla at the coronation: HM Government, OGL v3.0',av:'camilla',pos:'50% 15%'},
+ rEliz:{f:'Hrh Princess Elizabeth in the Auxiliary Territorial Service, April 1945 TR2832 (cropped).jpg',c:'Princess Elizabeth in 1945: Ministry of Information, public domain',av:'eliz',pos:'50% 25%'},
+ dEliz:{f:'Hrh Princess Elizabeth in the Auxiliary Territorial Service, April 1945 TR2832.jpg',c:'Princess Elizabeth with an army truck, 1945: Ministry of Information, public domain',av:'eliz',pos:'50% 50%'},
+ rWilliam:{f:'The Duke & Duchess of Cambridge visit the National Stadium Belfast, home of the Irish Football Association. (46364855055).jpg',c:'William and Catherine at a football stadium: Northern Ireland Office, CC BY 2.0',av:'william',pos:'50% 30%'},
+ rCatherine:{f:'Kiss Wedding Prince William of Wales Kate Middleton.jpg',c:'William and Catherine\'s wedding day: John Pannell, CC BY 2.0',av:'catherine',pos:'50% 30%'},
+ rGeorge:{f:'Coronation Balcony 2023 (King\'s Pages).jpg',c:'The King\'s pages at the coronation: Isaac Mayne / DCMS, OGL v3.0',av:'george',pos:'50% 30%'},
+ rCharlotte:{f:'The Cambridges on the balcony.png',c:'William, Catherine, George, Charlotte and Louis: No 10 Downing Street, CC BY 2.0',av:'charlotte',pos:'50% 25%'},
+ rLouis:{f:'Queen Elizabeth II Platinum Jubilee 2022 - Platinum Pageant (52124830349) (cropped3).jpg',c:'Prince Louis at the Platinum Jubilee: No 10 Downing Street, CC BY 2.0',av:'louis',pos:'50% 25%'},
+ rAnne:{f:'Princess Anne, Princess Royal Trooping the Colour 2023 cropped.jpg',c:'Princess Anne at Trooping the Colour: Katie Chan, CC BY-SA 4.0',av:'queen',pos:'50% 20%'},
+ rHarry:{f:'Prince Harry at the 2016 Invictus Games Symposium on Invisible Wounds (26292600724) (cropped).jpg',c:'Prince Harry: EJ Hersom / U.S. Department of Defense, public domain',av:'harry',pos:'50% 20%'},
+ dBalcony:{f:'Royal Family Platinum Jubilee Balcony Appearance 2022.jpg',c:'Platinum Jubilee balcony: No 10 Downing Street, CC BY 2.0',av:'eliz',pos:'50% 40%'},
+ dRiding:{f:'President Ronald Reagan Riding Horses with Queen Elizabeth Ii During Visit to Windsor Castle - DPLA - 934bb1fd137bd8789fa9648e928f9ded.jpg',c:'Queen Elizabeth and President Reagan: White House photo, public domain',av:'eliz',pos:'50% 40%'},
+ dCarriage:{f:'Queen\'s Platinum Jubilee 2022-0695 (52118365405).jpg',c:'Royal carriage, Platinum Jubilee: John Pannell, CC BY 2.0',av:'princess',pos:'50% 40%'}
+};
+function photoBack(k){const p=PH[k]||{};return A2[k]||ART[k]||(p.av&&ART.p?ART.p(p.av):'')}
+function fillImg(el){
+  const k=el.dataset.art, p=PH[k]; if(!p)return;
+  el.innerHTML=photoBack(k);
+  const img=new Image(); img.alt=p.c; img.decoding='async'; img.className='photo';
+  img.style.objectPosition=p.pos||'50% 50%';
+  img.onload=()=>{img.classList.add('on')};
+  img.onerror=()=>{img.remove()};
+  img.src=IMG(p.f,500); el.appendChild(img);
+}
+const PHOTO=k=>PH[k]?'<div class="ph-box" data-img="1" data-art="'+k+'"></div>':PIC(k);
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 const norm=s=>String(s).toLowerCase().replace(/[’‘`´]/g,"'").replace(/\s+/g,' ').trim().replace(/[.!?,]+$/,'').trim();
 const FLAG='<svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Union Flag"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="2"/><path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/></svg>';
@@ -641,7 +711,7 @@ function updStars(){
     const w=ids.filter(i=>won.has(i)).length, f=ids.filter(i=>solved.has(i)).length; m.textContent='★ '+w+' / '+ids.length;
     const a=document.querySelector('#jump a[href="#'+m.dataset.sec+'"]'); if(a)a.classList.toggle('done',f===ids.length);});
 }
-$('#jump').innerHTML=[1,2,3,4,5,6,7,8,9,10].map(i=>'<a href="#m'+i+'">'+i+'</a>').join('')+'<a href="#cert">★</a>';
+$('#jump').innerHTML=[1,2,3,4,5,6,7,8,9,10,11].map(i=>'<a href="#m'+i+'">'+i+'</a>').join('')+'<a href="#cert">★</a>';
 
 const nameIn=$('#kidname');
 function setName(){const n=nameIn.value.trim(); $('#hello').textContent=n?'Good morning, '+n+'! ☀️':''; $('#certName').textContent=n||'Royal Guest'; store.set('re_name',n)}
@@ -694,7 +764,7 @@ function tileGame(container,sec,units,label,sep,onWin){
 }
 
 /* ---------- hero ---------- */
-$('#heroArt').innerHTML=A2.bigben;
+
 
 /* ---------- 1 review ---------- */
 [
@@ -777,7 +847,7 @@ $('#timerule').innerHTML=[[7,0,'seven o\'clock','7:00 — ровно семь'],
   $('#setters').appendChild(d);});
 
 /* ---------- 4 reading ---------- */
-$('#daytl').innerHTML='<b>The King\'s day</b>'+[['getup','gets up early'],['breakfast','fruit and tea'],['redbox','red boxes'],['nolunch','no lunch!'],['tea','5:00 tea with Camilla'],['dinner','8:30 dinner'],['bed','works late']].map(x=>'<div><span class="mini">'+PIC(x[0])+'</span>'+x[1]+'</div>').join('');
+$('#daytl').innerHTML='<b>The King\'s day</b>'+[['getup','gets up early'],['breakfast','fruit and tea'],['redbox','red boxes'],['nolunch','no lunch!'],['tea','5:00 tea with Camilla'],['dinner','8:30 dinner'],['bed','works late']].map(x=>'<div><span class="mini">'+PHOTO(x[0])+'</span>'+x[1]+'</div>').join('');
 [
  ['The King gets up late.','False'],['He has fruit and tea for breakfast.','True'],['He gets red boxes with important papers.','True'],['The King has a big lunch every day.','False'],
  ['He has afternoon tea at five o\'clock.','True'],['He has afternoon tea with Prince William.','False'],['He has dinner at half past eight.','True'],['He always goes to bed at nine o\'clock.','False']
@@ -795,7 +865,7 @@ tileGame($('#dayorder'),'m4',['gets up','has breakfast','reads his papers','has 
  ['The King','eat lunch.','doesn\'t','king'],['I','go to school on Sunday.','don\'t','school'],['The guards','smile at work.','don\'t','guard'],
  ['Charlotte','have a sister.','doesn\'t','charlotte'],['We','live in a palace.','don\'t','palace'],['Orla the dog','go to school.','doesn\'t','puppies'],
  ['My parents','drink coffee at night.','don\'t','tea'],['My cat','like water.','doesn\'t','swan']
-].forEach((g,i)=>optCard($('#dont'),'m5',{head:'<span class="mini">'+(PIC(g[3])||ART.p(g[3]))+'</span>',q:'<span class="n">'+(i+1)+'</span> '+g[0]+' ____ '+g[1],o:['don\'t','doesn\'t'],a:g[2],say:g[0]+' '+g[2]+' '+g[1],
+].forEach((g,i)=>optCard($('#dont'),'m6',{head:'<span class="mini">'+(PIC(g[3])||ART.p(g[3]))+'</span>',q:'<span class="n">'+(i+1)+'</span> '+g[0]+' ____ '+g[1],o:['don\'t','doesn\'t'],a:g[2],say:g[0]+' '+g[2]+' '+g[1],
   after:d=>{d.querySelector('.qtext').innerHTML='<span class="n">'+(i+1)+'</span> '+g[0]+' <b>'+g[2]+'</b> '+g[1]}},'line'));
 [
  {q:'Does the King eat lunch?',o:['Yes, he does.','No, he doesn\'t.','No, he isn\'t.'],a:'No, he doesn\'t.',p:'nolunch'},
@@ -804,8 +874,8 @@ tileGame($('#dayorder'),'m4',['gets up','has breakfast','reads his papers','has 
  {q:'Does George go to Eton?',o:['Yes, he does.','Yes, he do.','No, he doesn\'t.'],a:'Yes, he does.',p:'george'},
  {q:'Do you live in a palace?',o:['Yes, I am.','No, I don\'t.','No, I doesn\'t.'],a:'No, I don\'t.',p:'palace'},
  {q:'Does the King have afternoon tea?',o:['No, he doesn\'t.','Yes, he has.','Yes, he does.'],a:'Yes, he does.',p:'tea'}
-].forEach((x,i)=>optCard($('#short'),'m5',{head:'<div class="rid-row"><span class="mini">'+(PIC(x.p)||ART.p(x.p))+'</span><button class="say" type="button" data-say="'+esc(x.q)+'">🔊</button></div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a,say:x.a}));
-['Does the King eat lunch?','Do you like tea?','Does Louis go to school?'].forEach((s,i)=>tileGame($('#buildq'),'m5',s.split(' '),'<span class="n">'+(i+1)+'</span> Make a question',' ',()=>speak(s)));
+].forEach((x,i)=>optCard($('#short'),'m6',{head:'<div class="rid-row"><span class="mini">'+(PIC(x.p)||ART.p(x.p))+'</span><button class="say" type="button" data-say="'+esc(x.q)+'">🔊</button></div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a,say:x.a}));
+['Does the King eat lunch?','Do you like tea?','Does Louis go to school?'].forEach((s,i)=>tileGame($('#buildq'),'m6',s.split(' '),'<span class="n">'+(i+1)+'</span> Make a question',' ',()=>speak(s)));
 
 /* ---------- 6 secrets ---------- */
 const secrets=[
@@ -820,9 +890,47 @@ const secrets=[
  {p:'puppies',t:'Prince William and Catherine\'s dog Orla had puppies.',v:'T',e:'TRUE! Orla is a black cocker spaniel. In 2025 she had four puppies!'},
  {p:'guardShout',t:'The King\'s guards can never move or speak, even if tourists come too close.',v:'F',e:'NOT TRUE! They don\'t smile or chat, but if people come too close, they can shout: "Make way for the King\'s Guard!"'}
 ];
+/* ---------- mission 5: meet the royals ---------- */
+const royals=[
+ {k:'rCharles',n:'King Charles III',r:'the King',b:'born in 1948',f:['He <b>became</b> King in 2022.','At his coronation in 2023 he <b>wore</b> two different crowns!','He <b>loves</b> gardening. He <b>says</b> he <b>talks</b> to his plants!','He <b>paints</b> pictures with watercolours.']},
+ {k:'rCamilla',n:'Queen Camilla',r:'the King\'s wife',b:'born in 1947',f:['She <b>loves</b> books and <b>has</b> a big online book club.','She <b>has</b> two dogs, Bluebell and Beth. They <b>come</b> from a dogs\' home.','She <b>loves</b> horses too.']},
+ {k:'rEliz',n:'Queen Elizabeth II',r:'the King\'s mother',b:'1926 – 2022',f:['She <b>was</b> Queen for 70 years. That is a record!','In the war, young Princess Elizabeth <b>was</b> a driver and a car mechanic. She <b>could</b> fix engines!','She <b>had</b> more than 30 corgis in her life.']},
+ {k:'rWilliam',n:'Prince William',r:'Prince of Wales, the next King',b:'born in 1982',f:['He <b>was</b> a rescue helicopter pilot. He <b>saved</b> people at sea and in the mountains.','He <b>loves</b> football. His team <b>is</b> Aston Villa.','He <b>has</b> three children: George, Charlotte and Louis.']},
+ {k:'rCatherine',n:'Catherine, Princess of Wales',r:'William\'s wife',b:'born in 1982',f:['She <b>met</b> William at university in Scotland. This is their wedding day in 2011!','She <b>loves</b> sport: tennis, hockey and sailing.','She <b>loves</b> taking photos. She often <b>takes</b> the family photos herself!']},
+ {k:'rGeorge',n:'Prince George',r:'William\'s eldest son',b:'born in 2013',f:['One day, after his dad, he <b>will be</b> King.','At the King\'s coronation he <b>was</b> a page: pages <b>carry</b> the King\'s long robe. Can you find George in the photo?','He <b>loves</b> football, like his dad.','In 2026 he <b>started</b> at Eton College.']},
+ {k:'rCharlotte',n:'Princess Charlotte',r:'William\'s daughter',b:'born in 2015',f:['She <b>likes</b> tennis and ballet.','Her middle name <b>is</b> Elizabeth, like her great-grandmother.','<span class="tag ps">People say…</span> she <b>is</b> the boss and often <b>tells</b> her brothers what to do!']},
+ {k:'rLouis',n:'Prince Louis',r:'William\'s youngest son',b:'born in 2018',f:['He <b>is</b> famous for his funny faces at the Queen\'s Jubilee in 2022.','When the planes <b>flew</b> over the palace, he <b>covered</b> his ears: "It\'s too loud!"','His birthday <b>is</b> on 23 April.']},
+ {k:'rAnne',n:'Princess Anne',r:'the King\'s sister',b:'born in 1950',f:['She <b>loves</b> horses. She <b>rode</b> for Great Britain at the 1976 Olympics!','Her daughter Zara <b>is</b> a horse-riding champion too.','She <b>works</b> very hard and <b>visits</b> hundreds of places every year.']},
+ {k:'rHarry',n:'Prince Harry',r:'William\'s brother',b:'born in 1984',f:['He <b>lives</b> in California, in America, with his wife Meghan.','He <b>has</b> two children, Archie and Lilibet.','He <b>started</b> the Invictus Games: sports games for injured soldiers.','He <b>flew</b> helicopters in the army.']}
+];
+const plain=h=>h.replace(/<span class="tag ps">People say…<\/span>/,'People say').replace(/<[^>]+>/g,'');
+$('#royals').innerHTML=royals.map(x=>'<article class="royal"><div class="rp">'+PHOTO(x.k)+'<div class="rname">'+esc(x.n)+'<small>'+esc(x.r)+'</small></div></div><div class="rb"><div class="born">'+x.b+' <button class="say" type="button" data-say="'+esc(x.n+'. '+x.f.map(plain).join(' '))+'">🔊</button></div><ul>'+x.f.map(f=>'<li>'+f+'</li>').join('')+'</ul></div></article>').join('');
+const RN=['King Charles','Queen Camilla','Queen Elizabeth II','Prince William','Catherine','Prince George','Princess Charlotte','Prince Louis','Princess Anne','Prince Harry'];
+[
+ ['She loves horses and rode at the Olympics.','Princess Anne',['Princess Anne','Queen Camilla','Princess Charlotte']],
+ ['He talks to his plants.','King Charles',['Prince Harry','King Charles','Prince George']],
+ ['He made funny faces at the Jubilee.','Prince Louis',['Prince Louis','Prince William','King Charles']],
+ ['He lives in California with Meghan.','Prince Harry',['Prince George','Prince Harry','Prince William']],
+ ['She fixed engines in the war.','Queen Elizabeth II',['Catherine','Princess Anne','Queen Elizabeth II']],
+ ['He flew rescue helicopters and loves Aston Villa.','Prince William',['Prince William','Prince Louis','Prince Harry']],
+ ['She has two dogs, Bluebell and Beth.','Queen Camilla',['Princess Charlotte','Queen Camilla','Queen Elizabeth II']],
+ ['She often takes the family photos.','Catherine',['Princess Anne','Queen Camilla','Catherine']],
+ ['He carried the King\'s robe at the coronation.','Prince George',['Prince George','Prince Louis','Prince Harry']],
+ ['People say she is the boss of her brothers.','Princess Charlotte',['Catherine','Princess Charlotte','Princess Anne']]
+].forEach((w,i)=>optCard($('#whois'),'m5',{q:'<span class="n">'+(i+1)+'</span> '+esc(w[0])+' <button class="say" type="button" data-say="'+esc(w[0])+' Who is it?">🔊</button>',o:w[2],a:w[1],say:w[1]}));
+[
+ {k:'dBalcony',q:'This is the Queen\'s Platinum Jubilee in 2022: 70 years as Queen! What colour is Queen Elizabeth\'s dress?',o:['green','red','black'],a:'green',say:'Queen Elizabeth is wearing a green dress.'},
+ {k:'dRiding',q:'Queen Elizabeth and an American President are at Windsor Castle. What are they doing?',o:['playing tennis','riding horses','having tea'],a:'riding horses',say:'They are riding horses.'},
+ {k:'dEliz',q:'This is Princess Elizabeth in the war, in 1945. What was her job?',o:['a teacher','a cook','a driver and mechanic'],a:'a driver and mechanic',say:'She was a driver and a mechanic.'},
+ {k:'rGeorge',q:'The boys in red are the King\'s pages. What do pages do at a coronation?',o:['They carry the King\'s robe.','They cook the dinner.','They drive the car.'],a:'They carry the King\'s robe.',say:'They carry the King\'s robe.'},
+ {k:'dCarriage',q:'How do the royals travel in the big parade?',o:['by bus','in a carriage with horses','on bikes'],a:'in a carriage with horses',say:'They travel in a carriage with horses.'}
+].forEach((d,i)=>optCard($('#detect'),'m5',{head:'<div class="qimg" style="height:170px">'+PHOTO(d.k)+'</div>',q:'<span class="n">'+(i+1)+'</span> '+esc(d.q),o:d.o,a:d.a,say:d.say}));
+
 let sGuessed=0,sRight=0;
+$('#kingPic').innerHTML=PHOTO('king');
+$('#heroArt').innerHTML=PHOTO('bigben');
 secrets.forEach((s,i)=>{const d=document.createElement('div'); d.className='secret';
-  d.innerHTML='<div class="sp">'+PIC(s.p)+'</div><div class="sb">'+(s.ps?'<span class="tag ps">People say…</span>':'<span class="tag">Royal secret '+(i+1)+'</span>')+'<div class="st">'+esc(s.t)+' <button class="say" type="button" data-say="'+esc(s.t)+'">🔊</button></div><div class="opts"><button class="opt" type="button">I think TRUE</button><button class="opt" type="button">I think NOT TRUE</button></div></div>';
+  d.innerHTML='<div class="sp">'+PHOTO(s.p)+'</div><div class="sb">'+(s.ps?'<span class="tag ps">People say…</span>':'<span class="tag">Royal secret '+(i+1)+'</span>')+'<div class="st">'+esc(s.t)+' <button class="say" type="button" data-say="'+esc(s.t)+'">🔊</button></div><div class="opts"><button class="opt" type="button">I think TRUE</button><button class="opt" type="button">I think NOT TRUE</button></div></div>';
   d.querySelectorAll('.opt').forEach((b,k)=>b.addEventListener('click',()=>{
     const truth=s.v!=='F', right=(k===0)===truth;
     d.querySelectorAll('.opt').forEach(x=>x.disabled=true); b.classList.add(right?'ok':'no');
@@ -839,7 +947,7 @@ secrets.forEach((s,i)=>{const d=document.createElement('div'); d.className='secr
  {q:'When do the royals open Christmas presents?',o:['on Christmas Eve','on Christmas morning','in January'],a:'on Christmas Eve'},
  {q:'What is the name of the dog with four puppies?',o:['Susan','Biscuit','Orla'],a:'Orla'},
  {q:'What do the boys at Eton wear?',o:['crowns','tailcoats','pyjamas'],a:'tailcoats'}
-].forEach((x,i)=>optCard($('#squiz'),'m6',{q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
+].forEach((x,i)=>optCard($('#squiz'),'m7',{q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
 
 /* ---------- 7 listening ---------- */
 const story='Hello! My name is Biscuit. I am a corgi and I live in a palace. I wake up at seven o\'clock. I have breakfast at quarter past seven. I love sausages, but I don\'t eat vegetables. At ten o\'clock I walk in the garden with the gardener. I don\'t go to school! At one o\'clock I sleep under the King\'s desk. At five o\'clock the Queen has tea, and she gives me a biscuit. That is why my name is Biscuit! I go to bed at nine o\'clock. Goodnight!';
@@ -853,16 +961,16 @@ $('#showStory').addEventListener('click',()=>{const t=$('#storyText'); t.hidden=
  {q:'Where does Biscuit sleep at one o\'clock?',o:['in the garden','under the King\'s desk','in a car'],a:'under the King\'s desk'},
  {q:'Who gives Biscuit a biscuit?',o:['the gardener','the King','the Queen'],a:'the Queen'},
  {q:'What time does Biscuit go to bed?',o:['at nine o\'clock','at five o\'clock','at midnight'],a:'at nine o\'clock'}
-].forEach((x,i)=>optCard($('#listen'),'m7',{q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
+].forEach((x,i)=>optCard($('#listen'),'m8',{q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
 ['morning','breakfast','school','clock','dinner','homework'].forEach((w,i)=>{
-  const d=typeLine($('#dict'),'m7',i,'','',[w],'<button class="check" type="button" data-say="'+w+'" aria-label="listen">▶</button>');
+  const d=typeLine($('#dict'),'m8',i,'','',[w],'<button class="check" type="button" data-say="'+w+'" aria-label="listen">▶</button>');
   const h=document.createElement('button'); h.className='ghost'; h.type='button'; h.textContent='Hint';
   h.addEventListener('click',()=>{h.textContent=w[0]+' _'.repeat(w.length-1)+' ('+w.length+')'});
   d.insertBefore(h,d.querySelector('.fb'));});
 
 /* ---------- 8 spelling ---------- */
 [['LUNCH','обед','lunch'],['CLOCK','часы','clock'],['TEETH','зубы','teeth'],['DINNER','ужин','dinner'],['SCHOOL','школа','school'],['MORNING','утро','wakeup'],['HOMEWORK','домашнее задание','homework'],['BREAKFAST','завтрак','breakfast']]
-.forEach((w,i)=>tileGame($('#scramble'),'m8',w[0].split(''),'<div class="sc-pic">'+(w[2]==='clock'?A2.clock(3,0):PIC(w[2]))+'</div><span class="n">'+(i+1)+'</span> '+w[1],'',()=>speak(w[0].toLowerCase())));
+.forEach((w,i)=>tileGame($('#scramble'),'m9',w[0].split(''),'<div class="sc-pic">'+(w[2]==='clock'?A2.clock(3,0):PIC(w[2]))+'</div><span class="n">'+(i+1)+'</span> '+w[1],'',()=>speak(w[0].toLowerCase())));
 
 /* ---------- 9 speaking ---------- */
 [
@@ -871,7 +979,7 @@ $('#showStory').addEventListener('click',()=>{const t=$('#storyText'); t.hidden=
  {k:'What do you have for breakfast?',o:['I has porridge.','I have porridge and tea.','I am porridge.'],a:'I have porridge and tea.'},
  {k:'Does your mum work?',o:['Yes, she do.','Yes, she is work.','Yes, she does.'],a:'Yes, she does.'},
  {k:'What time do you go to bed?',o:['I go to bed at half past nine.','I go bed at nine half.','I going to bed.'],a:'I go to bed at half past nine.'}
-].forEach((x,i)=>optCard($('#interview'),'m9',{head:'<div class="rid-row"><span class="mini">'+ART.king+'</span><div><b>The King:</b> “'+esc(x.k)+'” <button class="say" type="button" data-say="'+esc(x.k)+'">🔊</button></div></div>',q:'You say:',o:x.o,a:x.a,say:x.a},'q'));
+].forEach((x,i)=>optCard($('#interview'),'m10',{head:'<div class="rid-row"><span class="mini">'+ART.king+'</span><div><b>The King:</b> “'+esc(x.k)+'” <button class="say" type="button" data-say="'+esc(x.k)+'">🔊</button></div></div>',q:'You say:',o:x.o,a:x.a,say:x.a},'q'));
 const hrs=['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'];
 const times=[]; for(let hh=6;hh<=11;hh++){const H=hrs[hh-1],N=hrs[hh%12]; times.push(H+' o\'clock','quarter past '+H,'half past '+H,'quarter to '+N)}
 const fillSel=(id,def)=>{const s=$('#'+id); s.innerHTML=times.map(t=>'<option'+(t===def?' selected':'')+'>'+t+'</option>').join('')};
@@ -891,9 +999,11 @@ $('#readDiary').addEventListener('click',e=>{e.stopPropagation(); speak(diaryTex
  {h:PIC('tea'),q:'What time is the King\'s afternoon tea?',o:['at five o\'clock','at one o\'clock','at midnight'],a:'at five o\'clock'},
  {h:A2.clock(7,45),q:'"Quarter to eight" is …',o:['8:15','7:45','8:45'],a:'7:45'},
  {h:ART.p('louis'),q:'Does Louis like football? — Yes, he …',o:['is','do','does'],a:'does'}
-].forEach((x,i)=>optCard($('#final'),'m10',{head:'<div class="qimg">'+x.h+'</div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
+].forEach((x,i)=>optCard($('#final'),'m11',{head:'<div class="qimg">'+x.h+'</div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
 
 $('#certArt').innerHTML='<span>'+A2.clock(5,0)+'</span><span class="c">'+A2.bigben+'</span><span>'+A2.tea+'</span>';
+document.querySelectorAll('.ph-box[data-img]').forEach(fillImg);
+(function(){$('#photoCredits').textContent=Object.values(PH).map(p=>p.c).join('; ')})();
 setName(); updStars();
 })();
 </script>
