@@ -1,0 +1,899 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Royal Day</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Layout: Royal English series, lesson 2 — a sticky star bar, ten missions through one royal day, certificate at the end */
+:root{
+  --bg:#EEF2FA; --card:#FFFFFF; --ink:#1A2346; --muted:#59618A; --line:#D6DCEE;
+  --royal:#23308F; --royal-soft:#E2E6FA; --gold:#B8861E; --gold-soft:#FBF0D6;
+  --scarlet:#C8102E; --ok:#1E8556; --ok-soft:#DDF3E8; --bad:#C8102E; --bad-soft:#FBE3E6; --hl:#FFE89A;
+  --f-display:"Cinzel Decorative", Georgia, serif;
+  --f-head:"Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --f-body:"Nunito", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1230; --card:#191F4B; --ink:#EEF0FA; --muted:#A9B0D6; --line:#2D3570;
+  --royal:#9CA9FF; --royal-soft:#252D66; --gold:#E6B955; --gold-soft:#3A3220;
+  --scarlet:#FF5A6E; --ok:#4FD69A; --ok-soft:#173D33; --bad:#FF6B7D; --bad-soft:#4A1F2C; --hl:#5A4A12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1230; --card:#191F4B; --ink:#EEF0FA; --muted:#A9B0D6; --line:#2D3570;
+  --royal:#9CA9FF; --royal-soft:#252D66; --gold:#E6B955; --gold-soft:#3A3220;
+  --scarlet:#FF5A6E; --ok:#4FD69A; --ok-soft:#173D33; --bad:#FF6B7D; --bad-soft:#4A1F2C; --hl:#5A4A12; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--royal)}
+.wrap{max-width:900px;margin:0 auto}
+h1,h2,h3{text-wrap:balance;margin:0}
+button{font:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+input,select{font-size:17px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  background:var(--royal);color:var(--bg);display:flex;gap:8px 10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.bar b{font-family:var(--f-head);font-size:1.15rem}
+.stars{font-family:var(--f-head);font-weight:800;font-size:1.1rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.jump{display:flex;gap:5px;flex-wrap:wrap}
+.jump a{color:inherit;text-decoration:none;font-size:.85rem;font-weight:800;border:1.5px solid currentColor;border-radius:999px;padding:1px 9px;opacity:.85;font-variant-numeric:tabular-nums;flex:none}
+.jump a.done{background:var(--gold);border-color:var(--gold);color:var(--card);opacity:1}
+
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;padding:28px 0 8px}
+.hero h1{font-family:var(--f-display);font-size:clamp(2rem,6vw,3.2rem);line-height:1.1;color:var(--royal)}
+.hero p{color:var(--muted);max-width:52ch}
+.hero figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.hero .tower{width:100%;max-width:240px;aspect-ratio:3/4;border-radius:18px;overflow:hidden;border:4px solid var(--gold)}
+.hero figcaption{font-size:.85rem;color:var(--muted);text-align:center;max-width:30ch}
+.name-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.name-row input{font:inherit;padding:8px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);min-width:0;flex:1 1 180px}
+.hello{font-family:var(--f-head);color:var(--gold);font-size:1.2rem;min-height:1.6em}
+
+.voicebox{margin-top:14px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.voicebox .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.voicebox select{font:inherit;font-size:16px;padding:5px 8px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--ink);min-width:0;flex:1 1 200px;max-width:100%}
+.voicebox small{color:var(--muted);font-size:.82rem;line-height:1.4}
+.seg{display:inline-flex;border:2px solid var(--royal);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--royal);padding:4px 14px;font-weight:800;font-size:.9rem}
+.seg button[aria-pressed="true"]{background:var(--royal);color:var(--card)}
+
+section.mission{margin-top:40px;scroll-margin-top:70px}
+.mhead{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.eyebrow{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;color:var(--gold);font-weight:800}
+.time{font-size:.8rem;color:var(--muted);font-weight:700}
+.mstar{font-family:var(--f-head);font-weight:800;font-size:.85rem;color:var(--royal);background:var(--royal-soft);border-radius:999px;padding:0 10px;font-variant-numeric:tabular-nums}
+.mission h2{font-family:var(--f-head);font-size:clamp(1.5rem,4vw,2rem);color:var(--royal);line-height:1.15}
+.task{color:var(--muted);margin:6px 0 4px;max-width:65ch}
+.task i{color:var(--ink);font-style:normal;font-weight:800}
+.ru{display:block;color:var(--muted);font-size:.85rem;margin:0 0 16px;max-width:65ch}
+.ru::before{content:"RU · ";font-weight:800;color:var(--gold)}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px}
+.rule{background:var(--gold-soft);border-left:5px solid var(--gold);border-radius:10px;padding:12px 16px;margin-bottom:16px}
+.rule b{color:var(--ink)}
+.rule .rr{color:var(--muted)}
+h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:26px 0 4px;color:var(--ink)}
+
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.vcard{perspective:800px;height:178px}
+.vin{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.vcard.flip .vin{transform:rotateY(180deg)}
+.vf,.vb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;border:2px solid var(--line);background:var(--card);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px;color:var(--ink);cursor:pointer;text-align:center}
+.vb{transform:rotateY(180deg);background:var(--royal-soft);border-color:var(--royal)}
+.vf .pic{width:110px;height:80px;border-radius:8px;overflow:hidden}
+.vf .w{font-family:var(--f-head);font-size:1.2rem;font-weight:800;line-height:1.1}
+.vb .tr{font-size:1.1rem;font-weight:800}
+.vb .ex{font-size:.85rem;color:var(--muted)}
+.say{border:0;background:var(--gold-soft);color:var(--ink);border-radius:999px;padding:4px 11px;font-size:.85rem;font-weight:800}
+.say:hover{background:var(--gold);color:var(--card)}
+.say.playing{background:var(--gold);color:var(--card)}
+
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.q{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.q.right,.line.right{border-color:var(--ok);background:var(--ok-soft)}
+.q .qimg{height:130px;border-radius:10px;overflow:hidden;background:var(--royal-soft);display:flex;align-items:center;justify-content:center}
+.q .qtext{font-weight:700}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:2px solid var(--royal);color:var(--royal);background:transparent;border-radius:10px;padding:6px 14px;font-weight:800;min-height:40px;text-align:left}
+.opt:hover{background:var(--royal-soft)}
+.opt.ok{background:var(--ok);border-color:var(--ok);color:var(--card)}
+.opt.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.opt:disabled{cursor:default}
+.list{display:flex;flex-direction:column;gap:10px}
+.line{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;min-width:0}
+.line.wrong{border-color:var(--bad)}
+.line .qtext{font-weight:700;flex:1 1 220px;min-width:0}
+.n{font-family:var(--f-head);font-weight:800;color:var(--gold);min-width:1.4em;display:inline-block}
+.line input{font:inherit;font-size:17px;font-weight:700;padding:5px 8px;border-radius:8px;border:2px solid var(--royal);background:var(--card);color:var(--ink);min-width:0;width:9em;max-width:100%}
+.check{border:0;background:var(--royal);color:var(--card);border-radius:8px;padding:6px 14px;font-weight:800;min-height:38px}
+.check:disabled{opacity:.45;cursor:default}
+.ghost{border:2px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:4px 10px;font-weight:700;font-size:.85rem;min-height:36px}
+.fb{font-weight:800;font-size:.95rem}
+.fb.ok{color:var(--ok)} .fb.no{color:var(--bad)}
+.reveal{font-size:.92rem;color:var(--ink);background:var(--gold-soft);border-radius:8px;padding:8px 10px;width:100%}
+.mini{width:52px;height:52px;flex:none;border-radius:10px;overflow:hidden;display:block}
+.rid-row{display:flex;gap:10px;align-items:center}
+
+.scr{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.slots,.tiles{display:flex;gap:6px;flex-wrap:wrap;min-height:44px}
+.tile,.slot{min-width:38px;height:42px;border-radius:8px;font-family:var(--f-head);font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center;padding:0 8px}
+.tile{border:2px solid var(--gold);background:var(--gold-soft);color:var(--ink)}
+.slot{border:2px dashed var(--line);background:transparent;color:var(--ink)}
+.slot.f{border-style:solid;border-color:var(--royal)}
+.words .tile,.words .slot{font-family:var(--f-body);font-size:1rem}
+.words .slot{min-width:56px}
+.phr .tile,.phr .slot{font-family:var(--f-body);font-size:.95rem;height:auto;min-height:42px;padding:4px 10px}
+.phr .slots{flex-direction:column;align-items:stretch}
+.phr .slot{justify-content:flex-start}
+.phr .slot::before{content:attr(data-num);font-family:var(--f-head);color:var(--gold);margin-right:8px}
+.sc-pic{width:130px;height:100px;border-radius:10px;overflow:hidden;background:var(--royal-soft)}
+
+/* clocks */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.q .clockbox{width:120px;height:120px;align-self:center}
+.timerule{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.timerule div{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:8px;text-align:center;font-weight:800;font-size:.9rem;display:flex;flex-direction:column;align-items:center;gap:4px}
+.timerule .c{width:84px;height:84px}
+.timerule small{font-weight:600;color:var(--muted)}
+.setter .clockbox{width:150px;height:150px;align-self:center}
+.ctrl{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px 8px;align-items:center;font-size:.9rem;font-weight:700}
+.ctrl button{border:2px solid var(--royal);background:transparent;color:var(--royal);border-radius:8px;font-weight:800;min-height:40px;font-size:.9rem;padding:0 6px}
+
+/* reading */
+.reading{display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:start}
+.reading .text{min-width:0}
+.reading .text p{margin:0 0 12px;max-width:65ch;border-radius:6px;padding:2px 4px;margin-left:-4px;transition:background .2s}
+.reading .text p.reading-now{background:var(--hl)}
+.reading .text b{color:var(--royal)}
+.side{display:flex;flex-direction:column;gap:10px;min-width:0}
+.gloss{font-size:.9rem;background:var(--gold-soft);border-radius:10px;padding:10px 12px}
+.gloss div{display:flex;justify-content:space-between;gap:8px}
+.daytl{display:flex;flex-direction:column;gap:6px;background:var(--royal-soft);border-radius:12px;padding:10px}
+.daytl b{font-family:var(--f-head);color:var(--royal)}
+.daytl div{display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:700}
+.daytl .mini{width:44px;height:44px}
+.story-tag{display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--gold-soft);color:var(--gold);border-radius:999px;padding:1px 10px}
+
+/* secrets */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.secret{background:var(--card);border:2px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.secret .sp{height:120px;background:var(--royal-soft)}
+.secret .sb{padding:12px 14px;display:flex;flex-direction:column;gap:10px;flex:1}
+.secret .st{font-weight:700}
+.tag{align-self:flex-start;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:1px 9px;background:var(--royal-soft);color:var(--royal)}
+.tag.ps{background:var(--gold-soft);color:var(--gold)}
+.verdict{font-family:var(--f-head);font-weight:800;font-size:1.05rem}
+.verdict.t{color:var(--ok)} .verdict.f{color:var(--bad)} .verdict.p{color:var(--gold)}
+.scoreline{font-family:var(--f-head);font-weight:800;color:var(--royal);margin:10px 0 0}
+
+/* diary */
+.post{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.frame{display:flex;flex-direction:column;gap:10px}
+.frame label{font-weight:700;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.frame input,.frame select{font:inherit;font-size:16px;padding:5px 8px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--ink);min-width:0;flex:1 1 140px;max-width:100%}
+.diary{border:3px solid var(--royal);border-radius:10px;padding:18px;background:var(--card);
+  background-image:repeating-linear-gradient(transparent 0 31px,var(--line) 31px 32px);background-position:0 12px;min-height:260px}
+.diary h3{font-family:var(--f-head);color:var(--scarlet);margin-bottom:8px}
+.diary .msg{font-family:var(--f-head);font-size:1.05rem;white-space:pre-line;line-height:32px}
+.checklist{font-size:.9rem;color:var(--muted);margin:6px 0 0;padding-left:1.2em}
+
+.cert{text-align:center;border:6px double var(--gold);border-radius:18px;padding:28px 18px;background:var(--card)}
+.cert h2{font-family:var(--f-display);color:var(--royal);font-size:clamp(1.5rem,5vw,2.4rem)}
+.cert .who{font-family:var(--f-head);font-size:2rem;color:var(--scarlet);margin:8px 0;overflow-wrap:anywhere}
+.cert .rank{font-family:var(--f-head);font-weight:800;color:var(--gold);font-size:1.3rem}
+.cert-art{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin-bottom:12px}
+.cert-art span{width:70px;height:70px;border-radius:12px;overflow:hidden;display:block}
+.cert-art span.c{width:96px;height:128px}
+.credits{margin-top:40px;font-size:.78rem;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-weight:800;opacity:0;transition:opacity .25s;pointer-events:none;z-index:20;white-space:nowrap}
+.toast.on{opacity:1}
+@media (max-width:700px){.hero,.reading,.post{grid-template-columns:1fr}.hero figure{order:-1}.hero .tower{max-width:170px}}
+@media (max-width:640px){
+  .jump{order:3;flex:1 0 100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .jump::-webkit-scrollbar{display:none}
+  section.mission{scroll-margin-top:110px}
+  .timerule{grid-template-columns:repeat(2,1fr)}
+  .panel{padding:14px}
+}
+@media (prefers-reduced-motion:reduce){.vin,.reading .text p{transition:none}}
+</style>
+
+<div class="bar">
+  <b>Royal English 2</b>
+  <nav class="jump" aria-label="Missions" id="jump"></nav>
+  <span class="stars" id="stars">★ 0 / 0</span>
+</div>
+
+<div class="wrap">
+<header class="hero">
+  <div>
+    <div class="eyebrow">Lesson 2 · Time and my day · 45–60 minutes</div>
+    <h1>A Royal Day</h1>
+    <p>Last time you met the royal family. Today you will find out what the King does every day, learn to tell the time, and hear some royal secrets. Collect stars ★ for your second Royal Certificate!</p>
+    <div class="name-row">
+      <label for="kidname"><b>What is your name?</b></label>
+      <input id="kidname" placeholder="My name is…" autocomplete="off" autocapitalize="words">
+    </div>
+    <div class="hello" id="hello"></div>
+    <div class="voicebox">
+      <div class="row"><b>🔊 Voice</b>
+        <select id="voiceSel" aria-label="Choose a voice"><option>Loading voices…</option></select>
+        <button class="say" id="voiceTest">Test</button>
+      </div>
+      <div class="row"><span style="font-weight:700;font-size:.9rem">Speed</span>
+        <div class="seg" role="group" aria-label="Speed"><button data-rate="0.75" aria-pressed="false">slow</button><button data-rate="0.92" aria-pressed="true">normal</button></div>
+      </div>
+      <small id="voiceNote">Самый живой голос — в Microsoft Edge («Natural»: Sonia, Libby, Ryan), в Chrome (Google UK English), на iPhone/Mac — Serena, Daniel, Kate. Во встроенном браузере Telegram/WhatsApp звук может не работать: откройте ссылку в Safari или Chrome.</small>
+    </div>
+  </div>
+  <figure>
+    <div class="tower" id="heroArt"></div>
+    <figcaption>Big Ben is the name of the big bell inside. The tower is called the Elizabeth Tower!</figcaption>
+  </figure>
+</header>
+
+<section class="mission" id="m1">
+  <div class="mhead"><span class="eyebrow">Mission 1 · Do you remember?</span><span class="time">⏱ 3 min</span><span class="mstar" data-sec="m1"></span></div>
+  <h2>Quick review of Lesson 1</h2>
+  <p class="task">Let's remember the royal family! <i>Choose the right answer.</i></p>
+  <span class="ru">Вспомним прошлый урок. Выбери правильный ответ.</span>
+  <div class="qgrid" id="review"></div>
+</section>
+
+<section class="mission" id="m2">
+  <div class="mhead"><span class="eyebrow">Mission 2 · My day words</span><span class="time">⏱ 8 min</span><span class="mstar" data-sec="m2"></span></div>
+  <h2>What do we do every day?</h2>
+  <p class="task">Look, listen and repeat. <i>Tap the card</i> to see the Russian and an example.</p>
+  <span class="ru">Смотри, слушай, повторяй. Нажми на карточку — увидишь перевод и пример.</span>
+  <div class="vgrid" id="vocab"></div>
+  <h3 class="sub">What is she doing?</h3>
+  <p class="task">Look at the picture and <i>choose the right words</i>.</p>
+  <span class="ru">Посмотри на картинку и выбери подходящие слова.</span>
+  <div class="qgrid" id="vmatch"></div>
+  <h3 class="sub">Word partners</h3>
+  <div class="rule">Some words always go together: <b>have</b> breakfast, <b>do</b> homework, <b>go</b> to bed, <b>get</b> dressed.<br><span class="rr">Некоторые слова «дружат»: по-русски «делать завтрак» не скажешь, вот и по-английски так же.</span></div>
+  <p class="task"><i>Choose the word</i> that goes with the phrase.</p>
+  <div class="list" id="collo"></div>
+</section>
+
+<section class="mission" id="m3">
+  <div class="mhead"><span class="eyebrow">Mission 3 · What time is it?</span><span class="time">⏱ 9 min</span><span class="mstar" data-sec="m3"></span></div>
+  <h2>Telling the time like a royal</h2>
+  <div class="rule">The <b>short hand</b> shows the hour. The <b>long hand</b> shows the minutes.<br>
+  <span class="rr">Короткая стрелка — часы, длинная — минуты. <b>past</b> = после, <b>to</b> = без (quarter to eight = без пятнадцати восемь).</span></div>
+  <div class="timerule" id="timerule"></div>
+  <p class="task"><i>Look at the clock and choose the time.</i></p>
+  <span class="ru">Посмотри на часы и выбери, который час.</span>
+  <div class="cgrid" id="clocks"></div>
+  <h3 class="sub">Set the clock</h3>
+  <p class="task">Move the hands with the buttons, then press <i>Check</i>.</p>
+  <span class="ru">Поставь стрелки кнопками и нажми Check.</span>
+  <div class="cgrid" id="setters"></div>
+</section>
+
+<section class="mission" id="m4">
+  <div class="mhead"><span class="eyebrow">Mission 4 · Reading</span><span class="time">⏱ 10 min</span><span class="mstar" data-sec="m4"></span></div>
+  <h2>The King's busy day</h2>
+  <p class="task">Read the text. <i>Tap a paragraph</i> to hear it. Then do the tasks.</p>
+  <span class="ru">Прочитай текст. Нажми на абзац, чтобы послушать. Потом выполни задания.</span>
+  <div class="panel reading">
+    <div class="text" id="read1">
+      <p>What does the King do every day? Royal writers say that <b>King Charles</b> has a very busy day.</p>
+      <p>The King <b>gets up early</b>. For breakfast he has fruit, seeds and a cup of tea. He likes honey too.</p>
+      <p>After breakfast the King reads his letters and papers. Every day he gets special <b>red boxes</b> with important papers from the government. Then he has meetings and visits people all over the country.</p>
+      <p>And lunch? The King <b>doesn't eat lunch</b>! Royal writers say lunch takes too much time for him.</p>
+      <p>At <b>five o'clock</b> the King has afternoon tea with Queen Camilla. They have sandwiches and cake. Tea time is very important for them!</p>
+      <p>After tea the King works again. He has dinner at <b>half past eight</b>. Then he works at his desk until late at night. Sometimes he goes to bed after <b>midnight</b>! Queen Camilla says he works too much.</p>
+      <button class="say" data-read="read1">🔊 Listen to the whole text</button>
+    </div>
+    <div class="side">
+      <div class="daytl" id="daytl"></div>
+      <div class="gloss"><b>New words</b>
+        <div><span>busy</span><span>занятой</span></div>
+        <div><span>early / late</span><span>рано / поздно</span></div>
+        <div><span>seeds</span><span>семечки</span></div>
+        <div><span>government</span><span>правительство</span></div>
+        <div><span>meeting</span><span>встреча</span></div>
+        <div><span>midnight</span><span>полночь</span></div>
+      </div>
+    </div>
+  </div>
+  <h3 class="sub">True or False?</h3>
+  <div class="list" id="tf"></div>
+  <h3 class="sub">Put the King's day in order</h3>
+  <p class="task"><i>Tap the phrases</i> from morning to night.</p>
+  <span class="ru">Нажимай на фразы по порядку: от утра до вечера.</span>
+  <div class="scr phr" id="dayorder"></div>
+  <h3 class="sub">Write the missing word</h3>
+  <p class="task">Write one word or a number, then press <i>Check</i>.</p>
+  <div class="list" id="rfill"></div>
+</section>
+
+<section class="mission" id="m5">
+  <div class="mhead"><span class="eyebrow">Mission 5 · Grammar</span><span class="time">⏱ 8 min</span><span class="mstar" data-sec="m5"></span></div>
+  <h2>The King doesn't eat lunch</h2>
+  <div class="rule">
+    <b>I / you / we / they</b> → <b>don't</b>: I <b>don't</b> live in a palace.<br>
+    <b>he / she / it</b> → <b>doesn't</b>: The King <b>doesn't eat</b> lunch. <span class="rr">(после doesn't — без -s: doesn't eat, НЕ doesn't eats)</span><br>
+    Questions: <b>Do</b> you like tea? <b>Does</b> the King like tea? → Yes, he <b>does</b>. / No, he <b>doesn't</b>.
+  </div>
+  <p class="task"><i>Choose don't or doesn't.</i></p>
+  <div class="list" id="dont"></div>
+  <h3 class="sub">Short answers</h3>
+  <p class="task"><i>Choose the right answer.</i> Look at the question: <b>Does</b> → does, <b>Do</b> → do.</p>
+  <span class="ru">Отвечаем тем же словом, что в вопросе: Does…? → Yes, he does. Do…? → Yes, they do.</span>
+  <div class="qgrid" id="short"></div>
+  <h3 class="sub">Build a question</h3>
+  <p class="task"><i>Tap the words</i> in the right order.</p>
+  <div class="scr words" id="buildq"></div>
+</section>
+
+<section class="mission" id="m6">
+  <div class="mhead"><span class="eyebrow">Mission 6 · Royal secrets</span><span class="time">⏱ 8 min</span><span class="mstar" data-sec="m6"></span></div>
+  <h2>Fact or myth?</h2>
+  <p class="task">Read the royal secret. Is it <i>TRUE</i> or <i>NOT TRUE</i>? Make a guess, then read the answer. Some stories are old legends: we say <b>"People say…"</b>.</p>
+  <span class="ru">Прочитай королевский «секрет». Правда или нет? Угадай и прочитай ответ. Здесь звёзд нет, но потом будет квиз!</span>
+  <div class="sgrid" id="secrets"></div>
+  <p class="scoreline" id="secretScore"></p>
+  <h3 class="sub">Secrets quiz</h3>
+  <p class="task">Now <i>answer the questions</i> about the secrets.</p>
+  <div class="qgrid" id="squiz"></div>
+</section>
+
+<section class="mission" id="m7">
+  <div class="mhead"><span class="eyebrow">Mission 7 · Listening</span><span class="time">⏱ 6 min</span><span class="mstar" data-sec="m7"></span></div>
+  <h2>A day in the life of Biscuit</h2>
+  <p class="task">Biscuit is a palace corgi. <span class="story-tag">made-up story</span> <i>Listen to the story</i> two times, then answer.</p>
+  <span class="ru">Бисквит — корги из дворца (это придуманная история). Послушай два раза и ответь на вопросы. Если звука нет — нажми «Show text».</span>
+  <div class="panel" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+    <span class="mini" id="biscuitPic" style="width:110px;height:84px"></span>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="check" id="playStory">▶ Listen to Biscuit</button>
+      <button class="ghost" id="showStory">Show text</button>
+    </div>
+    <p id="storyText" hidden style="margin:0;flex:1 1 100%;font-style:italic;color:var(--muted)"></p>
+  </div>
+  <div class="qgrid" id="listen" style="margin-top:12px"></div>
+  <h3 class="sub">Royal dictation</h3>
+  <p class="task">Press <i>▶</i>, listen and write the word. Then press <i>Check</i>. Need help? Press "Hint".</p>
+  <span class="ru">Нажми ▶, послушай и напиши слово, потом Check. Hint — подсказка.</span>
+  <div class="list" id="dict"></div>
+</section>
+
+<section class="mission" id="m8">
+  <div class="mhead"><span class="eyebrow">Mission 8 · Spelling</span><span class="time">⏱ 4 min</span><span class="mstar" data-sec="m8"></span></div>
+  <h2>Mixed-up letters</h2>
+  <p class="task"><i>Tap the letters</i> in the right order. Tap a letter in the top row to take it back.</p>
+  <span class="ru">Собери слово из букв. Подсказка — картинка и перевод.</span>
+  <div class="scr" id="scramble"></div>
+</section>
+
+<section class="mission" id="m9">
+  <div class="mhead"><span class="eyebrow">Mission 9 · Speaking and writing</span><span class="time">⏱ 10 min</span><span class="mstar" data-sec="m9"></span></div>
+  <h2>The King wants to know about your day</h2>
+  <p class="task">The King asks you questions. <i>Choose the best answer.</i> Then press 🔊 again and answer <i>out loud about you</i>.</p>
+  <span class="ru">Король задаёт вопросы. Выбери лучший ответ. Потом включи вопрос ещё раз и ответь вслух про себя.</span>
+  <div class="list" id="interview"></div>
+
+  <h3 class="sub">My Royal Diary</h3>
+  <p class="task">Write about <i>your</i> day. Choose the times and write your own words. Then press the button.</p>
+  <span class="ru">Напиши про свой день: выбери время и впиши свои слова, потом нажми кнопку.</span>
+  <div class="post">
+    <div class="frame panel">
+      <label>I wake up at <select id="d1"></select>.</label>
+      <label>For breakfast I have <input id="d2" placeholder="porridge and tea" autocomplete="off">.</label>
+      <label>I go to school at <select id="d3"></select>.</label>
+      <label>After school I <input id="d4" placeholder="do my homework" autocomplete="off">.</label>
+      <label>I don't <input id="d5" placeholder="like vegetables" autocomplete="off">.</label>
+      <label>I go to bed at <select id="d6"></select>.</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="check" id="makeDiary">Write my diary</button><button class="say" id="readDiary">🔊 Read it aloud</button></div>
+      <ul class="checklist"><li>After <b>I</b> — no -s: I hav<b>e</b>, I g<b>o</b>.</li><li>After <b>don't</b> — just the verb: I don't <b>like</b>.</li></ul>
+    </div>
+    <div class="diary"><h3>My Royal Diary</h3><div class="msg" id="diaryOut">Your diary will be here ✍️</div></div>
+  </div>
+</section>
+
+<section class="mission" id="m10">
+  <div class="mhead"><span class="eyebrow">Mission 10 · Final quiz</span><span class="time">⏱ 4 min</span><span class="mstar" data-sec="m10"></span></div>
+  <h2>The big royal day quiz</h2>
+  <p class="task">Show what you know!</p>
+  <span class="ru">Финальная проверка по всему уроку.</span>
+  <div class="qgrid" id="final"></div>
+</section>
+
+<section class="mission" id="cert">
+  <div class="cert">
+    <div class="cert-art" id="certArt"></div>
+    <div class="eyebrow">By order of the Royal English School</div>
+    <h2>Royal Certificate</h2>
+    <p>This certificate is given to</p>
+    <div class="who" id="certName">Royal Guest</div>
+    <p>for finishing Lesson 2 “A Royal Day”</p>
+    <div class="rank" id="certRank"></div>
+    <p class="stars" id="certStars" style="color:var(--royal)"></p>
+  </div>
+</section>
+
+<footer class="credits">
+  All pictures were drawn for this lesson. The people are friendly cartoons, not real likenesses. The facts about the King's day come from royal writers and newspapers; "people say" stories are legends.
+</footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const norm=s=>String(s).toLowerCase().replace(/[’‘`´]/g,"'").replace(/\s+/g,' ').trim().replace(/[.!?,]+$/,'').trim();
+const FLAG='<svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Union Flag"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="2"/><path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/></svg>';
+const GUARD='<svg viewBox="0 0 100 140" width="100%" height="100%" role="img" aria-label="A royal guard"><rect width="100" height="140" fill="#cfe0f5"/><rect x="0" y="118" width="100" height="22" fill="#9bb07a"/><ellipse cx="50" cy="28" rx="17" ry="24" fill="#1b1b1b"/><circle cx="50" cy="52" r="10" fill="#f2c9a5"/><path d="M45 50h3M52 50h3" stroke="#333" stroke-width="1.6" stroke-linecap="round"/><path d="M46 56h8" stroke="#a44" stroke-width="1.5" stroke-linecap="round"/><path d="M40 52 Q50 64 60 52" fill="none" stroke="#c9a227" stroke-width="1.5"/><rect x="36" y="62" width="28" height="34" rx="4" fill="#C8102E"/><rect x="36" y="78" width="28" height="4" fill="#fff"/><circle cx="50" cy="68" r="1.6" fill="#e6c34a"/><circle cx="50" cy="74" r="1.6" fill="#e6c34a"/><circle cx="50" cy="88" r="1.6" fill="#e6c34a"/><rect x="28" y="62" width="8" height="30" rx="4" fill="#C8102E"/><rect x="64" y="62" width="8" height="30" rx="4" fill="#C8102E"/><rect x="66" y="40" width="3" height="62" fill="#6b4a2b"/><rect x="39" y="96" width="9" height="24" fill="#1b1b2e"/><rect x="52" y="96" width="9" height="24" fill="#1b1b2e"/><rect x="37" y="118" width="12" height="5" rx="2" fill="#111"/><rect x="51" y="118" width="12" height="5" rx="2" fill="#111"/></svg>';
+/* ---------- illustrations (drawn for this lesson) ---------- */
+const ART=(()=>{
+const S=(vb,inner,label,par)=>'<svg viewBox="'+vb+'" width="100%" height="100%" preserveAspectRatio="'+(par||'xMidYMid slice')+'" role="img" aria-label="'+label+'">'+inner+'</svg>';
+function person(o){
+  const sk=o.skin||'#F3C9A5', hc=o.hair||'#6B4423', bg=o.bg||'#DCE4F7', out=o.outfit||'#23308F', ch=!!o.child;
+  let s='<rect width="100" height="100" fill="'+bg+'"/>';
+  s+=ch?'<path d="M22 100 C22 80 36 72 50 72 C64 72 78 80 78 100Z" fill="'+out+'"/>'
+       :'<path d="M14 100 C14 74 32 66 50 66 C68 66 86 74 86 100Z" fill="'+out+'"/>';
+  if(o.cape) s+='<path d="M14 100 C14 80 26 71 38 68 L50 86 L62 68 C74 71 86 80 86 100 L77 100 C76 86 70 78 60 75 L50 92 L40 75 C30 78 24 86 23 100Z" fill="#FFFFFF"/><g fill="#1B1B1B"><circle cx="29" cy="86" r="1.4"/><circle cx="71" cy="86" r="1.4"/><circle cx="37" cy="77" r="1.4"/><circle cx="63" cy="77" r="1.4"/><circle cx="26" cy="95" r="1.4"/><circle cx="74" cy="95" r="1.4"/></g>';
+  if(o.collar) s+=ch?'<path d="M43 73 L50 82 L57 73Z" fill="#FFFFFF"/>':'<path d="M41 67 L50 80 L59 67Z" fill="#FFFFFF"/>';
+  if(o.tie) s+='<path d="M48.4 71 L51.6 71 L52.6 85 L50 88 L47.4 85Z" fill="'+o.tie+'"/>';
+  s+=ch?'<rect x="45" y="63" width="10" height="11" rx="3" fill="'+sk+'"/>':'<rect x="45" y="56" width="10" height="13" rx="3" fill="'+sk+'"/>';
+  if(o.pearls) s+='<g fill="#FFFFFF" stroke="#BFC4D6" stroke-width=".5">'+[37,41.5,46,50,54,58.5,63].map((x,i)=>'<circle cx="'+x+'" cy="'+(70.5+[0,1.3,2.2,2.5,2.2,1.3,0][i])+'" r="1.9"/>').join('')+'</g>';
+  let h='';
+  if(o.style==='long') h+='<path d="M27 46 C24 72 29 86 37 89 L63 89 C71 86 76 72 73 46Z" fill="'+hc+'"/>';
+  h+='<circle cx="50" cy="46" r="20" fill="'+sk+'"/>';
+  const tops={
+    short:'<path d="M30 46 C28 23 72 23 70 46 C67 36 60 31 50 31 C40 31 33 36 30 46Z" fill="'+hc+'"/>',
+    side:'<path d="M30 46 C28 23 72 23 70 46 C67 38 63 34 56 33 C58 37 45 39 34 38 C32 40 31 43 30 46Z" fill="'+hc+'"/>',
+    thin:'<path d="M30 49 C29 38 32 32 37 29 C35 36 34 42 33 49Z M70 49 C71 38 68 32 63 29 C65 36 66 42 67 49Z M37 29 C44 26 56 26 63 29 C56 28.5 44 28.5 37 29Z" fill="'+hc+'"/>',
+    long:'<path d="M29 50 C27 23 73 23 71 50 C68 40 64 34 58 32 C52 36 42 38 33 38 C31 42 30 46 29 50Z" fill="'+hc+'"/>',
+    bob:'<path d="M28 58 C24 25 76 25 72 58 C70 52 70 42 64 36 C56 40 44 40 36 36 C30 42 30 52 28 58Z" fill="'+hc+'"/>',
+    curly:[[33,35],[41,28],[50,25.5],[59,28],[67,35],[30,43],[70,43]].map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="7.5" fill="'+hc+'"/>').join('')
+  };
+  h+=tops[o.style||'short']||'';
+  if(o.beard) h+='<path d="M31 46 C31 65 40 70 50 70 C60 70 69 65 69 46 C67 56 60 61 50 61 C40 61 33 56 31 46Z" fill="'+hc+'"/>';
+  h+='<circle cx="43" cy="47" r="2.4" fill="#2A2A3A"/><circle cx="57" cy="47" r="2.4" fill="#2A2A3A"/><circle cx="43.8" cy="46.2" r=".7" fill="#FFFFFF"/><circle cx="57.8" cy="46.2" r=".7" fill="#FFFFFF"/>';
+  h+='<circle cx="37.5" cy="53" r="3.2" fill="#F28B8B" opacity=".45"/><circle cx="62.5" cy="53" r="3.2" fill="#F28B8B" opacity=".45"/>';
+  h+='<path d="M44 54.5 Q50 59.5 56 54.5" fill="none" stroke="'+(o.beard?'#FFFFFF':'#9A4A3A')+'" stroke-width="2" stroke-linecap="round"/>';
+  if(o.head==='crown') h+='<path d="M33 30 L35 12 L42.5 21 L50 8 L57.5 21 L65 12 L67 30Z" fill="#E7B53C" stroke="#A97B12" stroke-width="1.2" stroke-linejoin="round"/><rect x="32.5" y="27" width="35" height="5" rx="2" fill="#C8102E"/><circle cx="50" cy="17.5" r="2.3" fill="#C8102E"/><circle cx="41" cy="24" r="1.6" fill="#2F6BD8"/><circle cx="59" cy="24" r="1.6" fill="#2F6BD8"/><circle cx="35" cy="12" r="1.8" fill="#FFF4C2"/><circle cx="50" cy="8" r="1.8" fill="#FFF4C2"/><circle cx="65" cy="12" r="1.8" fill="#FFF4C2"/>';
+  if(o.head==='small-crown') h+='<path d="M39 29 L40 17 L45 23 L50 14 L55 23 L60 17 L61 29Z" fill="#E7B53C" stroke="#A97B12" stroke-width="1" stroke-linejoin="round"/><circle cx="50" cy="24" r="1.6" fill="#C8102E"/>';
+  if(o.head==='tiara') h+='<path d="M35 31 Q50 17 65 31 L62 32.5 Q50 24 38 32.5Z" fill="#E2E6F0" stroke="#9AA0B5" stroke-width=".8"/><circle cx="50" cy="21.5" r="2.4" fill="#6EC1E4"/><circle cx="42.5" cy="25" r="1.4" fill="#FFFFFF"/><circle cx="57.5" cy="25" r="1.4" fill="#FFFFFF"/>';
+  if(o.bow) h+='<path d="M63 31 L74 24 L74 38Z M63 31 L72 41 L59 39Z" fill="'+o.bow+'"/><circle cx="64" cy="32" r="2.8" fill="'+o.bow+'"/>';
+  s+=ch?'<g transform="translate(50 52) scale(.86) translate(-50 -46)">'+h+'</g>':h;
+  return S('0 0 100 100',s,o.label||'person','xMidYMin slice');
+}
+const AV={
+  king:{label:'a king',beard:1,hair:'#8F8A85',style:'short',head:'crown',outfit:'#7A1E3A',cape:1,bg:'#FBEFD2'},
+  queen:{label:'a queen',style:'long',hair:'#C99A3E',head:'crown',outfit:'#5B2A86',cape:1,bg:'#F3E3F5'},
+  prince:{label:'a prince',style:'side',hair:'#7A4A22',head:'small-crown',outfit:'#23308F',collar:1,bg:'#DCE4F7'},
+  princess:{label:'a princess',child:1,style:'long',hair:'#4A2C1A',head:'tiara',outfit:'#E75480',bg:'#FCE4EC'},
+  eliz:{label:'Queen Elizabeth II',style:'curly',hair:'#ECECEC',head:'tiara',pearls:1,outfit:'#6CA0DC',bg:'#E7ECF4',skin:'#F5D6BE'},
+  phil:{label:'Prince Philip',style:'thin',hair:'#C4C4C4',outfit:'#2E3B55',collar:1,tie:'#8B1E3F',bg:'#E7ECF4',skin:'#F2CDB2'},
+  charles:{label:'King Charles III',style:'thin',hair:'#CFC8BE',head:'crown',cape:1,outfit:'#7A1E3A',bg:'#FBEFD2'},
+  camilla:{label:'Queen Camilla',style:'bob',hair:'#E2C26C',head:'tiara',pearls:1,outfit:'#3A6EA5',bg:'#FBEFD2'},
+  william:{label:'Prince William',style:'thin',hair:'#8A6A45',outfit:'#23308F',collar:1,tie:'#1E8556',bg:'#DCE4F7'},
+  catherine:{label:'Catherine, Princess of Wales',style:'long',hair:'#5A3A22',head:'tiara',outfit:'#1F7A8C',bg:'#DCE4F7'},
+  harry:{label:'Prince Harry',style:'short',hair:'#B8582A',beard:1,outfit:'#4B5563',collar:1,bg:'#E5EEDF'},
+  meghan:{label:'Meghan, Duchess of Sussex',style:'long',hair:'#2E1E14',skin:'#D6A27C',outfit:'#8E6C8A',bg:'#E5EEDF'},
+  george:{label:'Prince George',child:1,style:'side',hair:'#7A4A22',outfit:'#23308F',collar:1,bg:'#FFF4D9'},
+  charlotte:{label:'Princess Charlotte',child:1,style:'long',hair:'#6B4423',bow:'#2B6CB0',outfit:'#E06C9F',bg:'#FFF4D9'},
+  louis:{label:'Prince Louis',child:1,style:'short',hair:'#A07A4F',outfit:'#3F9E5A',collar:1,bg:'#FFF4D9'},
+  archie:{label:'Prince Archie',child:1,style:'short',hair:'#C0602A',skin:'#EBBE96',outfit:'#F4A261',bg:'#F0F6E8'},
+  lili:{label:'Princess Lilibet',child:1,style:'long',hair:'#C0602A',skin:'#EBBE96',bow:'#E75480',outfit:'#9B5DE5',bg:'#F0F6E8'}
+};
+const p=k=>person(AV[k]);
+
+const sky='<rect width="120" height="90" fill="#CFE6FA"/>';
+const palaceWin=()=>{let w='';for(const y of [41,53]){for(let x=12;x<108;x+=7.5){if(x>40&&x<78)continue;w+='<rect x="'+x+'" y="'+y+'" width="4" height="6" fill="#8FA7C2"/>'}}
+  for(const x of [47,53.5,60,66.5])w+='<rect x="'+x+'" y="34" width="4" height="7" fill="#8FA7C2"/><rect x="'+x+'" y="52" width="4" height="7" fill="#8FA7C2"/>';return w};
+const rails=()=>{let r='<g stroke="#1F2230" stroke-width="1">';for(let x=3;x<=117;x+=3.5)r+='<line x1="'+x+'" y1="71" x2="'+x+'" y2="84"/>';return r+'<line x1="2" y1="72" x2="118" y2="72"/><line x1="2" y1="83" x2="118" y2="83"/></g><g fill="#E7B53C"><rect x="56" y="66" width="8" height="5" rx="1"/></g>'};
+const palace=S('0 0 120 90',sky+'<circle cx="100" cy="14" r="7" fill="#FFE08A"/><rect y="74" width="120" height="16" fill="#9CC27E"/><rect x="8" y="36" width="104" height="38" fill="#EAE3D2"/><rect x="6" y="32.5" width="108" height="4" fill="#D3C9B0"/><rect x="42" y="26" width="36" height="48" fill="#DFD6C0"/><path d="M40 27 L60 17 L80 27Z" fill="#D3C9B0"/><rect x="44" y="47" width="32" height="2.2" fill="#B5AA8C"/>'+palaceWin()+'<rect x="55" y="62" width="10" height="12" rx="5" fill="#7B6A4A"/><rect x="59.4" y="3" width="1.2" height="15" fill="#555"/><rect x="60.6" y="3" width="5" height="3" fill="#C8102E"/><rect x="65.6" y="3" width="5" height="3" fill="#E7B53C"/><rect x="60.6" y="6" width="5" height="3" fill="#2B4DA8"/><rect x="65.6" y="6" width="5" height="3" fill="#C8102E"/>'+rails()+'<rect x="12" y="60" width="7" height="12" fill="#2E3B55"/><path d="M11 60 L15.5 56 L20 60Z" fill="#1F2230"/><rect x="101" y="60" width="7" height="12" fill="#2E3B55"/><path d="M100 60 L104.5 56 L109 60Z" fill="#1F2230"/>','a palace');
+const merl=(x,y,w,n)=>{let m='';const step=w/n;for(let i=0;i<n;i+=2)m+='<rect x="'+(x+i*step)+'" y="'+(y-4)+'" width="'+step+'" height="4" fill="#BFB197"/>';return m};
+const castle=S('0 0 120 90','<rect width="120" height="90" fill="#D8E8F7"/><path d="M0 70 C30 58 90 58 120 70 L120 90 L0 90Z" fill="#8DBA6E"/><rect x="12" y="46" width="96" height="30" fill="#CDBFA3"/>'+merl(12,46,96,24)+'<rect x="4" y="32" width="18" height="44" fill="#C2B496"/>'+merl(4,32,18,5)+'<rect x="98" y="32" width="18" height="44" fill="#C2B496"/>'+merl(98,32,18,5)+'<ellipse cx="60" cy="47" rx="22" ry="6" fill="#7FAE60"/><rect x="46" y="18" width="28" height="30" fill="#BBAB8C"/>'+merl(46,18,28,7)+'<rect x="59.4" y="2" width="1.2" height="12" fill="#555"/><rect x="60.6" y="2" width="5" height="3" fill="#C8102E"/><rect x="65.6" y="2" width="5" height="3" fill="#E7B53C"/><rect x="60.6" y="5" width="5" height="3" fill="#2B4DA8"/><rect x="65.6" y="5" width="5" height="3" fill="#C8102E"/><path d="M52 76 L52 64 C52 58 68 58 68 64 L68 76Z" fill="#5B4A33"/><g fill="#5E5A66"><rect x="11" y="42" width="3" height="8" rx="1.5"/><rect x="105" y="42" width="3" height="8" rx="1.5"/><rect x="58" y="26" width="4" height="9" rx="2"/><rect x="28" y="56" width="3" height="7" rx="1.5"/><rect x="40" y="56" width="3" height="7" rx="1.5"/><rect x="78" y="56" width="3" height="7" rx="1.5"/><rect x="90" y="56" width="3" height="7" rx="1.5"/></g>','a castle');
+const crown=S('0 0 120 90','<rect width="120" height="90" fill="#FBF0D6"/><circle cx="60" cy="48" r="38" fill="#FFF7E3"/><path d="M33 56 C33 26 87 26 87 56Z" fill="#5B2A86"/><g fill="none" stroke="#E2AE33" stroke-width="4" stroke-linecap="round"><path d="M34 56 C38 30 54 24 60 22"/><path d="M86 56 C82 30 66 24 60 22"/><path d="M60 56 L60 22"/></g><circle cx="60" cy="18" r="5" fill="#E2AE33"/><rect x="58.3" y="5" width="3.4" height="10" fill="#E2AE33"/><rect x="55" y="8" width="10" height="3.4" fill="#E2AE33"/><rect x="30" y="55" width="60" height="12" rx="3" fill="#E2AE33"/><rect x="28" y="65" width="64" height="9" rx="4.5" fill="#FFFFFF" stroke="#E5E0D4"/><g fill="#1B1B1B"><circle cx="36" cy="69.5" r="1.3"/><circle cx="48" cy="69.5" r="1.3"/><circle cx="60" cy="69.5" r="1.3"/><circle cx="72" cy="69.5" r="1.3"/><circle cx="84" cy="69.5" r="1.3"/></g><path d="M60 56 L64.5 61 L60 66 L55.5 61Z" fill="#DDEFFF" stroke="#8FB8E0"/><circle cx="43" cy="61" r="2.6" fill="#C8102E"/><circle cx="77" cy="61" r="2.6" fill="#1E8556"/><circle cx="36" cy="61" r="1.8" fill="#2F6BD8"/><circle cx="84" cy="61" r="1.8" fill="#2F6BD8"/>','a crown');
+const corgi=S('0 0 120 90','<rect width="120" height="90" fill="#E3F1DA"/><rect y="72" width="120" height="18" fill="#A9CF8C"/><circle cx="25" cy="46" r="6.5" fill="#E08A3C"/><g fill="#E08A3C"><rect x="34" y="58" width="8" height="15" rx="3.5"/><rect x="45" y="58" width="8" height="15" rx="3.5"/><rect x="67" y="58" width="8" height="15" rx="3.5"/><rect x="78" y="58" width="8" height="15" rx="3.5"/></g><g fill="#FFFFFF"><rect x="34" y="68" width="8" height="5" rx="2.5"/><rect x="45" y="68" width="8" height="5" rx="2.5"/><rect x="67" y="68" width="8" height="5" rx="2.5"/><rect x="78" y="68" width="8" height="5" rx="2.5"/></g><ellipse cx="57" cy="51" rx="31" ry="14" fill="#E08A3C"/><ellipse cx="60" cy="58" rx="19" ry="6.5" fill="#FFFFFF"/><path d="M80 31 L76 11 L90 25Z" fill="#E08A3C"/><path d="M81 27 L79 16 L86 24Z" fill="#F5B7A8"/><path d="M94 25 L101 8 L103 30Z" fill="#E08A3C"/><path d="M96 24 L100.5 13 L101.5 27Z" fill="#F5B7A8"/><circle cx="90" cy="38" r="14" fill="#E08A3C"/><path d="M90 26 C93 34 95 40 100 44 L86 46 C88 40 89 34 90 26Z" fill="#FFFFFF"/><ellipse cx="99" cy="45" rx="9" ry="6" fill="#FFFFFF"/><circle cx="106" cy="42.5" r="2.6" fill="#2A2A3A"/><circle cx="86" cy="36" r="2" fill="#2A2A3A"/><circle cx="96" cy="35" r="2" fill="#2A2A3A"/><path d="M98 49 Q101 52 104 49" fill="none" stroke="#2A2A3A" stroke-width="1.4" stroke-linecap="round"/><path d="M100.5 50.5 C100.5 55 104 55 103.5 50.5Z" fill="#E86A7A"/>','a corgi');
+const horse=S('0 0 120 90','<rect width="120" height="90" fill="#E3F1DA"/><rect y="74" width="120" height="16" fill="#A9CF8C"/><path d="M34 42 C22 44 20 60 24 72 C28 62 30 52 37 47Z" fill="#3B2414"/><g fill="#8B5A2B"><rect x="38" y="54" width="6" height="22" rx="2"/><rect x="47" y="55" width="6" height="21" rx="2"/><rect x="72" y="55" width="6" height="21" rx="2"/><rect x="81" y="54" width="6" height="22" rx="2"/></g><g fill="#2A1A10"><rect x="38" y="73" width="6" height="4" rx="1"/><rect x="47" y="73" width="6" height="4" rx="1"/><rect x="72" y="73" width="6" height="4" rx="1"/><rect x="81" y="73" width="6" height="4" rx="1"/></g><ellipse cx="62" cy="47" rx="28" ry="13" fill="#8B5A2B"/><path d="M78 42 L91 18 L100 24 L91 50Z" fill="#8B5A2B"/><path d="M89 16 C96 11 107 16 109 26 C110 31 104 33 100 31 L91 27Z" fill="#8B5A2B"/><path d="M91 17 L93 7 L97 16Z" fill="#8B5A2B"/><path d="M89 19 C82 27 80 35 78 44 L83 44 C85 35 87 27 93 21Z" fill="#3B2414"/><circle cx="99" cy="21" r="1.8" fill="#1B1B1B"/><circle cx="106" cy="28" r="1" fill="#3B2414"/>','a horse');
+const garden=S('0 0 120 90',sky+'<circle cx="18" cy="14" r="8" fill="#FFE08A"/><path d="M0 52 C30 40 80 44 120 50 L120 90 L0 90Z" fill="#8DC26F"/><path d="M52 90 L58 52 L62 52 L68 90Z" fill="#E9DDBF"/><rect x="88" y="30" width="5" height="24" fill="#7A5230"/><circle cx="90" cy="26" r="15" fill="#4F9A45"/><circle cx="82" cy="32" r="9" fill="#5DAA50"/><circle cx="99" cy="32" r="9" fill="#5DAA50"/><rect x="6" y="58" width="40" height="10" rx="5" fill="#3F7F3A"/><rect x="74" y="60" width="40" height="10" rx="5" fill="#3F7F3A"/><g>'+[[12,76,'#E94F64'],[20,82,'#FFD23F'],[28,75,'#F78FB3'],[36,83,'#E94F64'],[44,77,'#FFFFFF'],[80,78,'#FFD23F'],[88,84,'#E94F64'],[96,77,'#F78FB3'],[104,83,'#FFFFFF'],[112,76,'#FFD23F']].map(f=>'<circle cx="'+f[0]+'" cy="'+f[1]+'" r="3" fill="'+f[2]+'"/><circle cx="'+f[0]+'" cy="'+f[1]+'" r="1" fill="#C77A12"/>').join('')+'</g>','a garden');
+const rstandard=S('0 0 120 80','<rect width="60" height="40" fill="#C8102E"/><rect x="60" width="60" height="40" fill="#E7B53C"/><rect y="40" width="60" height="40" fill="#2B4DA8"/><rect x="60" y="40" width="60" height="40" fill="#C8102E"/><g fill="#E7B53C"><rect x="18" y="6" width="24" height="7" rx="3.5"/><rect x="18" y="16.5" width="24" height="7" rx="3.5"/><rect x="18" y="27" width="24" height="7" rx="3.5"/><rect x="78" y="46" width="24" height="7" rx="3.5"/><rect x="78" y="56.5" width="24" height="7" rx="3.5"/><rect x="78" y="67" width="24" height="7" rx="3.5"/></g><path d="M84 32 L84 18 C84 12 92 8 96 12 L98 16 L94 18 L92 32Z" fill="#C8102E"/><path d="M24 74 L24 50 C24 46 36 44 38 52 L38 74Z M26 54 L36 70" fill="none" stroke="#E7B53C" stroke-width="2.5"/><g stroke="#E7B53C" stroke-width="1"><line x1="28" y1="54" x2="28" y2="72"/><line x1="31" y1="53" x2="31" y2="72"/><line x1="34" y1="54" x2="34" y2="72"/></g>','the Royal Standard flag');
+const football=S('0 0 100 100','<rect width="100" height="100" fill="#DDF3E8"/><rect y="70" width="100" height="30" fill="#7FC36A"/><circle cx="50" cy="52" r="24" fill="#FFFFFF" stroke="#1F2230" stroke-width="2"/><path d="M50 42 L59 48.5 L55.5 59 L44.5 59 L41 48.5Z" fill="#1F2230"/><g stroke="#1F2230" stroke-width="2"><line x1="50" y1="42" x2="50" y2="29"/><line x1="59" y1="48.5" x2="72" y2="44"/><line x1="55.5" y1="59" x2="63" y2="70"/><line x1="44.5" y1="59" x2="37" y2="70"/><line x1="41" y1="48.5" x2="28" y2="44"/></g>','a football');
+const teacup=S('0 0 100 100','<rect width="100" height="100" fill="#FBF0D6"/><path d="M40 30 C36 24 44 20 40 14 M52 30 C48 24 56 20 52 14 M64 30 C60 24 68 20 64 14" fill="none" stroke="#B8A27A" stroke-width="2" stroke-linecap="round"/><ellipse cx="52" cy="74" rx="32" ry="7" fill="#FFFFFF" stroke="#C9B48A"/><path d="M28 38 L76 38 C76 58 66 72 52 72 C38 72 28 58 28 38Z" fill="#FFFFFF" stroke="#C9B48A" stroke-width="1.5"/><path d="M76 44 C88 44 88 60 72 62" fill="none" stroke="#C9B48A" stroke-width="4"/><path d="M34 46 Q52 52 70 46" fill="none" stroke="#2B4DA8" stroke-width="2.5"/><ellipse cx="52" cy="39" rx="23" ry="3" fill="#B5651D"/>','a cup of tea');
+const books=S('0 0 100 100','<rect width="100" height="100" fill="#F3E3F5"/><rect x="18" y="66" width="64" height="14" rx="2" fill="#2B4DA8"/><rect x="22" y="52" width="56" height="14" rx="2" fill="#C8102E"/><rect x="16" y="38" width="62" height="14" rx="2" fill="#1E8556"/><rect x="26" y="24" width="50" height="14" rx="2" fill="#E7B53C"/><g fill="#FFFFFF" opacity=".7"><rect x="24" y="72" width="40" height="2"/><rect x="28" y="58" width="34" height="2"/><rect x="22" y="44" width="42" height="2"/><rect x="32" y="30" width="30" height="2"/></g>','books');
+const heart=S('0 0 100 100','<rect width="100" height="100" fill="#FCE4EC"/><path d="M50 80 C20 60 14 44 22 32 C30 20 46 24 50 36 C54 24 70 20 78 32 C86 44 80 60 50 80Z" fill="#E94F64"/><circle cx="36" cy="38" r="5" fill="#FFFFFF" opacity=".5"/>','a heart');
+const school=S('0 0 100 100','<rect width="100" height="100" fill="#CFE6FA"/><rect y="78" width="100" height="22" fill="#8DC26F"/><rect x="14" y="44" width="72" height="36" fill="#C2533D"/><path d="M10 46 L50 26 L90 46Z" fill="#7B2E22"/><rect x="44" y="12" width="12" height="16" fill="#C2533D"/><path d="M42 14 L50 6 L58 14Z" fill="#7B2E22"/><circle cx="50" cy="20" r="3" fill="#E7B53C"/><g fill="#DCEBFA"><rect x="20" y="52" width="10" height="10"/><rect x="34" y="52" width="10" height="10"/><rect x="56" y="52" width="10" height="10"/><rect x="70" y="52" width="10" height="10"/></g><rect x="45" y="62" width="10" height="18" fill="#3B2414"/>','a school');
+const dino=S('0 0 100 100','<rect width="100" height="100" fill="#E3F1DA"/><rect y="80" width="100" height="20" fill="#A9CF8C"/><path d="M14 70 C24 70 30 64 36 60 L36 70Z" fill="#4CAF50"/><ellipse cx="48" cy="62" rx="22" ry="14" fill="#4CAF50"/><path d="M60 56 C64 40 66 30 72 24 L80 26 C74 34 72 46 70 60Z" fill="#4CAF50"/><ellipse cx="80" cy="24" rx="10" ry="7" fill="#4CAF50"/><circle cx="83" cy="22" r="1.8" fill="#1B1B1B"/><path d="M84 28 Q87 29 89 27" fill="none" stroke="#1B1B1B" stroke-width="1.2"/><g fill="#2E7D32"><path d="M34 49 L38 42 L42 49Z"/><path d="M44 47 L48 40 L52 47Z"/><path d="M54 48 L58 41 L62 48Z"/></g><g fill="#43A047"><rect x="36" y="70" width="7" height="12" rx="3"/><rect x="54" y="70" width="7" height="12" rx="3"/></g><text x="16" y="30" font-size="26" font-weight="800" fill="#C8102E" font-family="sans-serif">?!</text>','a dinosaur');
+const mystery=S('0 0 100 100','<rect width="100" height="100" fill="#E2E6FA"/><circle cx="50" cy="42" r="18" fill="#9AA3C9"/><path d="M18 100 C18 76 34 66 50 66 C66 66 82 76 82 100Z" fill="#9AA3C9"/><text x="50" y="52" text-anchor="middle" font-size="30" font-weight="800" fill="#FFFFFF" font-family="sans-serif">?</text>','who is it?');
+const flag=FLAG, guard=GUARD;
+const lookup={palace,castle,crown,corgi,horse,garden,rstandard,football,teacup,books,heart,school,dino,mystery,flag,guard,
+  king:p('king'),queen:p('queen'),prince:p('prince'),princess:p('princess')};
+return Object.assign(lookup,{p,AV});
+})();
+
+
+/* ---------- lesson 2 drawings ---------- */
+const A2=(()=>{
+const S=(inner,label,vb)=>'<svg viewBox="'+(vb||'0 0 100 100')+'" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+label+'">'+inner+'</svg>';
+const rad=d=>d*Math.PI/180;
+function clockInner(h,m,cx,cy,r){
+  let t='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+4)+'" fill="#23308F"/><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#FFFFFF"/>';
+  for(let i=0;i<12;i++){const a=rad(i*30),big=i%3===0,r1=r-(big?8:5),r2=r-2;
+    t+='<line x1="'+(cx+r1*Math.sin(a)).toFixed(2)+'" y1="'+(cy-r1*Math.cos(a)).toFixed(2)+'" x2="'+(cx+r2*Math.sin(a)).toFixed(2)+'" y2="'+(cy-r2*Math.cos(a)).toFixed(2)+'" stroke="#1A2346" stroke-width="'+(big?2.6:1.4)+'" stroke-linecap="round"/>';}
+  [[12,0],[3,90],[6,180],[9,270]].forEach(([n,d])=>{const a=rad(d),rr=r-16;t+='<text x="'+(cx+rr*Math.sin(a)).toFixed(2)+'" y="'+(cy-rr*Math.cos(a)+4.5).toFixed(2)+'" text-anchor="middle" font-size="'+(r*0.27).toFixed(1)+'" font-weight="800" font-family="sans-serif" fill="#1A2346">'+n+'</text>'});
+  const ha=rad(((h%12)+m/60)*30),ma=rad(m*6);
+  t+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+r*0.5*Math.sin(ha)).toFixed(2)+'" y2="'+(cy-r*0.5*Math.cos(ha)).toFixed(2)+'" stroke="#1A2346" stroke-width="'+(r*0.12).toFixed(1)+'" stroke-linecap="round"/>';
+  t+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+r*0.8*Math.sin(ma)).toFixed(2)+'" y2="'+(cy-r*0.8*Math.cos(ma)).toFixed(2)+'" stroke="#C8102E" stroke-width="'+(r*0.07).toFixed(1)+'" stroke-linecap="round"/>';
+  t+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.08).toFixed(1)+'" fill="#1A2346"/>';
+  return t;
+}
+const clock=(h,m)=>S('<rect width="100" height="100" fill="#FBF0D6"/>'+clockInner(h,m,50,50,42),'a clock');
+const bigben=S('<rect width="120" height="160" fill="#CFE6FA"/><circle cx="98" cy="22" r="9" fill="#FFE08A"/><path d="M0 128 L120 128 L120 160 L0 160Z" fill="#7FB3E0"/><path d="M0 132 Q15 128 30 132 T60 132 T90 132 T120 132" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity=".7"/>'
+ +'<path d="M48 30 L60 2 L72 30Z" fill="#3B4A6B"/><rect x="58.8" y="0" width="2.4" height="6" fill="#E7B53C"/>'
+ +'<rect x="44" y="30" width="32" height="12" fill="#B8955A"/><g fill="#5E5A66"><rect x="48" y="33" width="4" height="7" rx="2"/><rect x="55" y="33" width="4" height="7" rx="2"/><rect x="62" y="33" width="4" height="7" rx="2"/><rect x="69" y="33" width="4" height="7" rx="2"/></g>'
+ +'<rect x="42" y="42" width="36" height="36" fill="#C9A86A"/>'+clockInner(5,0,60,60,13)
+ +'<rect x="44" y="78" width="32" height="50" fill="#C9A86A"/><g fill="#A88752">'+[82,92,102,112,122].map(y=>'<rect x="47" y="'+y+'" width="4" height="7"/><rect x="58" y="'+y+'" width="4" height="7"/><rect x="69" y="'+y+'" width="4" height="7"/>').join('')+'</g>'
+ +'<rect x="40" y="40" width="40" height="3" fill="#A88752"/><rect x="40" y="77" width="40" height="3" fill="#A88752"/>','Big Ben clock tower','0 0 120 160');
+const bedBase=(bg,blanket)=>'<rect width="100" height="100" fill="'+bg+'"/><rect x="10" y="48" width="7" height="40" rx="2" fill="#8B5A2B"/><rect x="83" y="60" width="7" height="28" rx="2" fill="#8B5A2B"/><rect x="12" y="64" width="76" height="12" rx="3" fill="#B97A45"/><ellipse cx="28" cy="60" rx="11" ry="5.5" fill="#FFFFFF"/>';
+const head='<circle cx="28" cy="54" r="7" fill="#F3C9A5"/><path d="M21 53 C21 44 35 44 35 53 C32 49 24 49 21 53Z" fill="#6B4423"/>';
+const wakeup=S(bedBase('#FFF1D6')+'<rect x="30" y="56" width="56" height="11" rx="5" fill="#5C7CFA"/>'+head+'<circle cx="25.5" cy="55" r="1.2" fill="#2A2A3A"/><circle cx="30.5" cy="55" r="1.2" fill="#2A2A3A"/><ellipse cx="28" cy="58.5" rx="1.6" ry="1.2" fill="#9A4A3A"/>'
+ +'<circle cx="74" cy="30" r="11" fill="#C8102E"/><circle cx="74" cy="30" r="8" fill="#FFFFFF"/><path d="M74 30 L74 24.5 M74 30 L78 32" stroke="#1A2346" stroke-width="1.8" stroke-linecap="round"/><circle cx="66.5" cy="20.5" r="3.4" fill="#C8102E"/><circle cx="81.5" cy="20.5" r="3.4" fill="#C8102E"/><path d="M59 17 L55 13 M89 17 L93 13 M58 30 L52 30 M90 30 L96 30" stroke="#E7B53C" stroke-width="2.4" stroke-linecap="round"/>','wake up');
+const getup=S(bedBase('#FFF1D6')+'<path d="M56 56 L86 56 L86 67 L56 67Z" fill="#5C7CFA"/><rect x="30" y="8" width="34" height="28" rx="2" fill="#CFE6FA" stroke="#B58B4C" stroke-width="2.5"/><circle cx="47" cy="30" r="8" fill="#FFD23F"/><line x1="47" y1="8" x2="47" y2="36" stroke="#B58B4C" stroke-width="2"/><ellipse cx="38" cy="93" rx="8" ry="4" fill="#E75480"/><ellipse cx="56" cy="93" rx="8" ry="4" fill="#E75480"/><path d="M76 40 L76 20 M70 26 L76 19 L82 26" fill="none" stroke="#1E8556" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>','get up');
+const teeth=S('<rect width="100" height="100" fill="#E0F2FE"/><path d="M22 12 C14 12 13 28 19 33 L21 46 L25 38 L29 46 L31 33 C37 28 36 12 28 12 C26 12 25.5 14 25 14 C24.5 14 24 12 22 12Z" fill="#FFFFFF" stroke="#9CC5E8" stroke-width="1.8"/><path d="M40 14 L42 18 M44 10 L44 15 M46 18 L49 16" stroke="#E7B53C" stroke-width="2" stroke-linecap="round"/><g transform="rotate(-28 50 62)"><rect x="18" y="58" width="58" height="9" rx="4.5" fill="#2B6CB0"/><rect x="64" y="46" width="18" height="12" rx="2" fill="#FFFFFF" stroke="#9CC5E8" stroke-width="1.5"/><path d="M64 46 C66 38 78 38 82 44 L82 46Z" fill="#7FD1C7"/></g>','brush my teeth');
+const dressed=S('<rect width="100" height="100" fill="#FCE4EC"/><line x1="8" y1="14" x2="92" y2="14" stroke="#8B5A2B" stroke-width="3.5" stroke-linecap="round"/><path d="M50 14 L50 22" stroke="#6B7280" stroke-width="2.5"/><path d="M34 32 L50 22 L66 32" fill="none" stroke="#6B7280" stroke-width="2.5" stroke-linejoin="round"/><path d="M40 30 L60 30 L62 46 L78 88 L22 88 L38 46Z" fill="#E75480"/><path d="M38 46 L62 46" stroke="#FFFFFF" stroke-width="3"/><circle cx="50" cy="38" r="2" fill="#FFFFFF"/><g fill="#23308F"><path d="M30 90 L42 90 L42 95 L28 95Z"/><path d="M58 90 L70 90 L72 95 L58 95Z"/></g>','get dressed');
+const breakfast=S('<rect width="100" height="100" fill="#FFF4D9"/><ellipse cx="40" cy="84" rx="30" ry="5" fill="#E9DDBF"/><circle cx="26" cy="56" r="7" fill="#E94F64"/><circle cx="38" cy="51" r="7" fill="#FFB347"/><circle cx="50" cy="56" r="7" fill="#8BC34A"/><circle cx="58" cy="53" r="5" fill="#7B4FB7"/><path d="M12 58 L68 58 C68 76 55 84 40 84 C25 84 12 76 12 58Z" fill="#FFFFFF" stroke="#C9B48A" stroke-width="2"/><path d="M18 64 Q40 70 62 64" fill="none" stroke="#5C7CFA" stroke-width="2"/><path d="M70 52 L90 52 L88 76 L72 76Z" fill="#FFFFFF" stroke="#C9B48A" stroke-width="2"/><path d="M90 57 C97 57 97 68 89 68" fill="none" stroke="#C9B48A" stroke-width="3"/><path d="M76 46 C74 42 78 40 76 36 M84 46 C82 42 86 40 84 36" stroke="#B8A27A" stroke-width="1.8" fill="none" stroke-linecap="round"/><rect x="74" y="14" width="16" height="18" rx="4" fill="#F2A900"/><rect x="72" y="11" width="20" height="5" rx="2" fill="#B97A45"/>','breakfast');
+const desk='<rect x="6" y="66" width="88" height="8" rx="2" fill="#8B5A2B"/><rect x="12" y="74" width="6" height="22" fill="#6B4423"/><rect x="82" y="74" width="6" height="22" fill="#6B4423"/>';
+const box=(x,y,w,h)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="2" fill="#B3122E"/><rect x="'+x+'" y="'+(y-3)+'" width="'+w+'" height="6" rx="2" fill="#8E0E24"/><path d="M'+(x+w/2-6)+' '+(y+h/2+3)+' l1.5 -7 l3 4 l1.5 -6 l1.5 6 l3 -4 l1.5 7z" fill="#E7B53C"/>';
+const work=S('<rect width="100" height="100" fill="#E7ECF4"/>'+desk+box(12,44,40,22)+'<g transform="rotate(-6 74 56)"><rect x="60" y="46" width="26" height="20" fill="#FFFFFF" stroke="#C7CCDA"/><path d="M64 52 H82 M64 56 H82 M64 60 H76" stroke="#9AA3C9" stroke-width="1.5"/></g><rect x="70" y="30" width="3" height="20" rx="1.5" fill="#1F2230" transform="rotate(30 71 40)"/>','work');
+const redbox=S('<rect width="100" height="100" fill="#FBF0D6"/>'+box(14,40,72,40)+'<text x="50" y="74" text-anchor="middle" font-size="10" font-weight="800" font-family="Georgia,serif" fill="#E7B53C">C R</text>','a red box');
+const lunch=S('<rect width="100" height="100" fill="#FFF4D9"/><ellipse cx="50" cy="80" rx="38" ry="7" fill="#FFFFFF" stroke="#C9B48A" stroke-width="1.5"/><path d="M18 76 L82 76 L50 24Z" fill="#F4D58D"/><path d="M23 70 L77 70" stroke="#7CB342" stroke-width="5"/><path d="M27 63 L73 63" stroke="#E94F64" stroke-width="4"/><path d="M31 57 L69 57" stroke="#FFD23F" stroke-width="3"/><path d="M18 76 L82 76 L50 24Z" fill="none" stroke="#C99A3E" stroke-width="3" stroke-linejoin="round"/>','lunch');
+const nolunch=lunch.replace('</svg>','<path d="M14 14 L86 86 M86 14 L14 86" stroke="#C8102E" stroke-width="7" stroke-linecap="round" opacity=".85"/></svg>');
+const tea=S('<rect width="100" height="100" fill="#F3E3F5"/><ellipse cx="38" cy="62" rx="22" ry="18" fill="#FFFFFF" stroke="#7B9ACC" stroke-width="2"/><path d="M58 58 L74 44 L77 48 L60 67Z" fill="#FFFFFF" stroke="#7B9ACC" stroke-width="2" stroke-linejoin="round"/><path d="M17 54 C5 54 5 73 18 70" fill="none" stroke="#7B9ACC" stroke-width="4"/><ellipse cx="38" cy="45" rx="11" ry="3.5" fill="#7B9ACC"/><circle cx="38" cy="40" r="3.5" fill="#7B9ACC"/><path d="M23 62 Q38 69 53 62" stroke="#E75480" stroke-width="2.5" fill="none"/><circle cx="38" cy="70" r="2" fill="#E75480"/><ellipse cx="80" cy="88" rx="17" ry="3.5" fill="#FFFFFF" stroke="#C9B48A"/><path d="M66 86 L94 86 L94 72 L66 78Z" fill="#F4D58D"/><path d="M66 78 L94 72 L94 76.5 L66 82.5Z" fill="#FFFFFF"/><circle cx="86" cy="69" r="4" fill="#E94F64"/>','afternoon tea');
+const homework=S('<rect width="100" height="100" fill="#E5EEDF"/><rect x="16" y="14" width="52" height="72" rx="3" fill="#FFFFFF" stroke="#9AA3C9" stroke-width="2"/><line x1="27" y1="14" x2="27" y2="86" stroke="#F28B8B" stroke-width="1.5"/>'+[36,45,54,63,72].map(y=>'<line x1="20" y1="'+y+'" x2="64" y2="'+y+'" stroke="#BFD7F2" stroke-width="1.2"/>').join('')+'<text x="46" y="30" font-size="11" font-family="sans-serif" font-weight="800" fill="#23308F" text-anchor="middle">ABC</text><path d="M32 44 h20 M32 53 h26 M32 62 h14" stroke="#23308F" stroke-width="1.6" stroke-linecap="round"/><g transform="rotate(32 74 54)"><rect x="69" y="18" width="10" height="52" fill="#FFD23F"/><path d="M69 70 L79 70 L74 83Z" fill="#F3C9A5"/><path d="M72.5 78 L75.5 78 L74 83Z" fill="#333"/><rect x="69" y="13" width="10" height="7" rx="1" fill="#E94F64"/></g>','homework');
+const bed=S(bedBase('#2B3A67')+'<rect x="30" y="56" width="56" height="11" rx="5" fill="#9B5DE5"/>'+head+'<path d="M24.5 55 h2.5 M29.5 55 h2.5" stroke="#2A2A3A" stroke-width="1.3" stroke-linecap="round"/><path d="M82 10 A13 13 0 1 0 92 32 A10.5 10.5 0 1 1 82 10Z" fill="#FFE08A"/><g fill="#FFFFFF"><circle cx="16" cy="16" r="1.6"/><circle cx="34" cy="10" r="1.2"/><circle cx="58" cy="20" r="1.6"/><circle cx="66" cy="8" r="1"/></g><text x="38" y="44" font-size="13" font-weight="800" fill="#FFFFFF" font-family="sans-serif">z</text><text x="46" y="36" font-size="10" font-weight="800" fill="#FFFFFF" font-family="sans-serif">z</text>','go to bed');
+const dinner=S('<rect width="100" height="100" fill="#E7ECF4"/><circle cx="50" cy="54" r="30" fill="#FFFFFF" stroke="#C7CCDA" stroke-width="2"/><circle cx="50" cy="54" r="21" fill="#FFFFFF" stroke="#E2E6F0" stroke-width="1.5"/><ellipse cx="44" cy="57" rx="10" ry="6.5" fill="#B5651D"/><circle cx="57" cy="49" r="4.5" fill="#7CB342"/><circle cx="59" cy="60" r="4.5" fill="#FF9800"/><g fill="#9AA0B5"><rect x="11" y="34" width="3.5" height="44" rx="1.5"/><rect x="8" y="24" width="2" height="14" rx="1"/><rect x="11.8" y="24" width="2" height="14" rx="1"/><rect x="15.5" y="24" width="2" height="14" rx="1"/><path d="M86 24 C92 30 92 44 88 50 L88 78 L85 78 L85 24Z"/></g>','dinner');
+const walkdog=ART.corgi.replace('</svg>','<path d="M86 46 C72 30 44 12 18 2" fill="none" stroke="#C8102E" stroke-width="2.8" stroke-linecap="round"/><rect x="80" y="44" width="10" height="4" rx="2" fill="#C8102E"/></svg>');
+const swan=S('<rect width="100" height="100" fill="#CFE6FA"/><rect y="66" width="100" height="34" fill="#7FB3E0"/><path d="M8 74 Q20 70 32 74 T56 74 T80 74 T100 74" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity=".7"/><path d="M20 68 C20 54 38 50 56 58 L70 62 C66 72 50 76 34 74 C26 73 20 71 20 68Z" fill="#FFFFFF" stroke="#C7CCDA"/><path d="M28 62 C36 56 48 56 56 62" fill="none" stroke="#DDE3EE" stroke-width="2"/><path d="M64 62 C68 48 58 36 64 28 C68 22 77 23 77 30" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round"/><path d="M77 28 L86 31 L77 33Z" fill="#FF8C1A"/><circle cx="73" cy="28" r="1.4" fill="#1B1B1B"/><path d="M60 14 L62 6 L66 11 L69 4 L72 11 L76 6 L78 14Z" fill="#E7B53C"/>','a swan');
+const raven=S('<rect width="100" height="100" fill="#E2E6FA"/><rect y="84" width="100" height="16" fill="#9CC27E"/><rect x="50" y="28" width="44" height="58" fill="#E3DCC8"/><g fill="#D2C9B0"><rect x="46" y="20" width="10" height="66"/><rect x="88" y="20" width="10" height="66"/></g><g fill="#5E7FA6"><path d="M46 20 Q51 10 56 20Z"/><path d="M88 20 Q93 10 98 20Z"/></g><g fill="#7A7465"><rect x="64" y="40" width="5" height="9" rx="2.5"/><rect x="76" y="40" width="5" height="9" rx="2.5"/><rect x="64" y="58" width="5" height="9" rx="2.5"/><rect x="76" y="58" width="5" height="9" rx="2.5"/></g><path d="M70 86 L70 74 C70 70 76 70 76 74 L76 86Z" fill="#6B4423"/>'
+ +'<ellipse cx="24" cy="66" rx="16" ry="11" fill="#1B1B24"/><path d="M8 64 L-2 74 L10 70Z" fill="#1B1B24"/><circle cx="38" cy="52" r="8" fill="#1B1B24"/><path d="M44 50 L54 54 L44 56Z" fill="#3A3A44"/><circle cx="40" cy="50" r="1.6" fill="#FFFFFF"/><path d="M20 76 L18 86 M28 76 L30 86" stroke="#3A3A44" stroke-width="2"/><path d="M14 62 C20 58 28 60 32 64" fill="none" stroke="#3A3A44" stroke-width="2"/>','a raven at the Tower of London');
+const cakeAt=(x,s,c)=>'<g transform="translate('+x+' 0) scale('+s+')"><rect x="0" y="60" width="40" height="24" rx="3" fill="'+c+'"/><path d="M0 64 Q5 70 10 64 T20 64 T30 64 T40 64" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3"/><rect x="18" y="44" width="4" height="16" fill="#5C7CFA"/><path d="M20 36 C24 40 22 44 20 44 C18 44 16 40 20 36Z" fill="#FFB347"/></g>';
+const cake=S('<rect width="100" height="100" fill="#FCE4EC"/>'+cakeAt(6,1,'#F78FB3')+cakeAt(54,1,'#8FB8E0')+'<text x="26" y="98" text-anchor="middle" font-size="9" font-weight="800" font-family="sans-serif" fill="#C8102E">NOV</text><text x="74" y="98" text-anchor="middle" font-size="9" font-weight="800" font-family="sans-serif" fill="#23308F">JUNE</text>','two birthday cakes');
+const present=S('<rect width="100" height="100" fill="#E5EEDF"/><rect x="20" y="44" width="60" height="44" rx="3" fill="#C8102E"/><rect x="16" y="34" width="68" height="12" rx="3" fill="#E1243E"/><rect x="45" y="34" width="10" height="54" fill="#E7B53C"/><path d="M50 34 C40 20 28 24 34 32 C38 36 46 34 50 34 C54 34 62 36 66 32 C72 24 60 20 50 34Z" fill="#E7B53C"/><g fill="#1E8556"><path d="M8 18 l4 -6 l4 6 l-4 6z"/><path d="M84 14 l4 -6 l4 6 l-4 6z"/></g>','a Christmas present');
+const scales=S('<rect width="100" height="100" fill="#FFF4D9"/><rect x="16" y="52" width="68" height="36" rx="9" fill="#9AA3C9"/><rect x="20" y="56" width="60" height="28" rx="7" fill="#C7CCDA"/><circle cx="50" cy="66" r="10" fill="#FFFFFF"/><path d="M50 66 L56 60" stroke="#C8102E" stroke-width="2.4" stroke-linecap="round"/><g fill="#5C4033"><circle cx="34" cy="28" r="14"/></g><path d="M22 22 C28 18 40 18 46 22 C40 26 28 26 22 22Z" fill="#FFFFFF"/><g fill="#1E8556"><path d="M32 12 l-6 -4 l1 6z"/><path d="M36 12 l6 -4 l-1 6z"/></g><circle cx="34" cy="13" r="2.4" fill="#C8102E"/><text x="74" y="38" text-anchor="middle" font-size="22" font-weight="800" fill="#C8102E" font-family="sans-serif">?!</text>','scales and a Christmas pudding');
+const handbag=S('<rect width="100" height="100" fill="#E7ECF4"/><path d="M32 48 C32 26 68 26 68 48" fill="none" stroke="#1F2230" stroke-width="5"/><rect x="22" y="46" width="56" height="40" rx="7" fill="#1F2230"/><rect x="43" y="52" width="14" height="8" rx="2" fill="#E7B53C"/><path d="M8 30 C12 14 30 10 40 18" fill="none" stroke="#C8102E" stroke-width="3" stroke-linecap="round"/><path d="M36 12 L41 19 L33 21" fill="none" stroke="#C8102E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>','a handbag');
+const tailcoat=S('<rect width="100" height="100" fill="#DCE4F7"/><path d="M34 20 L50 30 L66 20 L78 26 L76 60 L72 94 L60 72 L54 40 L46 40 L40 72 L28 94 L24 60 L22 26Z" fill="#1F2230"/><path d="M42 18 L50 30 L58 18Z" fill="#FFFFFF"/><path d="M44 30 L56 30 L55 46 L45 46Z" fill="#FFFFFF"/><rect x="47" y="30" width="6" height="3" fill="#FFFFFF" stroke="#C7CCDA"/><g fill="#9AA0B5"><circle cx="50" cy="52" r="1.6"/><circle cx="50" cy="60" r="1.6"/></g>','a school tailcoat');
+const pup=(x,y)=>'<g transform="translate('+x+' '+y+')"><ellipse cx="0" cy="10" rx="13" ry="8" fill="#1F1F28"/><circle cx="12" cy="0" r="8" fill="#1F1F28"/><ellipse cx="7" cy="5" rx="3.5" ry="7" fill="#33333F"/><circle cx="15" cy="-1.5" r="1.4" fill="#FFFFFF"/><circle cx="19.5" cy="2" r="1.6" fill="#55556A"/><rect x="-9" y="15" width="4" height="6" rx="2" fill="#1F1F28"/><rect x="5" y="15" width="4" height="6" rx="2" fill="#1F1F28"/><path d="M-13 8 C-18 4 -18 0 -15 -2" fill="none" stroke="#1F1F28" stroke-width="3" stroke-linecap="round"/></g>';
+const puppies=S('<rect width="100" height="100" fill="#E3F1DA"/><rect y="80" width="100" height="20" fill="#A9CF8C"/>'+pup(26,26)+pup(70,26)+pup(26,62)+pup(70,62)+'<path d="M48 8 C44 2 38 6 44 12 L48 16 L52 12 C58 6 52 2 48 8Z" fill="#E94F64"/>','four puppies');
+const eggs=S('<rect width="100" height="100" fill="#FFF4D9"/>'+[12,24,36,48,60,72,84].map(x=>'<ellipse cx="'+x+'" cy="30" rx="5.5" ry="7.5" fill="#F7EBD3" stroke="#D9C49A" stroke-width="1.2"/>').join('')+'<path d="M36 70 C36 60 64 60 64 70 L60 82 L40 82Z" fill="#5C7CFA"/><rect x="38" y="82" width="24" height="5" rx="2" fill="#5C7CFA"/><ellipse cx="50" cy="58" rx="11" ry="14" fill="#F7EBD3" stroke="#D9C49A" stroke-width="1.5"/><text x="80" y="76" text-anchor="middle" font-size="24" font-weight="800" fill="#C8102E" font-family="sans-serif">?</text>','seven eggs');
+const guardShout=GUARD.replace('</svg>','<path d="M58 54 L74 48" stroke="#1B1B1B" stroke-width="0"/><g><rect x="62" y="6" width="36" height="18" rx="6" fill="#FFFFFF" stroke="#1A2346" stroke-width="1.5"/><path d="M68 24 L64 30 L74 24Z" fill="#FFFFFF" stroke="#1A2346" stroke-width="1.5"/><text x="80" y="19" text-anchor="middle" font-size="9" font-weight="800" fill="#C8102E" font-family="sans-serif">STOP!</text></g></svg>');
+return {clock,bigben,wakeup,getup,teeth,dressed,breakfast,work,redbox,lunch,nolunch,tea,homework,bed,dinner,walkdog,swan,raven,cake,present,scales,handbag,tailcoat,puppies,eggs,guardShout};
+})();
+const PIC=k=>A2[k]||ART[k]||'';
+
+/* ---------- voice ---------- */
+const hasTTS='speechSynthesis' in window;
+let voices=[], voice=null, rate=parseFloat(store.get('re_rate')||'0.92');
+function vscore(v){
+  const n=v.name, l=(v.lang||'').replace('_','-'); let s=0;
+  if(!/^en/i.test(l)) return -999;
+  if(/natural|neural|online/i.test(n)) s+=120;
+  if(/premium|enhanced/i.test(n)) s+=90;
+  if(/^Google UK English/i.test(n)) s+=80;
+  if(/^Google US English/i.test(n)) s+=55;
+  if(/Sonia|Libby|Maisie|Ryan|Thomas|Serena|Daniel|Kate|Martha|Arthur|Stephanie|Oliver/i.test(n)) s+=30;
+  if(/en-GB/i.test(l)) s+=40; else if(/en-US/i.test(l)) s+=15;
+  if(/espeak|compact|eloquence|Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Wobble|Whisper|Zarvox|Trinoids|Organ|Jester|Superstar|Grandma|Grandpa|Rocko|Shelley|Junior|Ralph|Fred/i.test(n)) s-=200;
+  return s;
+}
+function loadVoices(){
+  if(!hasTTS) return;
+  voices=speechSynthesis.getVoices().filter(v=>vscore(v)>-100).sort((a,b)=>vscore(b)-vscore(a));
+  const sel=$('#voiceSel'); if(!voices.length){sel.innerHTML='<option>default voice</option>';return}
+  const saved=store.get('re_voice');
+  voice=voices.find(v=>v.name===saved)||voices[0];
+  sel.innerHTML=voices.map((v,i)=>'<option value="'+i+'"'+(v===voice?' selected':'')+'>'+esc(v.name)+' ('+esc(v.lang)+')'+(i===0?' ★ best':'')+'</option>').join('');
+}
+if(hasTTS){loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; setTimeout(loadVoices,700); setTimeout(loadVoices,2000);}
+else {$('#voiceSel').innerHTML='<option>no sound in this browser</option>'; $('#voiceNote').textContent='Этот браузер не умеет озвучивать текст. Откройте урок в Chrome, Edge или Safari.';}
+$('#voiceSel').addEventListener('change',e=>{voice=voices[+e.target.value]||null; if(voice)store.set('re_voice',voice.name); speak('Hello! What time is it?')});
+document.querySelectorAll('.seg button').forEach(b=>{b.setAttribute('aria-pressed',String(Math.abs(parseFloat(b.dataset.rate)-rate)<.01));
+  b.addEventListener('click',()=>{rate=parseFloat(b.dataset.rate); store.set('re_rate',String(rate)); document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); speak('This is my '+(rate<.9?'slow':'normal')+' voice.')})});
+$('#voiceTest').addEventListener('click',e=>{e.stopPropagation(); speak('Good morning! It is seven o\'clock. Time to get up!')});
+
+const splitS=t=>(t.replace(/\s+/g,' ').trim().match(/[^.!?]+[.!?]+["”']?|[^.!?]+$/g)||[]).map(x=>x.trim()).filter(Boolean);
+let playingBtn=null;
+function mkU(text){const u=new SpeechSynthesisUtterance(text); u.lang=voice?voice.lang:'en-GB'; if(voice)u.voice=voice; u.rate=rate; return u}
+function speakParts(parts,btn){
+  if(!hasTTS){toast('No sound here 🙁 Press "Show text"');return}
+  speechSynthesis.cancel(); clearHL();
+  if(playingBtn)playingBtn.classList.remove('playing');
+  playingBtn=btn||null; if(btn)btn.classList.add('playing');
+  const queue=[]; parts.forEach(p=>splitS(p.text).forEach(s=>queue.push({s,el:p.el})));
+  queue.forEach((q,i)=>{const u=mkU(q.s);
+    u.onstart=()=>{if(q.el){clearHL(); q.el.classList.add('reading-now')}};
+    if(i===queue.length-1){u.onend=u.onerror=()=>{clearHL(); if(btn)btn.classList.remove('playing')}}
+    speechSynthesis.speak(u);});
+  clearInterval(speakParts.k); speakParts.k=setInterval(()=>{if(!speechSynthesis.speaking){clearInterval(speakParts.k)} else if(speechSynthesis.paused){speechSynthesis.resume()}},1000);
+}
+function speak(t,btn){speakParts([{text:t}],btn)}
+function clearHL(){document.querySelectorAll('.reading-now').forEach(x=>x.classList.remove('reading-now'))}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-say]'); if(b){e.stopPropagation(); speak(b.dataset.say,b); return}
+  const r=e.target.closest('[data-read]'); if(r){e.stopPropagation(); speakParts([...$('#'+r.dataset.read).querySelectorAll('p')].map(p=>({text:p.innerText,el:p})),r); return}
+  const p=e.target.closest('.reading .text p'); if(p){speakParts([{text:p.innerText,el:p}])}
+},true);
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),1600)}
+
+/* ---------- stars ---------- */
+const secs={}; let total=0; const won=new Set(), tried=new Set(), solved=new Set();
+function reg(sec){const id='q'+(++total); (secs[sec]=secs[sec]||[]).push(id); return id}
+const praise=['Well done! ★','Brilliant! ★','Lovely! ★','Super! ★','Excellent! ★','Perfect! ★','Jolly good! ★'];
+function answer(id,ok){
+  if(ok){ if(!tried.has(id)&&!won.has(id)){won.add(id); toast(praise[won.size%praise.length]);} else toast('Yes! That\'s right.'); solved.add(id); }
+  else { tried.add(id); toast('Try again 🙂'); }
+  updStars(); return ok;
+}
+function updStars(){
+  $('#stars').textContent='★ '+won.size+' / '+total; $('#certStars').textContent='★ '+won.size+' / '+total+' stars';
+  const p=total?won.size/total:0; $('#certRank').textContent=p>=.8?'👑 Royal English Star':p>=.5?'🛡️ Royal Explorer':'🌱 Royal Apprentice';
+  document.querySelectorAll('.mstar').forEach(m=>{const ids=secs[m.dataset.sec]; if(!ids){m.textContent='';return}
+    const w=ids.filter(i=>won.has(i)).length, f=ids.filter(i=>solved.has(i)).length; m.textContent='★ '+w+' / '+ids.length;
+    const a=document.querySelector('#jump a[href="#'+m.dataset.sec+'"]'); if(a)a.classList.toggle('done',f===ids.length);});
+}
+$('#jump').innerHTML=[1,2,3,4,5,6,7,8,9,10].map(i=>'<a href="#m'+i+'">'+i+'</a>').join('')+'<a href="#cert">★</a>';
+
+const nameIn=$('#kidname');
+function setName(){const n=nameIn.value.trim(); $('#hello').textContent=n?'Good morning, '+n+'! ☀️':''; $('#certName').textContent=n||'Royal Guest'; store.set('re_name',n)}
+nameIn.value=store.get('re_name')||''; nameIn.addEventListener('input',setName);
+
+/* ---------- widgets ---------- */
+function optCard(container,sec,item,cls){
+  const id=reg(sec); const d=document.createElement('div'); d.className=cls||'q';
+  d.innerHTML=(item.head||'')+'<div class="qtext">'+item.q+'</div><div class="opts">'+item.o.map(o=>'<button class="opt" type="button">'+esc(o)+'</button>').join('')+'</div>';
+  d.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+    if(d.classList.contains('right'))return;
+    const ok=b.textContent===item.a; answer(id,ok);
+    if(ok){b.classList.add('ok'); d.classList.add('right'); d.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+      if(item.say) speak(item.say); if(item.after) item.after(d);} else b.classList.add('no');
+  }));
+  container.appendChild(d); return d;
+}
+function typeLine(container,sec,i,before,after,accept,extra){
+  const id=reg(sec); const d=document.createElement('div'); d.className='line';
+  const inId=sec+'_in'+i;
+  d.innerHTML='<span class="n">'+(i+1)+'</span>'+(extra||'')+(before?'<span>'+before+'</span>':'')+'<input id="'+inId+'" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" aria-label="answer '+(i+1)+'">'+(after?'<span>'+after+'</span>':'')+'<button class="check js-check" type="button">Check</button><span class="fb"></span>';
+  const inp=d.querySelector('input'), fb=d.querySelector('.fb'), btn=d.querySelector('.js-check');
+  const ok=accept.map(norm);
+  const go=()=>{const v=norm(inp.value); if(!v){fb.className='fb no';fb.textContent='Write your answer first ✍️';inp.focus();return}
+    const good=ok.includes(v); answer(id,good);
+    d.className='line '+(good?'right':'wrong'); fb.className='fb '+(good?'ok':'no'); fb.textContent=good?'✓':'✗ Try again';
+    if(good){inp.disabled=true;btn.disabled=true}};
+  btn.addEventListener('click',go); inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go()}});
+  container.appendChild(d); return d;
+}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function tileGame(container,sec,units,label,sep,onWin){
+  const id=reg(sec); const target=units.join(sep); const d=document.createElement('div'); d.className='q';
+  let items=shuffle(units); for(let t=0;t<5&&items.join(sep)===target;t++) items=shuffle(units);
+  if(items.join(sep)===target) items=items.slice().reverse();
+  d.innerHTML='<div class="qtext">'+label+'</div><div class="slots"></div><div class="tiles"></div><span class="fb"></span>';
+  const slots=d.querySelector('.slots'), tiles=d.querySelector('.tiles'), fb=d.querySelector('.fb'); let pick=[];
+  function draw(){
+    slots.innerHTML=units.map((_,k)=>'<button type="button" class="slot'+(pick[k]!=null?' f':'')+'" data-k="'+k+'" data-num="'+(k+1)+'" aria-label="place '+(k+1)+'">'+(pick[k]!=null?esc(items[pick[k]]):'')+'</button>').join('');
+    tiles.innerHTML=items.map((c,k)=>pick.includes(k)?'':'<button type="button" class="tile" data-t="'+k+'">'+esc(c)+'</button>').join('');
+  }
+  d.addEventListener('click',e=>{ if(d.classList.contains('right'))return;
+    const t=e.target.closest('.tile'), s=e.target.closest('.slot');
+    if(t){pick.push(+t.dataset.t);} else if(s && pick[+s.dataset.k]!=null){pick.splice(+s.dataset.k,1);} else return;
+    draw(); fb.textContent='';
+    if(pick.length===units.length){const got=pick.map(k=>items[k]).join(sep); const ok=got===target; answer(id,ok);
+      if(ok){d.classList.add('right'); fb.className='fb ok'; fb.textContent='✓ '+units.join(' '); onWin&&onWin()} else {fb.className='fb no'; fb.textContent='✗ Not quite. Tap the top row to change it.'}}
+  });
+  draw(); container.appendChild(d);
+}
+
+/* ---------- hero ---------- */
+$('#heroArt').innerHTML=A2.bigben;
+
+/* ---------- 1 review ---------- */
+[
+ {p:'crown',q:'What is it?',o:['a castle','a crown','a flag'],a:'a crown'},
+ {p:'charlotte',q:'Charlotte is George\'s …',o:['brother','sister','mother'],a:'sister'},
+ {p:'guard',q:'The guards … red jackets.',o:['wear','wears','wearing'],a:'wear'},
+ {p:'palace',q:'Where does the King live in London?',o:['Buckingham Palace','Windsor Castle','a school'],a:'Buckingham Palace'},
+ {p:'corgi',q:'Queen Elizabeth\'s favourite dogs were …',o:['poodles','corgis','cats'],a:'corgis'},
+ {p:'william',q:'Prince William … football.',o:['like','likes','liking'],a:'likes'}
+].forEach((x,i)=>optCard($('#review'),'m1',{head:'<div class="qimg">'+(ART[x.p]||ART.p(x.p))+'</div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
+
+/* ---------- 2 vocab ---------- */
+const vocab=[
+ {w:'wake up',tr:'просыпаться',ex:'I wake up at seven o\'clock.',a:'wakeup'},
+ {w:'get up',tr:'вставать',ex:'The King gets up early.',a:'getup'},
+ {w:'brush my teeth',tr:'чистить зубы',ex:'I brush my teeth every morning.',a:'teeth'},
+ {w:'get dressed',tr:'одеваться',ex:'Charlotte gets dressed for school.',a:'dressed'},
+ {w:'have breakfast',tr:'завтракать',ex:'The King has fruit for breakfast.',a:'breakfast'},
+ {w:'go to school',tr:'ходить в школу',ex:'George goes to school at Eton.',a:'school'},
+ {w:'work',tr:'работать',ex:'The King works every day.',a:'work'},
+ {w:'have lunch',tr:'обедать',ex:'I have lunch at school.',a:'lunch'},
+ {w:'have tea',tr:'пить чай (полдник)',ex:'The King has tea at five o\'clock.',a:'tea'},
+ {w:'do homework',tr:'делать уроки',ex:'Louis does his homework.',a:'homework'},
+ {w:'walk the dog',tr:'гулять с собакой',ex:'I walk the dog in the park.',a:'walkdog'},
+ {w:'go to bed',tr:'ложиться спать',ex:'I go to bed at nine o\'clock.',a:'bed'}
+];
+$('#vocab').innerHTML=vocab.map(v=>'<div class="vcard" role="button" tabindex="0" aria-label="'+v.w+'"><div class="vin"><div class="vf"><div class="pic">'+PIC(v.a)+'</div><div class="w">'+v.w+'</div><button class="say" type="button" data-say="'+v.w+'">🔊</button></div><div class="vb"><div class="tr">'+v.tr+'</div><div class="ex">'+v.ex+'</div><button class="say" type="button" data-say="'+esc(v.ex)+'">🔊 sentence</button></div></div></div>').join('');
+$('#vocab').addEventListener('click',e=>{const c=e.target.closest('.vcard'); if(c)c.classList.toggle('flip')});
+$('#vocab').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('vcard')){e.preventDefault();e.target.classList.toggle('flip')}});
+
+[
+ ['teeth','brush her teeth',['get dressed','brush her teeth','go to bed']],
+ ['bed','go to bed',['go to bed','have lunch','wake up']],
+ ['breakfast','have breakfast',['do homework','walk the dog','have breakfast']],
+ ['homework','do homework',['do homework','get up','have tea']],
+ ['walkdog','walk the dog',['go to school','walk the dog','brush her teeth']],
+ ['dressed','get dressed',['have breakfast','work','get dressed']],
+ ['wakeup','wake up',['wake up','have dinner','go to school']],
+ ['tea','have tea',['get dressed','have tea','go to bed']]
+].forEach((m,i)=>optCard($('#vmatch'),'m2',{head:'<div class="qimg">'+PIC(m[0])+'</div>',q:'<span class="n">'+(i+1)+'</span> She is going to …',o:m[2],a:m[1],say:m[1]}));
+
+[
+ ['___ breakfast','have',['have','do','go']],
+ ['___ my homework','do',['make','do','have']],
+ ['___ to bed','go',['go','get','have']],
+ ['___ dressed','get',['do','have','get']],
+ ['___ my teeth','brush',['wash','brush','clean up']],
+ ['___ the dog','walk',['walk','go','run']]
+].forEach((c,i)=>optCard($('#collo'),'m2',{q:'<span class="n">'+(i+1)+'</span> '+c[0],o:c[2],a:c[1],say:c[0].replace('___',c[1]),
+  after:d=>{d.querySelector('.qtext').innerHTML='<span class="n">'+(i+1)+'</span> '+c[0].replace('___','<b>'+c[1]+'</b>')}},'line'));
+
+/* ---------- 3 time ---------- */
+$('#timerule').innerHTML=[[7,0,'seven o\'clock','7:00 — ровно семь'],[7,15,'quarter past seven','7:15 — четверть восьмого'],[7,30,'half past seven','7:30 — половина восьмого'],[7,45,'quarter to eight','7:45 — без 15 восемь']]
+ .map(t=>'<div><span class="c">'+A2.clock(t[0],t[1])+'</span>'+t[2]+'<small>'+t[3]+'</small><button class="say" type="button" data-say="It\'s '+t[2]+'.">🔊</button></div>').join('');
+[
+ [3,0,'three o\'clock',['three o\'clock','half past three','twelve o\'clock']],
+ [8,30,'half past eight',['eight o\'clock','half past eight','half past six']],
+ [10,15,'quarter past ten',['quarter to ten','ten o\'clock','quarter past ten']],
+ [6,45,'quarter to seven',['quarter to six','quarter to seven','quarter past six']],
+ [12,0,'twelve o\'clock',['six o\'clock','half past twelve','twelve o\'clock']],
+ [2,30,'half past two',['half past two','half past six','two o\'clock']],
+ [9,45,'quarter to ten',['quarter past nine','quarter to nine','quarter to ten']],
+ [11,15,'quarter past eleven',['quarter past eleven','quarter past three','quarter to eleven']]
+].forEach((c,i)=>optCard($('#clocks'),'m3',{head:'<div class="clockbox">'+A2.clock(c[0],c[1])+'</div>',q:'<span class="n">'+(i+1)+'</span> What time is it?',o:c[3],a:c[2],say:'It\'s '+c[2]+'.'}));
+
+[['half past seven',7,30],['quarter past nine',9,15],['five o\'clock',5,0],['quarter to eight',7,45]].forEach((t,i)=>{
+  const id=reg('m3'); const d=document.createElement('div'); d.className='q setter';
+  let h=12,m=0;
+  d.innerHTML='<div class="qtext"><span class="n">'+(i+1)+'</span> Show: <b>'+t[0]+'</b> <button class="say" type="button" data-say="'+esc(t[0])+'">🔊</button></div><div class="clockbox"></div>'
+   +'<div class="ctrl"><span>Short hand</span><button type="button" data-a="h-" aria-label="short hand back">◀ back</button><button type="button" data-a="h+" aria-label="short hand forward">next ▶</button>'
+   +'<span>Long hand</span><button type="button" data-a="m-" aria-label="long hand back">◀ back</button><button type="button" data-a="m+" aria-label="long hand forward">next ▶</button></div>'
+   +'<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="check js-check" type="button">Check</button><span class="fb"></span></div>';
+  const box=d.querySelector('.clockbox'), fb=d.querySelector('.fb'), btn=d.querySelector('.js-check');
+  const draw=()=>{box.innerHTML=A2.clock(h,m)}; draw();
+  d.querySelectorAll('.ctrl button').forEach(b=>b.addEventListener('click',()=>{ if(d.classList.contains('right'))return;
+    const a=b.dataset.a; if(a==='h+')h=h%12+1; if(a==='h-')h=(h+10)%12+1; if(a==='m+')m=(m+15)%60; if(a==='m-')m=(m+45)%60; draw(); fb.textContent='';}));
+  btn.addEventListener('click',()=>{const ok=h===t[1]&&m===t[2]; answer(id,ok);
+    if(ok){d.classList.add('right'); fb.className='fb ok'; fb.textContent='✓ '+t[0]; btn.disabled=true; d.querySelectorAll('.ctrl button').forEach(x=>x.disabled=true); speak('Yes! It\'s '+t[0]+'.')}
+    else {fb.className='fb no'; fb.textContent=(m!==t[2]?'✗ Look at the long hand':'✗ Look at the short hand')}});
+  $('#setters').appendChild(d);});
+
+/* ---------- 4 reading ---------- */
+$('#daytl').innerHTML='<b>The King\'s day</b>'+[['getup','gets up early'],['breakfast','fruit and tea'],['redbox','red boxes'],['nolunch','no lunch!'],['tea','5:00 tea with Camilla'],['dinner','8:30 dinner'],['bed','works late']].map(x=>'<div><span class="mini">'+PIC(x[0])+'</span>'+x[1]+'</div>').join('');
+[
+ ['The King gets up late.','False'],['He has fruit and tea for breakfast.','True'],['He gets red boxes with important papers.','True'],['The King has a big lunch every day.','False'],
+ ['He has afternoon tea at five o\'clock.','True'],['He has afternoon tea with Prince William.','False'],['He has dinner at half past eight.','True'],['He always goes to bed at nine o\'clock.','False']
+].forEach((t,i)=>optCard($('#tf'),'m4',{q:'<span class="n">'+(i+1)+'</span> '+t[0],o:['True','False'],a:t[1]},'line'));
+tileGame($('#dayorder'),'m4',['gets up','has breakfast','reads his papers','has afternoon tea','has dinner'],'The King …','|',()=>speak('The King gets up, has breakfast, reads his papers, has afternoon tea and has dinner.'));
+[
+ ['The King has afternoon tea at','o\'clock.',['five','5']],
+ ['Every day he gets special','boxes.',['red']],
+ ['He has dinner at half past','.',['eight','8']],
+ ['Sometimes he goes to bed after','.',['midnight']]
+].forEach((r,i)=>typeLine($('#rfill'),'m4',i,r[0],r[1],r[2]));
+
+/* ---------- 5 grammar ---------- */
+[
+ ['The King','eat lunch.','doesn\'t','king'],['I','go to school on Sunday.','don\'t','school'],['The guards','smile at work.','don\'t','guard'],
+ ['Charlotte','have a sister.','doesn\'t','charlotte'],['We','live in a palace.','don\'t','palace'],['Orla the dog','go to school.','doesn\'t','puppies'],
+ ['My parents','drink coffee at night.','don\'t','tea'],['My cat','like water.','doesn\'t','swan']
+].forEach((g,i)=>optCard($('#dont'),'m5',{head:'<span class="mini">'+(PIC(g[3])||ART.p(g[3]))+'</span>',q:'<span class="n">'+(i+1)+'</span> '+g[0]+' ____ '+g[1],o:['don\'t','doesn\'t'],a:g[2],say:g[0]+' '+g[2]+' '+g[1],
+  after:d=>{d.querySelector('.qtext').innerHTML='<span class="n">'+(i+1)+'</span> '+g[0]+' <b>'+g[2]+'</b> '+g[1]}},'line'));
+[
+ {q:'Does the King eat lunch?',o:['Yes, he does.','No, he doesn\'t.','No, he isn\'t.'],a:'No, he doesn\'t.',p:'nolunch'},
+ {q:'Does Charlotte have two brothers?',o:['Yes, she does.','Yes, she is.','No, she doesn\'t.'],a:'Yes, she does.',p:'charlotte'},
+ {q:'Do the guards wear red jackets?',o:['Yes, they does.','Yes, they do.','No, they don\'t.'],a:'Yes, they do.',p:'guard'},
+ {q:'Does George go to Eton?',o:['Yes, he does.','Yes, he do.','No, he doesn\'t.'],a:'Yes, he does.',p:'george'},
+ {q:'Do you live in a palace?',o:['Yes, I am.','No, I don\'t.','No, I doesn\'t.'],a:'No, I don\'t.',p:'palace'},
+ {q:'Does the King have afternoon tea?',o:['No, he doesn\'t.','Yes, he has.','Yes, he does.'],a:'Yes, he does.',p:'tea'}
+].forEach((x,i)=>optCard($('#short'),'m5',{head:'<div class="rid-row"><span class="mini">'+(PIC(x.p)||ART.p(x.p))+'</span><button class="say" type="button" data-say="'+esc(x.q)+'">🔊</button></div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a,say:x.a}));
+['Does the King eat lunch?','Do you like tea?','Does Louis go to school?'].forEach((s,i)=>tileGame($('#buildq'),'m5',s.split(' '),'<span class="n">'+(i+1)+'</span> Make a question',' ',()=>speak(s)));
+
+/* ---------- 6 secrets ---------- */
+const secrets=[
+ {p:'cake',t:'The King has two birthdays: his real birthday in November and an official birthday in June.',v:'T',e:'TRUE! His real birthday is 14 November. In June there is a big parade for his "official birthday". It is called Trooping the Colour. Why June? The weather is better!'},
+ {p:'eggs',t:'People say the King has seven boiled eggs every morning and eats only the best one.',v:'F',ps:1,e:'NOT TRUE! It is a famous royal myth. The King\'s office said: "No, he doesn\'t and never has done."'},
+ {p:'swan',t:'Almost all wild swans on English rivers belong to the King.',v:'T',e:'TRUE! The white mute swans with no owner belong to the King. Every July people count the swans on the River Thames. It is called Swan Upping.'},
+ {p:'raven',t:'Six ravens must always live at the Tower of London.',v:'T',e:'TRUE! An old legend says: if the ravens fly away, the kingdom will fall. A special guard, the Ravenmaster, looks after them. There are always at least six.'},
+ {p:'present',t:'The royal family opens Christmas presents on Christmas morning.',v:'F',e:'NOT TRUE! They open presents on Christmas Eve, the evening before. It is an old German tradition from Prince Albert, Queen Victoria\'s husband.'},
+ {p:'scales',t:'People say royal Christmas guests stand on scales when they arrive and when they go home.',v:'P',ps:1,e:'PEOPLE SAY IT\'S TRUE! The story says King Edward VII started it more than 100 years ago. A good guest eats a lot, so they must be heavier when they go home!'},
+ {p:'handbag',t:'People say Queen Elizabeth used her handbag to send secret messages.',v:'P',ps:1,e:'PEOPLE SAY IT\'S TRUE! A royal historian said: when the Queen moved her handbag to the other arm, it meant "Please help me finish this conversation!"'},
+ {p:'tailcoat',t:'Prince George goes to a school where the boys wear tailcoats.',v:'T',e:'TRUE! In September 2026 George started at Eton College. He lives there too: it is a boarding school. The uniform has a black tailcoat. His dad William and uncle Harry went there too.'},
+ {p:'puppies',t:'Prince William and Catherine\'s dog Orla had puppies.',v:'T',e:'TRUE! Orla is a black cocker spaniel. In 2025 she had four puppies!'},
+ {p:'guardShout',t:'The King\'s guards can never move or speak, even if tourists come too close.',v:'F',e:'NOT TRUE! They don\'t smile or chat, but if people come too close, they can shout: "Make way for the King\'s Guard!"'}
+];
+let sGuessed=0,sRight=0;
+secrets.forEach((s,i)=>{const d=document.createElement('div'); d.className='secret';
+  d.innerHTML='<div class="sp">'+PIC(s.p)+'</div><div class="sb">'+(s.ps?'<span class="tag ps">People say…</span>':'<span class="tag">Royal secret '+(i+1)+'</span>')+'<div class="st">'+esc(s.t)+' <button class="say" type="button" data-say="'+esc(s.t)+'">🔊</button></div><div class="opts"><button class="opt" type="button">I think TRUE</button><button class="opt" type="button">I think NOT TRUE</button></div></div>';
+  d.querySelectorAll('.opt').forEach((b,k)=>b.addEventListener('click',()=>{
+    const truth=s.v!=='F', right=(k===0)===truth;
+    d.querySelectorAll('.opt').forEach(x=>x.disabled=true); b.classList.add(right?'ok':'no');
+    sGuessed++; if(right)sRight++;
+    const r=document.createElement('div'); r.className='reveal';
+    r.innerHTML='<div class="verdict '+(s.v==='T'?'t':s.v==='F'?'f':'p')+'">'+(right?'🎉 Good guess! ':'😮 Surprise! ')+'</div>'+esc(s.e);
+    d.querySelector('.sb').appendChild(r);
+    $('#secretScore').textContent='Your guesses: '+sRight+' right out of '+sGuessed+(sGuessed===secrets.length?' — all secrets open! 🔓':'');
+  }));
+  $('#secrets').appendChild(d);});
+[
+ {q:'When is the King\'s real birthday?',o:['in June','in November','at Christmas'],a:'in November'},
+ {q:'Where do the six ravens live?',o:['at Buckingham Palace','at the Tower of London','at Eton'],a:'at the Tower of London'},
+ {q:'When do the royals open Christmas presents?',o:['on Christmas Eve','on Christmas morning','in January'],a:'on Christmas Eve'},
+ {q:'What is the name of the dog with four puppies?',o:['Susan','Biscuit','Orla'],a:'Orla'},
+ {q:'What do the boys at Eton wear?',o:['crowns','tailcoats','pyjamas'],a:'tailcoats'}
+].forEach((x,i)=>optCard($('#squiz'),'m6',{q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
+
+/* ---------- 7 listening ---------- */
+const story='Hello! My name is Biscuit. I am a corgi and I live in a palace. I wake up at seven o\'clock. I have breakfast at quarter past seven. I love sausages, but I don\'t eat vegetables. At ten o\'clock I walk in the garden with the gardener. I don\'t go to school! At one o\'clock I sleep under the King\'s desk. At five o\'clock the Queen has tea, and she gives me a biscuit. That is why my name is Biscuit! I go to bed at nine o\'clock. Goodnight!';
+$('#biscuitPic').innerHTML=ART.corgi; $('#storyText').textContent=story;
+$('#playStory').addEventListener('click',e=>{e.stopPropagation(); speak(story,e.currentTarget)});
+$('#showStory').addEventListener('click',()=>{const t=$('#storyText'); t.hidden=!t.hidden; $('#showStory').textContent=t.hidden?'Show text':'Hide text'});
+[
+ {q:'What time does Biscuit wake up?',o:['at eight o\'clock','at seven o\'clock','at half past seven'],a:'at seven o\'clock'},
+ {q:'What does Biscuit love?',o:['vegetables','cake','sausages'],a:'sausages'},
+ {q:'Biscuit doesn\'t eat …',o:['vegetables','sausages','biscuits'],a:'vegetables'},
+ {q:'Where does Biscuit sleep at one o\'clock?',o:['in the garden','under the King\'s desk','in a car'],a:'under the King\'s desk'},
+ {q:'Who gives Biscuit a biscuit?',o:['the gardener','the King','the Queen'],a:'the Queen'},
+ {q:'What time does Biscuit go to bed?',o:['at nine o\'clock','at five o\'clock','at midnight'],a:'at nine o\'clock'}
+].forEach((x,i)=>optCard($('#listen'),'m7',{q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
+['morning','breakfast','school','clock','dinner','homework'].forEach((w,i)=>{
+  const d=typeLine($('#dict'),'m7',i,'','',[w],'<button class="check" type="button" data-say="'+w+'" aria-label="listen">▶</button>');
+  const h=document.createElement('button'); h.className='ghost'; h.type='button'; h.textContent='Hint';
+  h.addEventListener('click',()=>{h.textContent=w[0]+' _'.repeat(w.length-1)+' ('+w.length+')'});
+  d.insertBefore(h,d.querySelector('.fb'));});
+
+/* ---------- 8 spelling ---------- */
+[['LUNCH','обед','lunch'],['CLOCK','часы','clock'],['TEETH','зубы','teeth'],['DINNER','ужин','dinner'],['SCHOOL','школа','school'],['MORNING','утро','wakeup'],['HOMEWORK','домашнее задание','homework'],['BREAKFAST','завтрак','breakfast']]
+.forEach((w,i)=>tileGame($('#scramble'),'m8',w[0].split(''),'<div class="sc-pic">'+(w[2]==='clock'?A2.clock(3,0):PIC(w[2]))+'</div><span class="n">'+(i+1)+'</span> '+w[1],'',()=>speak(w[0].toLowerCase())));
+
+/* ---------- 9 speaking ---------- */
+[
+ {k:'What time do you get up?',o:['I get up at seven o\'clock.','I am get up in seven.','I gets up seven.'],a:'I get up at seven o\'clock.'},
+ {k:'Do you have breakfast at home?',o:['Yes, I am.','Yes, I do.','Yes, I does.'],a:'Yes, I do.'},
+ {k:'What do you have for breakfast?',o:['I has porridge.','I have porridge and tea.','I am porridge.'],a:'I have porridge and tea.'},
+ {k:'Does your mum work?',o:['Yes, she do.','Yes, she is work.','Yes, she does.'],a:'Yes, she does.'},
+ {k:'What time do you go to bed?',o:['I go to bed at half past nine.','I go bed at nine half.','I going to bed.'],a:'I go to bed at half past nine.'}
+].forEach((x,i)=>optCard($('#interview'),'m9',{head:'<div class="rid-row"><span class="mini">'+ART.king+'</span><div><b>The King:</b> “'+esc(x.k)+'” <button class="say" type="button" data-say="'+esc(x.k)+'">🔊</button></div></div>',q:'You say:',o:x.o,a:x.a,say:x.a},'q'));
+const hrs=['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'];
+const times=[]; for(let hh=6;hh<=11;hh++){const H=hrs[hh-1],N=hrs[hh%12]; times.push(H+' o\'clock','quarter past '+H,'half past '+H,'quarter to '+N)}
+const fillSel=(id,def)=>{const s=$('#'+id); s.innerHTML=times.map(t=>'<option'+(t===def?' selected':'')+'>'+t+'</option>').join('')};
+fillSel('d1','seven o\'clock'); fillSel('d3','eight o\'clock'); fillSel('d6','half past nine');
+function diaryText(){const v=k=>{const el=$('#d'+k); return (el.value||'').trim()||el.placeholder};
+  return 'I wake up at '+v(1)+'.\nFor breakfast I have '+v(2)+'.\nI go to school at '+v(3)+'.\nAfter school I '+v(4)+'.\nI don\'t '+v(5)+'.\nI go to bed at '+v(6)+'.\nThe King doesn\'t eat lunch, but I do!'+(nameIn.value.trim()?'\n— '+nameIn.value.trim():'')}
+$('#makeDiary').addEventListener('click',()=>{$('#diaryOut').textContent=diaryText(); toast('Your diary is ready ✍️')});
+$('#readDiary').addEventListener('click',e=>{e.stopPropagation(); speak(diaryText().replace(/\n/g,' ').replace('— ',''),e.currentTarget)});
+
+/* ---------- 10 final ---------- */
+[
+ {h:A2.clock(7,30),q:'What time is it?',o:['half past seven','seven o\'clock','quarter to seven'],a:'half past seven'},
+ {h:PIC('nolunch'),q:'The King … eat lunch.',o:['don\'t','doesn\'t','isn\'t'],a:'doesn\'t'},
+ {h:ART.p('charlotte'),q:'… Charlotte go to school?',o:['Do','Is','Does'],a:'Does'},
+ {h:PIC('teeth'),q:'I … my teeth every morning.',o:['brush','do','have'],a:'brush'},
+ {h:PIC('raven'),q:'Where do the ravens live?',o:['at Windsor Castle','at the Tower of London','at Eton'],a:'at the Tower of London'},
+ {h:PIC('tea'),q:'What time is the King\'s afternoon tea?',o:['at five o\'clock','at one o\'clock','at midnight'],a:'at five o\'clock'},
+ {h:A2.clock(7,45),q:'"Quarter to eight" is …',o:['8:15','7:45','8:45'],a:'7:45'},
+ {h:ART.p('louis'),q:'Does Louis like football? — Yes, he …',o:['is','do','does'],a:'does'}
+].forEach((x,i)=>optCard($('#final'),'m10',{head:'<div class="qimg">'+x.h+'</div>',q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
+
+$('#certArt').innerHTML='<span>'+A2.clock(5,0)+'</span><span class="c">'+A2.bigben+'</span><span>'+A2.tea+'</span>';
+setName(); updStars();
+})();
+</script>

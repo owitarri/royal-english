@@ -1,0 +1,856 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Royal English</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Layout: storybook "palace tour" — a sticky star bar, then ten missions in lesson order, ending with a certificate */
+:root{
+  --bg:#EEF2FA; --card:#FFFFFF; --ink:#1A2346; --muted:#59618A; --line:#D6DCEE;
+  --royal:#23308F; --royal-soft:#E2E6FA; --gold:#B8861E; --gold-soft:#FBF0D6;
+  --scarlet:#C8102E; --ok:#1E8556; --ok-soft:#DDF3E8; --bad:#C8102E; --bad-soft:#FBE3E6; --hl:#FFE89A;
+  --f-display:"Cinzel Decorative", Georgia, serif;
+  --f-head:"Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --f-body:"Nunito", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1230; --card:#191F4B; --ink:#EEF0FA; --muted:#A9B0D6; --line:#2D3570;
+  --royal:#9CA9FF; --royal-soft:#252D66; --gold:#E6B955; --gold-soft:#3A3220;
+  --scarlet:#FF5A6E; --ok:#4FD69A; --ok-soft:#173D33; --bad:#FF6B7D; --bad-soft:#4A1F2C; --hl:#5A4A12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1230; --card:#191F4B; --ink:#EEF0FA; --muted:#A9B0D6; --line:#2D3570;
+  --royal:#9CA9FF; --royal-soft:#252D66; --gold:#E6B955; --gold-soft:#3A3220;
+  --scarlet:#FF5A6E; --ok:#4FD69A; --ok-soft:#173D33; --bad:#FF6B7D; --bad-soft:#4A1F2C; --hl:#5A4A12; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--royal)}
+.wrap{max-width:900px;margin:0 auto}
+h1,h2,h3{text-wrap:balance;margin:0}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  background:var(--royal);color:var(--bg);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.bar b{font-family:var(--f-head);font-size:1.15rem}
+.stars{font-family:var(--f-head);font-weight:800;font-size:1.1rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.jump{display:flex;gap:5px;flex-wrap:wrap}
+.jump a{color:inherit;text-decoration:none;font-size:.82rem;font-weight:800;border:1.5px solid currentColor;border-radius:999px;padding:0 8px;opacity:.85;font-variant-numeric:tabular-nums}
+.jump a.done{background:var(--gold);border-color:var(--gold);color:var(--card);opacity:1}
+
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;padding:28px 0 8px}
+.hero h1{font-family:var(--f-display);font-size:clamp(2rem,6vw,3.2rem);line-height:1.1;color:var(--royal)}
+.hero p{color:var(--muted);max-width:52ch}
+.hero .ph-wrap{border-radius:18px;overflow:hidden;border:4px solid var(--gold);aspect-ratio:4/3;max-width:100%;background:var(--royal-soft)}
+.name-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.name-row input{font:inherit;padding:8px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);min-width:0;flex:1 1 180px}
+.hello{font-family:var(--f-head);color:var(--gold);font-size:1.2rem;min-height:1.6em}
+
+.voicebox{margin-top:18px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.voicebox .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.voicebox select{font:inherit;font-size:.9rem;padding:5px 8px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--ink);min-width:0;flex:1 1 220px;max-width:100%}
+.voicebox small{color:var(--muted);font-size:.82rem;line-height:1.4}
+.seg{display:inline-flex;border:2px solid var(--royal);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--royal);padding:3px 12px;font-weight:800;font-size:.85rem}
+.seg button[aria-pressed="true"]{background:var(--royal);color:var(--card)}
+
+section.mission{margin-top:40px;scroll-margin-top:70px}
+.mhead{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.eyebrow{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;color:var(--gold);font-weight:800}
+.time{font-size:.8rem;color:var(--muted);font-weight:700}
+.mstar{font-family:var(--f-head);font-weight:800;font-size:.85rem;color:var(--royal);background:var(--royal-soft);border-radius:999px;padding:0 10px;font-variant-numeric:tabular-nums}
+.mission h2{font-family:var(--f-head);font-size:clamp(1.5rem,4vw,2rem);color:var(--royal);line-height:1.15}
+.task{color:var(--muted);margin:6px 0 4px;max-width:65ch}
+.task i{color:var(--ink);font-style:normal;font-weight:800}
+.ru{display:block;color:var(--muted);font-size:.85rem;margin:0 0 16px;max-width:65ch}
+.ru::before{content:"RU · ";font-weight:800;color:var(--gold)}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px}
+.rule{background:var(--gold-soft);border-left:5px solid var(--gold);border-radius:10px;padding:12px 16px;margin-bottom:16px}
+.rule b{color:var(--ink)}
+h3.sub{font-family:var(--f-head);font-size:1.2rem;margin:24px 0 4px;color:var(--ink)}
+
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.vcard{perspective:800px;height:170px}
+.vin{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.vcard.flip .vin{transform:rotateY(180deg)}
+.vf,.vb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;border:2px solid var(--line);background:var(--card);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px;color:var(--ink);cursor:pointer}
+.vb{transform:rotateY(180deg);background:var(--royal-soft);border-color:var(--royal)}
+.vf .pic{font-size:3rem;line-height:1;height:80px;display:flex;align-items:center;justify-content:center}
+.vf .w{font-family:var(--f-head);font-size:1.35rem;font-weight:800}
+.vb .tr{font-size:1.2rem;font-weight:800}
+.vb .ex{font-size:.85rem;color:var(--muted);text-align:center}
+.say{border:0;background:var(--gold-soft);color:var(--ink);border-radius:999px;padding:3px 10px;font-size:.85rem;font-weight:800}
+.say:hover{background:var(--gold);color:var(--card)}
+.say.playing{background:var(--gold);color:var(--card)}
+
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.q{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.q.right,.line.right{border-color:var(--ok);background:var(--ok-soft)}
+.q .qimg{height:140px;border-radius:10px;overflow:hidden;background:var(--royal-soft);display:flex;align-items:center;justify-content:center}
+.q .qtext{font-weight:700}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:2px solid var(--royal);color:var(--royal);background:transparent;border-radius:10px;padding:5px 14px;font-weight:800}
+.opt:hover{background:var(--royal-soft)}
+.opt.ok{background:var(--ok);border-color:var(--ok);color:var(--card)}
+.opt.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.opt:disabled{cursor:default}
+.list{display:flex;flex-direction:column;gap:10px}
+.line{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;min-width:0}
+.line.wrong{border-color:var(--bad)}
+.line .qtext{font-weight:700;flex:1 1 260px}
+.n{font-family:var(--f-head);font-weight:800;color:var(--gold);min-width:1.4em;display:inline-block}
+.line select,.line input{font:inherit;font-weight:700;padding:4px 8px;border-radius:8px;border:2px solid var(--royal);background:var(--card);color:var(--ink);min-width:0}
+.line input{width:9em}
+.check{border:0;background:var(--royal);color:var(--card);border-radius:8px;padding:5px 12px;font-weight:800}
+.ghost{border:2px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:3px 10px;font-weight:700;font-size:.85rem}
+.fb{font-weight:800;font-size:.95rem}
+.fb.ok{color:var(--ok)} .fb.no{color:var(--bad)}
+.reveal{font-size:.92rem;color:var(--ink);background:var(--gold-soft);border-radius:8px;padding:6px 10px;width:100%}
+
+.tree{display:flex;flex-direction:column;gap:12px;align-items:center;padding:6px 0}
+.gen{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.couple{display:flex;gap:6px;align-items:center;padding:8px;border-radius:14px;background:var(--royal-soft);flex-wrap:wrap;justify-content:center}
+.couple .heart{color:var(--scarlet);font-weight:800}
+.kids{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:8px;border-radius:14px;border:2px dashed var(--line)}
+.person{border:2px solid var(--line);background:var(--card);border-radius:12px;padding:6px 10px;display:flex;flex-direction:column;align-items:center;min-width:88px;color:var(--ink)}
+.person:hover,.person.sel{border-color:var(--gold)}
+.crest{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--f-head);font-weight:800;color:var(--card);background:var(--royal);font-size:1.05rem}
+.person.past .av{filter:grayscale(.5)}
+.av{width:62px;height:62px;display:block;border-radius:12px;overflow:hidden;margin-bottom:3px}
+.info-row{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.info-row>div:last-child{flex:1 1 220px;min-width:0}
+.info .big{width:120px;height:120px;flex:none;border-radius:16px;overflow:hidden;border:3px solid var(--gold)}
+.mini{width:52px;height:52px;flex:none;border-radius:10px;overflow:hidden;display:block}
+.rid-row{display:flex;gap:10px;align-items:center}
+.q .rid{width:64px;height:64px}
+.sc-pic{width:130px;height:110px;border-radius:10px;overflow:hidden;background:var(--royal-soft)}
+.flags{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.flags .fl{height:62px}
+.cert-art{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin-bottom:12px}
+.cert-art span{width:60px;height:84px;border-radius:10px;overflow:hidden;display:block}
+.cert-art span.c{width:130px;height:96px}
+.person .pn{font-weight:800;font-size:.9rem}
+.person .pr{font-size:.75rem;color:var(--muted)}
+.arrow{color:var(--muted);font-size:1.4rem;line-height:1}
+.info{margin-top:14px;min-height:96px}
+.info h3{font-family:var(--f-head);color:var(--royal)}
+
+.reading{display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:start}
+.reading .text p{margin:0 0 12px;max-width:65ch;border-radius:6px;padding:2px 4px;margin-left:-4px;transition:background .2s}
+.reading .text p.reading-now{background:var(--hl)}
+.reading .text b{color:var(--royal)}
+.side{display:flex;flex-direction:column;gap:10px;min-width:0}
+.side figure{margin:0;border-radius:12px;overflow:hidden;background:var(--royal-soft)}
+.side figcaption{font-size:.8rem;color:var(--muted);padding:6px 8px}
+.gloss{font-size:.9rem;background:var(--gold-soft);border-radius:10px;padding:10px 12px}
+.gloss div{display:flex;justify-content:space-between;gap:8px}
+
+.scr{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.slots,.tiles{display:flex;gap:6px;flex-wrap:wrap;min-height:44px}
+.tile,.slot{min-width:38px;height:42px;border-radius:8px;font-family:var(--f-head);font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center;padding:0 8px}
+.tile{border:2px solid var(--gold);background:var(--gold-soft);color:var(--ink)}
+.slot{border:2px dashed var(--line);background:transparent;color:var(--ink)}
+.slot.f{border-style:solid;border-color:var(--royal)}
+.words .tile,.words .slot{font-family:var(--f-body);font-size:1rem}
+.words .slot{min-width:56px}
+
+.post{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.frame{display:flex;flex-direction:column;gap:8px}
+.frame label{font-weight:700;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.frame input{font:inherit;padding:4px 8px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--ink);min-width:0;flex:1 1 140px}
+.card-out{border:3px solid var(--scarlet);border-radius:6px;padding:18px;background:var(--card);position:relative;min-height:220px}
+.card-out .stamp{position:absolute;top:10px;right:10px;width:56px;height:64px;border:2px dotted var(--gold);display:flex;align-items:center;justify-content:center;background:var(--gold-soft)}
+.card-out .msg{padding-right:64px;font-family:var(--f-head);font-size:1.05rem;white-space:pre-line}
+.checklist{font-size:.9rem;color:var(--muted);margin:8px 0 0;padding-left:1.2em}
+
+.cert{text-align:center;border:6px double var(--gold);border-radius:18px;padding:28px 18px;background:var(--card)}
+.cert h2{font-family:var(--f-display);color:var(--royal);font-size:clamp(1.5rem,5vw,2.4rem)}
+.cert .who{font-family:var(--f-head);font-size:2rem;color:var(--scarlet);margin:8px 0}
+.cert .rank{font-family:var(--f-head);font-weight:800;color:var(--gold);font-size:1.3rem}
+.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;font-size:3rem;color:var(--muted);gap:4px}
+.ph small{font-size:.8rem;font-family:var(--f-body)}
+.credits{margin-top:40px;font-size:.78rem;color:var(--muted)}
+.credits a{color:inherit}
+.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-weight:800;opacity:0;transition:opacity .25s;pointer-events:none;z-index:20}
+.toast.on{opacity:1}
+@media (max-width:700px){.hero,.reading,.post{grid-template-columns:1fr}}
+@media (max-width:640px){.jump{order:3;flex:1 0 100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.jump::-webkit-scrollbar{display:none}.jump a{flex:none}section.mission{scroll-margin-top:110px}.panel{padding:14px}}
+input,select{font-size:17px}
+@media (prefers-reduced-motion:reduce){.vin,.reading .text p{transition:none}}
+</style>
+
+<div class="bar">
+  <b>Royal English</b>
+  <nav class="jump" aria-label="Missions" id="jump"></nav>
+  <span class="stars" id="stars">★ 0 / 0</span>
+</div>
+
+<div class="wrap">
+<header class="hero">
+  <div>
+    <div class="eyebrow">Lesson 1 · A visit to the palace · 40–60 minutes</div>
+    <h1>Welcome to the Royal Family!</h1>
+    <p>Today you are a royal guest. Finish 10 missions, collect stars ★ and get your Royal Certificate at the end. Press 🔊 to hear British English.</p>
+    <div class="name-row">
+      <label for="kidname"><b>What is your name?</b></label>
+      <input id="kidname" placeholder="My name is…" autocomplete="off">
+    </div>
+    <div class="hello" id="hello"></div>
+    <div class="voicebox">
+      <div class="row"><b>🔊 Voice</b>
+        <select id="voiceSel" aria-label="Choose a voice"><option>Loading voices…</option></select>
+        <button class="say" id="voiceTest">Test</button>
+      </div>
+      <div class="row"><span style="font-weight:700;font-size:.9rem">Speed</span>
+        <div class="seg" role="group" aria-label="Speed"><button data-rate="0.75" aria-pressed="false">slow</button><button data-rate="0.92" aria-pressed="true">normal</button></div>
+      </div>
+      <small id="voiceNote">Для самого живого голоса откройте урок в Microsoft Edge (голоса «Natural»: Sonia, Libby, Ryan) или в Chrome (Google UK English). На iPhone/Mac — Serena, Daniel, Kate.</small>
+    </div>
+  </div>
+  <div class="ph-wrap" data-img="Buckingham_Palace_London_Morning_2020_01_(cropped).jpg" data-art="palace" data-alt="Buckingham Palace" data-fb="🏰|Buckingham Palace"></div>
+</header>
+
+<section class="mission" id="m1">
+  <div class="mhead"><span class="eyebrow">Mission 1 · Warm-up</span><span class="time">⏱ 3 min</span><span class="mstar" data-sec="m1"></span></div>
+  <h2>Royal guessing game</h2>
+  <p class="task">What do you think? <i>Guess: true or false?</i> No stars here, just guess! You will learn the answers in this lesson.</p>
+  <span class="ru">Угадай: правда или нет? Здесь нет звёзд — просто попробуй угадать.</span>
+  <div class="list" id="guess"></div>
+</section>
+
+<section class="mission" id="m2">
+  <div class="mhead"><span class="eyebrow">Mission 2 · Royal words</span><span class="time">⏱ 7 min</span><span class="mstar" data-sec="m2"></span></div>
+  <h2>Learn 12 royal words</h2>
+  <p class="task">Look at the card and say the word. <i>Tap the card</i> to see the Russian word and a sentence. Press 🔊, listen and repeat.</p>
+  <span class="ru">Посмотри на карточку и назови слово. Нажми на карточку — увидишь перевод. Нажми 🔊, послушай и повтори.</span>
+  <div class="vgrid" id="vocab"></div>
+  <h3 class="sub">Odd one out</h3>
+  <p class="task">Which word is different? <i>Choose the odd one out.</i></p>
+  <span class="ru">Какое слово лишнее? Выбери его.</span>
+  <div class="qgrid" id="odd"></div>
+</section>
+
+<section class="mission" id="m3">
+  <div class="mhead"><span class="eyebrow">Mission 3 · What is it?</span><span class="time">⏱ 3 min</span><span class="mstar" data-sec="m3"></span></div>
+  <h2>Match the picture and the word</h2>
+  <p class="task">Look at the picture and <i>choose the right word</i>.</p>
+  <span class="ru">Посмотри на картинку и выбери правильное слово.</span>
+  <div class="qgrid" id="match"></div>
+</section>
+
+<section class="mission" id="m4">
+  <div class="mhead"><span class="eyebrow">Mission 4 · Meet the family</span><span class="time">⏱ 9 min</span><span class="mstar" data-sec="m4"></span></div>
+  <h2>The royal family tree</h2>
+  <p class="task"><i>Tap a person</i> to read about them and listen. Then do the two exercises.</p>
+  <span class="ru">Нажимай на людей в древе, читай и слушай про них. Потом сделай два упражнения.</span>
+  <div class="panel">
+    <div class="tree" id="tree"></div>
+    <div class="info" id="info"><p class="task">👆 Tap a person in the tree to meet them.</p></div>
+  </div>
+  <h3 class="sub">Family words</h3>
+  <div class="rule"><b>Charles<u>'s</u> son</b> = сын Чарльза. We add <b>'s</b> to say whose: <b>William's</b> wife, <b>George's</b> sister.<br>
+  son · daughter · brother · sister · mother · father · wife · husband · grandmother · grandfather · uncle · cousin</div>
+  <p class="task"><i>Choose the right family word.</i> Look at the tree to help you.</p>
+  <span class="ru">Выбери правильное слово. Подсматривай в древо.</span>
+  <div class="list" id="family"></div>
+  <h3 class="sub">Who am I?</h3>
+  <p class="task">Read the riddle. <i>Who is it?</i></p>
+  <span class="ru">Прочитай загадку. Кто это?</span>
+  <div class="qgrid" id="riddles"></div>
+</section>
+
+<section class="mission" id="m5">
+  <div class="mhead"><span class="eyebrow">Mission 5 · Grammar</span><span class="time">⏱ 7 min</span><span class="mstar" data-sec="m5"></span></div>
+  <h2>The King live<u>s</u> in London</h2>
+  <div class="rule">With <b>he, she, it</b> (the King, Charlotte, the dog) we add <b>-s</b>: The King <b>lives</b>. Charlotte <b>goes</b>.<br>
+  With <b>I, you, we, they</b> (the guards, the corgis) there is <b>no -s</b>: The guards <b>wear</b>. I <b>love</b>.<br>
+  <span style="color:var(--muted)">Он, она, оно (один человек) — добавляем -s. Я, ты, мы, они (много людей) — без -s.</span></div>
+  <p class="task"><i>Choose the right word.</i></p>
+  <div class="list" id="grammar"></div>
+  <h3 class="sub">Build a sentence</h3>
+  <p class="task"><i>Tap the words</i> in the right order. Tap a word in the top row to take it back.</p>
+  <span class="ru">Нажимай на слова по порядку и собери предложение. Слово в верхнем ряду можно убрать нажатием.</span>
+  <div class="scr words" id="build"></div>
+</section>
+
+<section class="mission" id="m6">
+  <div class="mhead"><span class="eyebrow">Mission 6 · Reading</span><span class="time">⏱ 12 min</span><span class="mstar" data-sec="m6"></span></div>
+  <h2>Welcome to Buckingham Palace</h2>
+  <p class="task">Read the text. You can <i>tap a paragraph</i> to hear it, or listen to the whole text. Then answer the questions.</p>
+  <span class="ru">Прочитай текст. Можно нажать на абзац, чтобы его послушать. Потом ответь на вопросы.</span>
+  <div class="panel reading">
+    <div class="text" id="read1">
+      <p><b>Buckingham Palace</b> is in London. It is the King's home and office in London. The palace is very, very big. It has <b>775 rooms</b>! There are bedrooms, offices, and even a post office and a cinema.</p>
+      <p>Behind the palace there is a big <b>garden</b>. It is the biggest private garden in London. In May, the King has big garden parties there.</p>
+      <p>How do you know if the King is at home? Look at the <b>flag</b> on the roof! When the King is in the palace, you can see the Royal Standard. It is red, gold and blue. When he is not there, you can see the Union Flag.</p>
+      <p>In front of the palace you can see the <b>guards</b>. They wear red jackets and tall black hats. The hats are called <b>bearskins</b>. On some days, at 11 o'clock in the morning, there is the Changing of the Guard. Many tourists come to watch it. The guards do not smile and do not talk when they are working.</p>
+      <p>In summer, people can visit some rooms of the palace. These rooms are called the <b>State Rooms</b>.</p>
+      <button class="say" data-read="read1">🔊 Listen to the whole text</button>
+    </div>
+    <div class="side">
+      <figure><div data-img="Buckingham_Palace_and_Victoria_Monument_-_September_2006.jpg" data-art="palace" data-alt="Buckingham Palace and the Victoria Memorial" data-fb="🏰|palace" style="height:170px"></div><figcaption>Buckingham Palace, London</figcaption></figure>
+      <div class="flags"><figure><div id="fl-rs" class="fl"></div><figcaption>Royal Standard: the King is at home</figcaption></figure><figure><div id="fl-uf" class="fl"></div><figcaption>Union Flag: the King is away</figcaption></figure></div>
+      <figure><div id="guardpic" style="height:150px"></div><figcaption>A guard in a bearskin hat</figcaption></figure>
+      <div class="gloss"><b>New words</b>
+        <div><span>office</span><span>офис, кабинет</span></div>
+        <div><span>behind</span><span>позади, за</span></div>
+        <div><span>roof</span><span>крыша</span></div>
+        <div><span>in front of</span><span>перед</span></div>
+        <div><span>tourist</span><span>турист</span></div>
+        <div><span>visit</span><span>посещать</span></div>
+      </div>
+    </div>
+  </div>
+  <h3 class="sub">True or False?</h3>
+  <div class="list" id="tf"></div>
+  <h3 class="sub">Choose the answer</h3>
+  <div class="qgrid" id="read-mcq"></div>
+
+  <h3 class="sub" style="margin-top:32px">Text 2 · The Queen who loved corgis</h3>
+  <p class="task">This text is about the past, so we say <i>was, had, lived</i>. Read and find these words!</p>
+  <span class="ru">Этот текст о прошлом: was (была), had (имела), lived (жили). Найди эти слова в тексте.</span>
+  <div class="panel reading">
+    <div class="text" id="read2">
+      <p><b>Queen Elizabeth II</b> was the Queen for <b>70 years</b>, from 1952 to 2022. That is longer than any other British king or queen. She was King Charles's mother.</p>
+      <p>The Queen loved animals. Her favourite animals were <b>dogs and horses</b>. Her favourite dogs were <b>corgis</b>. Corgis are small dogs with short legs and big ears.</p>
+      <p>Her first corgi was called <b>Susan</b>. Susan was a present for her <b>18th birthday</b>. In her life the Queen had <b>more than 30 corgis</b>! The corgis lived in the palace with her and often travelled with her.</p>
+      <button class="say" data-read="read2">🔊 Listen to the whole text</button>
+    </div>
+    <div class="side">
+      <figure><div data-img="Welchcorgipembroke.JPG" data-art="corgi" data-alt="A Pembroke Welsh Corgi" data-fb="🐕|corgi" style="height:170px"></div><figcaption>A corgi</figcaption></figure>
+      <div class="gloss"><b>New words</b>
+        <div><span>favourite</span><span>любимый</span></div>
+        <div><span>legs / ears</span><span>лапы / уши</span></div>
+        <div><span>present</span><span>подарок</span></div>
+        <div><span>travel</span><span>путешествовать</span></div>
+      </div>
+    </div>
+  </div>
+  <h3 class="sub">Write the missing word or number</h3>
+  <div class="list" id="read2q"></div>
+</section>
+
+<section class="mission" id="m7">
+  <div class="mhead"><span class="eyebrow">Mission 7 · Listening</span><span class="time">⏱ 6 min</span><span class="mstar" data-sec="m7"></span></div>
+  <h2>Listen and choose</h2>
+  <p class="task">Press <i>▶ Listen</i>. What did you hear? You can listen many times.</p>
+  <span class="ru">Нажми ▶ Listen. Что ты услышала? Слушать можно сколько угодно раз.</span>
+  <div class="qgrid" id="listen"></div>
+  <h3 class="sub">Royal dictation</h3>
+  <p class="task">Listen to the word and <i>write it</i>. Need help? Press "Hint".</p>
+  <span class="ru">Послушай слово и напиши его. Если трудно — нажми Hint (подсказка).</span>
+  <div class="list" id="dict"></div>
+</section>
+
+<section class="mission" id="m8">
+  <div class="mhead"><span class="eyebrow">Mission 8 · Spelling</span><span class="time">⏱ 4 min</span><span class="mstar" data-sec="m8"></span></div>
+  <h2>Mixed-up letters</h2>
+  <p class="task"><i>Tap the letters</i> in the right order to make a royal word.</p>
+  <span class="ru">Нажимай на буквы по порядку и собери слово. Подсказка — перевод сверху.</span>
+  <div class="scr" id="scramble"></div>
+</section>
+
+<section class="mission" id="m9">
+  <div class="mhead"><span class="eyebrow">Mission 9 · Speaking and writing</span><span class="time">⏱ 10 min</span><span class="mstar" data-sec="m9"></span></div>
+  <h2>At the garden party</h2>
+  <p class="task">You are at a royal garden party! Listen and <i>repeat each phrase two times</i>. Then choose the best answer in the dialogue.</p>
+  <span class="ru">Ты на королевском приёме в саду! Послушай и повтори каждую фразу два раза вслух. Потом выбери лучший ответ в диалоге.</span>
+  <div class="panel" style="display:flex;flex-wrap:wrap;gap:10px" id="phrases"></div>
+  <h3 class="sub">Dialogue with the King</h3>
+  <div class="list" id="dialogue"></div>
+  <p class="task" style="margin-top:12px"><i>Now speak!</i> Press 🔊 next to the King's questions and answer him out loud about yourself.</p>
+  <span class="ru">Теперь говори сама! Включай вопросы короля и отвечай вслух про себя.</span>
+
+  <h3 class="sub">Write a postcard</h3>
+  <p class="task">You are in London! Write a postcard to your friend. <i>Fill in the gaps</i> with your own words, then press the button.</p>
+  <span class="ru">Ты в Лондоне! Напиши открытку другу: заполни пропуски своими словами и нажми кнопку.</span>
+  <div class="post">
+    <div class="frame panel">
+      <label>Dear <input id="p1" placeholder="Masha">,</label>
+      <label>I am in London! Today I saw <input id="p2" placeholder="Buckingham Palace">.</label>
+      <label>It is very <input id="p3" placeholder="big and beautiful">.</label>
+      <label>The guards wear <input id="p4" placeholder="red jackets and tall hats">.</label>
+      <label>My favourite royal is <input id="p5" placeholder="Princess Charlotte">,</label>
+      <label>because <input id="p6" placeholder="she has two brothers, like me">.</label>
+      <label>Love, <input id="p7" placeholder="your name"></label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="check" id="makePost">Make my postcard</button><button class="say" id="readPost">🔊 Read it aloud</button></div>
+      <ul class="checklist"><li>Names and places start with a BIG letter: London, Charlotte.</li><li>Every sentence ends with a full stop.</li></ul>
+    </div>
+    <div class="card-out"><div class="stamp" id="stamp"></div><div class="msg" id="postOut">Your postcard will be here ✉️</div></div>
+  </div>
+</section>
+
+<section class="mission" id="m10">
+  <div class="mhead"><span class="eyebrow">Mission 10 · Final quiz</span><span class="time">⏱ 4 min</span><span class="mstar" data-sec="m10"></span></div>
+  <h2>The big royal quiz</h2>
+  <p class="task">Show what you know! <i>Everything from today's lesson.</i></p>
+  <span class="ru">Финальная проверка — всё, что было сегодня. А теперь вернись к Mission 1 и проверь свои догадки!</span>
+  <div class="qgrid" id="final"></div>
+</section>
+
+<section class="mission" id="cert">
+  <div class="cert">
+    <div class="cert-art" id="certArt"></div>
+    <div class="eyebrow">By order of the Royal English School</div>
+    <h2>Royal Certificate</h2>
+    <p>This certificate is given to</p>
+    <div class="who" id="certName">Royal Guest</div>
+    <p>for finishing Lesson 1 “The Royal Family”</p>
+    <div class="rank" id="certRank"></div>
+    <p class="stars" id="certStars" style="color:var(--royal)"></p>
+  </div>
+</section>
+
+<footer class="credits">
+  Photos: Wikimedia Commons (free licences) —
+  <a href="https://commons.wikimedia.org/wiki/File:Buckingham_Palace_London_Morning_2020_01_(cropped).jpg">Buckingham Palace (2020)</a>,
+  <a href="https://commons.wikimedia.org/wiki/File:Buckingham_Palace_and_Victoria_Monument_-_September_2006.jpg">Buckingham Palace and Victoria Monument</a>,
+  <a href="https://commons.wikimedia.org/wiki/File:Windsor_Castle_-_panoramio_(3).jpg">Windsor Castle</a>,
+  <a href="https://commons.wikimedia.org/wiki/File:Welchcorgipembroke.JPG">Corgi</a>,
+  <a href="https://commons.wikimedia.org/wiki/File:Imperial_State_Crown.png">Imperial State Crown (C. Davenport, 1919, public domain)</a>.
+  All drawings (family portraits, palace, castle, animals, flags) were made for this lesson; the portraits are friendly cartoons, not real likenesses.
+</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const IMG=(f,w)=>'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(f)+'?width='+(w||640);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+/* ---------- drawings ---------- */
+const FLAG='<svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Union Flag"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="2"/><path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/></svg>';
+const GUARD='<svg viewBox="0 0 100 140" width="100%" height="100%" role="img" aria-label="A royal guard"><rect width="100" height="140" fill="#cfe0f5"/><rect x="0" y="118" width="100" height="22" fill="#9bb07a"/><ellipse cx="50" cy="28" rx="17" ry="24" fill="#1b1b1b"/><circle cx="50" cy="52" r="10" fill="#f2c9a5"/><path d="M45 50h3M52 50h3" stroke="#333" stroke-width="1.6" stroke-linecap="round"/><path d="M46 56h8" stroke="#a44" stroke-width="1.5" stroke-linecap="round"/><path d="M40 52 Q50 64 60 52" fill="none" stroke="#c9a227" stroke-width="1.5"/><rect x="36" y="62" width="28" height="34" rx="4" fill="#C8102E"/><rect x="36" y="78" width="28" height="4" fill="#fff"/><circle cx="50" cy="68" r="1.6" fill="#e6c34a"/><circle cx="50" cy="74" r="1.6" fill="#e6c34a"/><circle cx="50" cy="88" r="1.6" fill="#e6c34a"/><rect x="28" y="62" width="8" height="30" rx="4" fill="#C8102E"/><rect x="64" y="62" width="8" height="30" rx="4" fill="#C8102E"/><rect x="66" y="40" width="3" height="62" fill="#6b4a2b"/><rect x="39" y="96" width="9" height="24" fill="#1b1b2e"/><rect x="52" y="96" width="9" height="24" fill="#1b1b2e"/><rect x="37" y="118" width="12" height="5" rx="2" fill="#111"/><rect x="51" y="118" width="12" height="5" rx="2" fill="#111"/></svg>';
+
+/* ---------- illustrations (drawn for this lesson) ---------- */
+const ART=(()=>{
+const S=(vb,inner,label,par)=>'<svg viewBox="'+vb+'" width="100%" height="100%" preserveAspectRatio="'+(par||'xMidYMid slice')+'" role="img" aria-label="'+label+'">'+inner+'</svg>';
+function person(o){
+  const sk=o.skin||'#F3C9A5', hc=o.hair||'#6B4423', bg=o.bg||'#DCE4F7', out=o.outfit||'#23308F', ch=!!o.child;
+  let s='<rect width="100" height="100" fill="'+bg+'"/>';
+  s+=ch?'<path d="M22 100 C22 80 36 72 50 72 C64 72 78 80 78 100Z" fill="'+out+'"/>'
+       :'<path d="M14 100 C14 74 32 66 50 66 C68 66 86 74 86 100Z" fill="'+out+'"/>';
+  if(o.cape) s+='<path d="M14 100 C14 80 26 71 38 68 L50 86 L62 68 C74 71 86 80 86 100 L77 100 C76 86 70 78 60 75 L50 92 L40 75 C30 78 24 86 23 100Z" fill="#FFFFFF"/><g fill="#1B1B1B"><circle cx="29" cy="86" r="1.4"/><circle cx="71" cy="86" r="1.4"/><circle cx="37" cy="77" r="1.4"/><circle cx="63" cy="77" r="1.4"/><circle cx="26" cy="95" r="1.4"/><circle cx="74" cy="95" r="1.4"/></g>';
+  if(o.collar) s+=ch?'<path d="M43 73 L50 82 L57 73Z" fill="#FFFFFF"/>':'<path d="M41 67 L50 80 L59 67Z" fill="#FFFFFF"/>';
+  if(o.tie) s+='<path d="M48.4 71 L51.6 71 L52.6 85 L50 88 L47.4 85Z" fill="'+o.tie+'"/>';
+  s+=ch?'<rect x="45" y="63" width="10" height="11" rx="3" fill="'+sk+'"/>':'<rect x="45" y="56" width="10" height="13" rx="3" fill="'+sk+'"/>';
+  if(o.pearls) s+='<g fill="#FFFFFF" stroke="#BFC4D6" stroke-width=".5">'+[37,41.5,46,50,54,58.5,63].map((x,i)=>'<circle cx="'+x+'" cy="'+(70.5+[0,1.3,2.2,2.5,2.2,1.3,0][i])+'" r="1.9"/>').join('')+'</g>';
+  let h='';
+  if(o.style==='long') h+='<path d="M27 46 C24 72 29 86 37 89 L63 89 C71 86 76 72 73 46Z" fill="'+hc+'"/>';
+  h+='<circle cx="50" cy="46" r="20" fill="'+sk+'"/>';
+  const tops={
+    short:'<path d="M30 46 C28 23 72 23 70 46 C67 36 60 31 50 31 C40 31 33 36 30 46Z" fill="'+hc+'"/>',
+    side:'<path d="M30 46 C28 23 72 23 70 46 C67 38 63 34 56 33 C58 37 45 39 34 38 C32 40 31 43 30 46Z" fill="'+hc+'"/>',
+    thin:'<path d="M30 49 C29 38 32 32 37 29 C35 36 34 42 33 49Z M70 49 C71 38 68 32 63 29 C65 36 66 42 67 49Z M37 29 C44 26 56 26 63 29 C56 28.5 44 28.5 37 29Z" fill="'+hc+'"/>',
+    long:'<path d="M29 50 C27 23 73 23 71 50 C68 40 64 34 58 32 C52 36 42 38 33 38 C31 42 30 46 29 50Z" fill="'+hc+'"/>',
+    bob:'<path d="M28 58 C24 25 76 25 72 58 C70 52 70 42 64 36 C56 40 44 40 36 36 C30 42 30 52 28 58Z" fill="'+hc+'"/>',
+    curly:[[33,35],[41,28],[50,25.5],[59,28],[67,35],[30,43],[70,43]].map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="7.5" fill="'+hc+'"/>').join('')
+  };
+  h+=tops[o.style||'short']||'';
+  if(o.beard) h+='<path d="M31 46 C31 65 40 70 50 70 C60 70 69 65 69 46 C67 56 60 61 50 61 C40 61 33 56 31 46Z" fill="'+hc+'"/>';
+  h+='<circle cx="43" cy="47" r="2.4" fill="#2A2A3A"/><circle cx="57" cy="47" r="2.4" fill="#2A2A3A"/><circle cx="43.8" cy="46.2" r=".7" fill="#FFFFFF"/><circle cx="57.8" cy="46.2" r=".7" fill="#FFFFFF"/>';
+  h+='<circle cx="37.5" cy="53" r="3.2" fill="#F28B8B" opacity=".45"/><circle cx="62.5" cy="53" r="3.2" fill="#F28B8B" opacity=".45"/>';
+  h+='<path d="M44 54.5 Q50 59.5 56 54.5" fill="none" stroke="'+(o.beard?'#FFFFFF':'#9A4A3A')+'" stroke-width="2" stroke-linecap="round"/>';
+  if(o.head==='crown') h+='<path d="M33 30 L35 12 L42.5 21 L50 8 L57.5 21 L65 12 L67 30Z" fill="#E7B53C" stroke="#A97B12" stroke-width="1.2" stroke-linejoin="round"/><rect x="32.5" y="27" width="35" height="5" rx="2" fill="#C8102E"/><circle cx="50" cy="17.5" r="2.3" fill="#C8102E"/><circle cx="41" cy="24" r="1.6" fill="#2F6BD8"/><circle cx="59" cy="24" r="1.6" fill="#2F6BD8"/><circle cx="35" cy="12" r="1.8" fill="#FFF4C2"/><circle cx="50" cy="8" r="1.8" fill="#FFF4C2"/><circle cx="65" cy="12" r="1.8" fill="#FFF4C2"/>';
+  if(o.head==='small-crown') h+='<path d="M39 29 L40 17 L45 23 L50 14 L55 23 L60 17 L61 29Z" fill="#E7B53C" stroke="#A97B12" stroke-width="1" stroke-linejoin="round"/><circle cx="50" cy="24" r="1.6" fill="#C8102E"/>';
+  if(o.head==='tiara') h+='<path d="M35 31 Q50 17 65 31 L62 32.5 Q50 24 38 32.5Z" fill="#E2E6F0" stroke="#9AA0B5" stroke-width=".8"/><circle cx="50" cy="21.5" r="2.4" fill="#6EC1E4"/><circle cx="42.5" cy="25" r="1.4" fill="#FFFFFF"/><circle cx="57.5" cy="25" r="1.4" fill="#FFFFFF"/>';
+  if(o.bow) h+='<path d="M63 31 L74 24 L74 38Z M63 31 L72 41 L59 39Z" fill="'+o.bow+'"/><circle cx="64" cy="32" r="2.8" fill="'+o.bow+'"/>';
+  s+=ch?'<g transform="translate(50 52) scale(.86) translate(-50 -46)">'+h+'</g>':h;
+  return S('0 0 100 100',s,o.label||'person','xMidYMin slice');
+}
+const AV={
+  king:{label:'a king',beard:1,hair:'#8F8A85',style:'short',head:'crown',outfit:'#7A1E3A',cape:1,bg:'#FBEFD2'},
+  queen:{label:'a queen',style:'long',hair:'#C99A3E',head:'crown',outfit:'#5B2A86',cape:1,bg:'#F3E3F5'},
+  prince:{label:'a prince',style:'side',hair:'#7A4A22',head:'small-crown',outfit:'#23308F',collar:1,bg:'#DCE4F7'},
+  princess:{label:'a princess',child:1,style:'long',hair:'#4A2C1A',head:'tiara',outfit:'#E75480',bg:'#FCE4EC'},
+  eliz:{label:'Queen Elizabeth II',style:'curly',hair:'#ECECEC',head:'tiara',pearls:1,outfit:'#6CA0DC',bg:'#E7ECF4',skin:'#F5D6BE'},
+  phil:{label:'Prince Philip',style:'thin',hair:'#C4C4C4',outfit:'#2E3B55',collar:1,tie:'#8B1E3F',bg:'#E7ECF4',skin:'#F2CDB2'},
+  charles:{label:'King Charles III',style:'thin',hair:'#CFC8BE',head:'crown',cape:1,outfit:'#7A1E3A',bg:'#FBEFD2'},
+  camilla:{label:'Queen Camilla',style:'bob',hair:'#E2C26C',head:'tiara',pearls:1,outfit:'#3A6EA5',bg:'#FBEFD2'},
+  william:{label:'Prince William',style:'thin',hair:'#8A6A45',outfit:'#23308F',collar:1,tie:'#1E8556',bg:'#DCE4F7'},
+  catherine:{label:'Catherine, Princess of Wales',style:'long',hair:'#5A3A22',head:'tiara',outfit:'#1F7A8C',bg:'#DCE4F7'},
+  harry:{label:'Prince Harry',style:'short',hair:'#B8582A',beard:1,outfit:'#4B5563',collar:1,bg:'#E5EEDF'},
+  meghan:{label:'Meghan, Duchess of Sussex',style:'long',hair:'#2E1E14',skin:'#D6A27C',outfit:'#8E6C8A',bg:'#E5EEDF'},
+  george:{label:'Prince George',child:1,style:'side',hair:'#7A4A22',outfit:'#23308F',collar:1,bg:'#FFF4D9'},
+  charlotte:{label:'Princess Charlotte',child:1,style:'long',hair:'#6B4423',bow:'#2B6CB0',outfit:'#E06C9F',bg:'#FFF4D9'},
+  louis:{label:'Prince Louis',child:1,style:'short',hair:'#A07A4F',outfit:'#3F9E5A',collar:1,bg:'#FFF4D9'},
+  archie:{label:'Prince Archie',child:1,style:'short',hair:'#C0602A',skin:'#EBBE96',outfit:'#F4A261',bg:'#F0F6E8'},
+  lili:{label:'Princess Lilibet',child:1,style:'long',hair:'#C0602A',skin:'#EBBE96',bow:'#E75480',outfit:'#9B5DE5',bg:'#F0F6E8'}
+};
+const p=k=>person(AV[k]);
+
+const sky='<rect width="120" height="90" fill="#CFE6FA"/>';
+const palaceWin=()=>{let w='';for(const y of [41,53]){for(let x=12;x<108;x+=7.5){if(x>40&&x<78)continue;w+='<rect x="'+x+'" y="'+y+'" width="4" height="6" fill="#8FA7C2"/>'}}
+  for(const x of [47,53.5,60,66.5])w+='<rect x="'+x+'" y="34" width="4" height="7" fill="#8FA7C2"/><rect x="'+x+'" y="52" width="4" height="7" fill="#8FA7C2"/>';return w};
+const rails=()=>{let r='<g stroke="#1F2230" stroke-width="1">';for(let x=3;x<=117;x+=3.5)r+='<line x1="'+x+'" y1="71" x2="'+x+'" y2="84"/>';return r+'<line x1="2" y1="72" x2="118" y2="72"/><line x1="2" y1="83" x2="118" y2="83"/></g><g fill="#E7B53C"><rect x="56" y="66" width="8" height="5" rx="1"/></g>'};
+const palace=S('0 0 120 90',sky+'<circle cx="100" cy="14" r="7" fill="#FFE08A"/><rect y="74" width="120" height="16" fill="#9CC27E"/><rect x="8" y="36" width="104" height="38" fill="#EAE3D2"/><rect x="6" y="32.5" width="108" height="4" fill="#D3C9B0"/><rect x="42" y="26" width="36" height="48" fill="#DFD6C0"/><path d="M40 27 L60 17 L80 27Z" fill="#D3C9B0"/><rect x="44" y="47" width="32" height="2.2" fill="#B5AA8C"/>'+palaceWin()+'<rect x="55" y="62" width="10" height="12" rx="5" fill="#7B6A4A"/><rect x="59.4" y="3" width="1.2" height="15" fill="#555"/><rect x="60.6" y="3" width="5" height="3" fill="#C8102E"/><rect x="65.6" y="3" width="5" height="3" fill="#E7B53C"/><rect x="60.6" y="6" width="5" height="3" fill="#2B4DA8"/><rect x="65.6" y="6" width="5" height="3" fill="#C8102E"/>'+rails()+'<rect x="12" y="60" width="7" height="12" fill="#2E3B55"/><path d="M11 60 L15.5 56 L20 60Z" fill="#1F2230"/><rect x="101" y="60" width="7" height="12" fill="#2E3B55"/><path d="M100 60 L104.5 56 L109 60Z" fill="#1F2230"/>','a palace');
+const merl=(x,y,w,n)=>{let m='';const step=w/n;for(let i=0;i<n;i+=2)m+='<rect x="'+(x+i*step)+'" y="'+(y-4)+'" width="'+step+'" height="4" fill="#BFB197"/>';return m};
+const castle=S('0 0 120 90','<rect width="120" height="90" fill="#D8E8F7"/><path d="M0 70 C30 58 90 58 120 70 L120 90 L0 90Z" fill="#8DBA6E"/><rect x="12" y="46" width="96" height="30" fill="#CDBFA3"/>'+merl(12,46,96,24)+'<rect x="4" y="32" width="18" height="44" fill="#C2B496"/>'+merl(4,32,18,5)+'<rect x="98" y="32" width="18" height="44" fill="#C2B496"/>'+merl(98,32,18,5)+'<ellipse cx="60" cy="47" rx="22" ry="6" fill="#7FAE60"/><rect x="46" y="18" width="28" height="30" fill="#BBAB8C"/>'+merl(46,18,28,7)+'<rect x="59.4" y="2" width="1.2" height="12" fill="#555"/><rect x="60.6" y="2" width="5" height="3" fill="#C8102E"/><rect x="65.6" y="2" width="5" height="3" fill="#E7B53C"/><rect x="60.6" y="5" width="5" height="3" fill="#2B4DA8"/><rect x="65.6" y="5" width="5" height="3" fill="#C8102E"/><path d="M52 76 L52 64 C52 58 68 58 68 64 L68 76Z" fill="#5B4A33"/><g fill="#5E5A66"><rect x="11" y="42" width="3" height="8" rx="1.5"/><rect x="105" y="42" width="3" height="8" rx="1.5"/><rect x="58" y="26" width="4" height="9" rx="2"/><rect x="28" y="56" width="3" height="7" rx="1.5"/><rect x="40" y="56" width="3" height="7" rx="1.5"/><rect x="78" y="56" width="3" height="7" rx="1.5"/><rect x="90" y="56" width="3" height="7" rx="1.5"/></g>','a castle');
+const crown=S('0 0 120 90','<rect width="120" height="90" fill="#FBF0D6"/><circle cx="60" cy="48" r="38" fill="#FFF7E3"/><path d="M33 56 C33 26 87 26 87 56Z" fill="#5B2A86"/><g fill="none" stroke="#E2AE33" stroke-width="4" stroke-linecap="round"><path d="M34 56 C38 30 54 24 60 22"/><path d="M86 56 C82 30 66 24 60 22"/><path d="M60 56 L60 22"/></g><circle cx="60" cy="18" r="5" fill="#E2AE33"/><rect x="58.3" y="5" width="3.4" height="10" fill="#E2AE33"/><rect x="55" y="8" width="10" height="3.4" fill="#E2AE33"/><rect x="30" y="55" width="60" height="12" rx="3" fill="#E2AE33"/><rect x="28" y="65" width="64" height="9" rx="4.5" fill="#FFFFFF" stroke="#E5E0D4"/><g fill="#1B1B1B"><circle cx="36" cy="69.5" r="1.3"/><circle cx="48" cy="69.5" r="1.3"/><circle cx="60" cy="69.5" r="1.3"/><circle cx="72" cy="69.5" r="1.3"/><circle cx="84" cy="69.5" r="1.3"/></g><path d="M60 56 L64.5 61 L60 66 L55.5 61Z" fill="#DDEFFF" stroke="#8FB8E0"/><circle cx="43" cy="61" r="2.6" fill="#C8102E"/><circle cx="77" cy="61" r="2.6" fill="#1E8556"/><circle cx="36" cy="61" r="1.8" fill="#2F6BD8"/><circle cx="84" cy="61" r="1.8" fill="#2F6BD8"/>','a crown');
+const corgi=S('0 0 120 90','<rect width="120" height="90" fill="#E3F1DA"/><rect y="72" width="120" height="18" fill="#A9CF8C"/><circle cx="25" cy="46" r="6.5" fill="#E08A3C"/><g fill="#E08A3C"><rect x="34" y="58" width="8" height="15" rx="3.5"/><rect x="45" y="58" width="8" height="15" rx="3.5"/><rect x="67" y="58" width="8" height="15" rx="3.5"/><rect x="78" y="58" width="8" height="15" rx="3.5"/></g><g fill="#FFFFFF"><rect x="34" y="68" width="8" height="5" rx="2.5"/><rect x="45" y="68" width="8" height="5" rx="2.5"/><rect x="67" y="68" width="8" height="5" rx="2.5"/><rect x="78" y="68" width="8" height="5" rx="2.5"/></g><ellipse cx="57" cy="51" rx="31" ry="14" fill="#E08A3C"/><ellipse cx="60" cy="58" rx="19" ry="6.5" fill="#FFFFFF"/><path d="M80 31 L76 11 L90 25Z" fill="#E08A3C"/><path d="M81 27 L79 16 L86 24Z" fill="#F5B7A8"/><path d="M94 25 L101 8 L103 30Z" fill="#E08A3C"/><path d="M96 24 L100.5 13 L101.5 27Z" fill="#F5B7A8"/><circle cx="90" cy="38" r="14" fill="#E08A3C"/><path d="M90 26 C93 34 95 40 100 44 L86 46 C88 40 89 34 90 26Z" fill="#FFFFFF"/><ellipse cx="99" cy="45" rx="9" ry="6" fill="#FFFFFF"/><circle cx="106" cy="42.5" r="2.6" fill="#2A2A3A"/><circle cx="86" cy="36" r="2" fill="#2A2A3A"/><circle cx="96" cy="35" r="2" fill="#2A2A3A"/><path d="M98 49 Q101 52 104 49" fill="none" stroke="#2A2A3A" stroke-width="1.4" stroke-linecap="round"/><path d="M100.5 50.5 C100.5 55 104 55 103.5 50.5Z" fill="#E86A7A"/>','a corgi');
+const horse=S('0 0 120 90','<rect width="120" height="90" fill="#E3F1DA"/><rect y="74" width="120" height="16" fill="#A9CF8C"/><path d="M34 42 C22 44 20 60 24 72 C28 62 30 52 37 47Z" fill="#3B2414"/><g fill="#8B5A2B"><rect x="38" y="54" width="6" height="22" rx="2"/><rect x="47" y="55" width="6" height="21" rx="2"/><rect x="72" y="55" width="6" height="21" rx="2"/><rect x="81" y="54" width="6" height="22" rx="2"/></g><g fill="#2A1A10"><rect x="38" y="73" width="6" height="4" rx="1"/><rect x="47" y="73" width="6" height="4" rx="1"/><rect x="72" y="73" width="6" height="4" rx="1"/><rect x="81" y="73" width="6" height="4" rx="1"/></g><ellipse cx="62" cy="47" rx="28" ry="13" fill="#8B5A2B"/><path d="M78 42 L91 18 L100 24 L91 50Z" fill="#8B5A2B"/><path d="M89 16 C96 11 107 16 109 26 C110 31 104 33 100 31 L91 27Z" fill="#8B5A2B"/><path d="M91 17 L93 7 L97 16Z" fill="#8B5A2B"/><path d="M89 19 C82 27 80 35 78 44 L83 44 C85 35 87 27 93 21Z" fill="#3B2414"/><circle cx="99" cy="21" r="1.8" fill="#1B1B1B"/><circle cx="106" cy="28" r="1" fill="#3B2414"/>','a horse');
+const garden=S('0 0 120 90',sky+'<circle cx="18" cy="14" r="8" fill="#FFE08A"/><path d="M0 52 C30 40 80 44 120 50 L120 90 L0 90Z" fill="#8DC26F"/><path d="M52 90 L58 52 L62 52 L68 90Z" fill="#E9DDBF"/><rect x="88" y="30" width="5" height="24" fill="#7A5230"/><circle cx="90" cy="26" r="15" fill="#4F9A45"/><circle cx="82" cy="32" r="9" fill="#5DAA50"/><circle cx="99" cy="32" r="9" fill="#5DAA50"/><rect x="6" y="58" width="40" height="10" rx="5" fill="#3F7F3A"/><rect x="74" y="60" width="40" height="10" rx="5" fill="#3F7F3A"/><g>'+[[12,76,'#E94F64'],[20,82,'#FFD23F'],[28,75,'#F78FB3'],[36,83,'#E94F64'],[44,77,'#FFFFFF'],[80,78,'#FFD23F'],[88,84,'#E94F64'],[96,77,'#F78FB3'],[104,83,'#FFFFFF'],[112,76,'#FFD23F']].map(f=>'<circle cx="'+f[0]+'" cy="'+f[1]+'" r="3" fill="'+f[2]+'"/><circle cx="'+f[0]+'" cy="'+f[1]+'" r="1" fill="#C77A12"/>').join('')+'</g>','a garden');
+const rstandard=S('0 0 120 80','<rect width="60" height="40" fill="#C8102E"/><rect x="60" width="60" height="40" fill="#E7B53C"/><rect y="40" width="60" height="40" fill="#2B4DA8"/><rect x="60" y="40" width="60" height="40" fill="#C8102E"/><g fill="#E7B53C"><rect x="18" y="6" width="24" height="7" rx="3.5"/><rect x="18" y="16.5" width="24" height="7" rx="3.5"/><rect x="18" y="27" width="24" height="7" rx="3.5"/><rect x="78" y="46" width="24" height="7" rx="3.5"/><rect x="78" y="56.5" width="24" height="7" rx="3.5"/><rect x="78" y="67" width="24" height="7" rx="3.5"/></g><path d="M84 32 L84 18 C84 12 92 8 96 12 L98 16 L94 18 L92 32Z" fill="#C8102E"/><path d="M24 74 L24 50 C24 46 36 44 38 52 L38 74Z M26 54 L36 70" fill="none" stroke="#E7B53C" stroke-width="2.5"/><g stroke="#E7B53C" stroke-width="1"><line x1="28" y1="54" x2="28" y2="72"/><line x1="31" y1="53" x2="31" y2="72"/><line x1="34" y1="54" x2="34" y2="72"/></g>','the Royal Standard flag');
+const football=S('0 0 100 100','<rect width="100" height="100" fill="#DDF3E8"/><rect y="70" width="100" height="30" fill="#7FC36A"/><circle cx="50" cy="52" r="24" fill="#FFFFFF" stroke="#1F2230" stroke-width="2"/><path d="M50 42 L59 48.5 L55.5 59 L44.5 59 L41 48.5Z" fill="#1F2230"/><g stroke="#1F2230" stroke-width="2"><line x1="50" y1="42" x2="50" y2="29"/><line x1="59" y1="48.5" x2="72" y2="44"/><line x1="55.5" y1="59" x2="63" y2="70"/><line x1="44.5" y1="59" x2="37" y2="70"/><line x1="41" y1="48.5" x2="28" y2="44"/></g>','a football');
+const teacup=S('0 0 100 100','<rect width="100" height="100" fill="#FBF0D6"/><path d="M40 30 C36 24 44 20 40 14 M52 30 C48 24 56 20 52 14 M64 30 C60 24 68 20 64 14" fill="none" stroke="#B8A27A" stroke-width="2" stroke-linecap="round"/><ellipse cx="52" cy="74" rx="32" ry="7" fill="#FFFFFF" stroke="#C9B48A"/><path d="M28 38 L76 38 C76 58 66 72 52 72 C38 72 28 58 28 38Z" fill="#FFFFFF" stroke="#C9B48A" stroke-width="1.5"/><path d="M76 44 C88 44 88 60 72 62" fill="none" stroke="#C9B48A" stroke-width="4"/><path d="M34 46 Q52 52 70 46" fill="none" stroke="#2B4DA8" stroke-width="2.5"/><ellipse cx="52" cy="39" rx="23" ry="3" fill="#B5651D"/>','a cup of tea');
+const books=S('0 0 100 100','<rect width="100" height="100" fill="#F3E3F5"/><rect x="18" y="66" width="64" height="14" rx="2" fill="#2B4DA8"/><rect x="22" y="52" width="56" height="14" rx="2" fill="#C8102E"/><rect x="16" y="38" width="62" height="14" rx="2" fill="#1E8556"/><rect x="26" y="24" width="50" height="14" rx="2" fill="#E7B53C"/><g fill="#FFFFFF" opacity=".7"><rect x="24" y="72" width="40" height="2"/><rect x="28" y="58" width="34" height="2"/><rect x="22" y="44" width="42" height="2"/><rect x="32" y="30" width="30" height="2"/></g>','books');
+const heart=S('0 0 100 100','<rect width="100" height="100" fill="#FCE4EC"/><path d="M50 80 C20 60 14 44 22 32 C30 20 46 24 50 36 C54 24 70 20 78 32 C86 44 80 60 50 80Z" fill="#E94F64"/><circle cx="36" cy="38" r="5" fill="#FFFFFF" opacity=".5"/>','a heart');
+const school=S('0 0 100 100','<rect width="100" height="100" fill="#CFE6FA"/><rect y="78" width="100" height="22" fill="#8DC26F"/><rect x="14" y="44" width="72" height="36" fill="#C2533D"/><path d="M10 46 L50 26 L90 46Z" fill="#7B2E22"/><rect x="44" y="12" width="12" height="16" fill="#C2533D"/><path d="M42 14 L50 6 L58 14Z" fill="#7B2E22"/><circle cx="50" cy="20" r="3" fill="#E7B53C"/><g fill="#DCEBFA"><rect x="20" y="52" width="10" height="10"/><rect x="34" y="52" width="10" height="10"/><rect x="56" y="52" width="10" height="10"/><rect x="70" y="52" width="10" height="10"/></g><rect x="45" y="62" width="10" height="18" fill="#3B2414"/>','a school');
+const dino=S('0 0 100 100','<rect width="100" height="100" fill="#E3F1DA"/><rect y="80" width="100" height="20" fill="#A9CF8C"/><path d="M14 70 C24 70 30 64 36 60 L36 70Z" fill="#4CAF50"/><ellipse cx="48" cy="62" rx="22" ry="14" fill="#4CAF50"/><path d="M60 56 C64 40 66 30 72 24 L80 26 C74 34 72 46 70 60Z" fill="#4CAF50"/><ellipse cx="80" cy="24" rx="10" ry="7" fill="#4CAF50"/><circle cx="83" cy="22" r="1.8" fill="#1B1B1B"/><path d="M84 28 Q87 29 89 27" fill="none" stroke="#1B1B1B" stroke-width="1.2"/><g fill="#2E7D32"><path d="M34 49 L38 42 L42 49Z"/><path d="M44 47 L48 40 L52 47Z"/><path d="M54 48 L58 41 L62 48Z"/></g><g fill="#43A047"><rect x="36" y="70" width="7" height="12" rx="3"/><rect x="54" y="70" width="7" height="12" rx="3"/></g><text x="16" y="30" font-size="26" font-weight="800" fill="#C8102E" font-family="sans-serif">?!</text>','a dinosaur');
+const mystery=S('0 0 100 100','<rect width="100" height="100" fill="#E2E6FA"/><circle cx="50" cy="42" r="18" fill="#9AA3C9"/><path d="M18 100 C18 76 34 66 50 66 C66 66 82 76 82 100Z" fill="#9AA3C9"/><text x="50" y="52" text-anchor="middle" font-size="30" font-weight="800" fill="#FFFFFF" font-family="sans-serif">?</text>','who is it?');
+const flag=FLAG, guard=GUARD;
+const lookup={palace,castle,crown,corgi,horse,garden,rstandard,football,teacup,books,heart,school,dino,mystery,flag,guard,
+  king:p('king'),queen:p('queen'),prince:p('prince'),princess:p('princess')};
+return Object.assign(lookup,{p,AV});
+})();
+
+function fillImg(el){
+  const fb=(el.dataset.fb||'🖼️|').split('|');
+  const img=new Image(); img.alt=el.dataset.alt||'';
+  img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
+  img.onerror=()=>{el.innerHTML=(el.dataset.art&&ART[el.dataset.art])?ART[el.dataset.art]:'<div class="ph">'+fb[0]+'<small>'+esc(fb[1])+'</small></div>'};
+  img.src=IMG(el.dataset.img,800); el.innerHTML=''; el.appendChild(img);
+  setTimeout(()=>{if(!img.complete||!img.naturalWidth)img.onerror()},7000);
+}
+function pic(p){
+  if(p.svg) return p.svg;
+  if(p.img) return '<div data-img="'+esc(p.img)+'" data-art="'+(p.a||'')+'" data-alt="'+esc(p.alt||'')+'" data-fb="'+esc(p.fb||'🖼️|')+'" style="width:100%;height:100%"></div>';
+  if(p.a) return ART[p.a];
+  return '<div class="ph" style="font-size:4rem">'+p.emoji+'</div>';
+}
+
+/* ---------- voice ---------- */
+const hasTTS='speechSynthesis' in window;
+let voices=[], voice=null, rate=parseFloat(store.get('re_rate')||'0.92');
+function vscore(v){
+  const n=v.name, l=(v.lang||'').replace('_','-'); let s=0;
+  if(!/^en/i.test(l)) return -999;
+  if(/natural|neural|online/i.test(n)) s+=120;          // Edge "Natural" voices
+  if(/premium|enhanced/i.test(n)) s+=90;               // Apple high-quality voices
+  if(/^Google UK English/i.test(n)) s+=80;
+  if(/^Google US English/i.test(n)) s+=55;
+  if(/Sonia|Libby|Maisie|Ryan|Thomas|Serena|Daniel|Kate|Martha|Arthur|Stephanie|Oliver/i.test(n)) s+=30;
+  if(/en-GB/i.test(l)) s+=40; else if(/en-US/i.test(l)) s+=15;
+  if(/espeak|compact|eloquence|Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Wobble|Whisper|Zarvox|Trinoids|Organ|Jester|Superstar|Grandma|Grandpa|Rocko|Shelley|Junior|Ralph|Fred/i.test(n)) s-=200;
+  if(v.localService===false) s+=5;
+  return s;
+}
+function loadVoices(){
+  if(!hasTTS) return;
+  voices=speechSynthesis.getVoices().filter(v=>vscore(v)>-100).sort((a,b)=>vscore(b)-vscore(a));
+  const sel=$('#voiceSel'); if(!voices.length){sel.innerHTML='<option>default voice</option>';return}
+  const saved=store.get('re_voice');
+  voice=voices.find(v=>v.name===saved)||voices[0];
+  sel.innerHTML=voices.map((v,i)=>'<option value="'+i+'"'+(v===voice?' selected':'')+'>'+esc(v.name)+' ('+esc(v.lang)+')'+(i===0?' ★ best':'')+'</option>').join('');
+}
+if(hasTTS){loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; setTimeout(loadVoices,700);}
+else {$('#voiceSel').innerHTML='<option>no sound in this browser</option>'; $('#voiceNote').textContent='Этот браузер не умеет озвучивать текст. Откройте урок в Chrome, Edge или Safari.';}
+$('#voiceSel').onchange=e=>{voice=voices[+e.target.value]||null; if(voice)store.set('re_voice',voice.name); speak('Hello! Welcome to Buckingham Palace.')};
+document.querySelectorAll('.seg button').forEach(b=>{b.setAttribute('aria-pressed',String(Math.abs(parseFloat(b.dataset.rate)-rate)<.01));
+  b.onclick=()=>{rate=parseFloat(b.dataset.rate); store.set('re_rate',String(rate)); document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); speak('This is my '+(rate<.9?'slow':'normal')+' voice.')}});
+$('#voiceTest').onclick=e=>{e.stopPropagation(); speak('Good afternoon! I am your royal teacher. Let\'s learn English together.')};
+
+const splitS=t=>(t.replace(/\s+/g,' ').trim().match(/[^.!?]+[.!?]+["”]?|[^.!?]+$/g)||[]).map(x=>x.trim()).filter(Boolean);
+let playingBtn=null;
+function mkU(text){const u=new SpeechSynthesisUtterance(text); u.lang=voice?voice.lang:'en-GB'; if(voice)u.voice=voice; u.rate=rate; u.pitch=1; return u}
+// parts: [{text, el}] — spoken sentence by sentence (long texts get cut off in some browsers otherwise)
+function speakParts(parts,btn){
+  if(!hasTTS){toast('No sound in this browser 🙁');return}
+  speechSynthesis.cancel(); clearHL();
+  if(playingBtn){playingBtn.classList.remove('playing')}
+  playingBtn=btn||null; if(btn)btn.classList.add('playing');
+  const queue=[]; parts.forEach(p=>splitS(p.text).forEach((s,i)=>queue.push({s,el:p.el,first:i===0})));
+  queue.forEach((q,i)=>{const u=mkU(q.s);
+    u.onstart=()=>{if(q.el){clearHL(); q.el.classList.add('reading-now')}};
+    if(i===queue.length-1){u.onend=u.onerror=()=>{clearHL(); if(btn)btn.classList.remove('playing')}}
+    speechSynthesis.speak(u);});
+  // Chrome sometimes pauses the queue; nudge it
+  clearInterval(speakParts.k); speakParts.k=setInterval(()=>{if(!speechSynthesis.speaking){clearInterval(speakParts.k)} else if(speechSynthesis.paused){speechSynthesis.resume()}},1000);
+}
+function speak(t,btn){speakParts([{text:t}],btn)}
+function clearHL(){document.querySelectorAll('.reading-now').forEach(x=>x.classList.remove('reading-now'))}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-say]'); if(b){e.stopPropagation(); speak(b.dataset.say,b); return}
+  const r=e.target.closest('[data-read]'); if(r){e.stopPropagation(); speakParts([...$('#'+r.dataset.read).querySelectorAll('p')].map(p=>({text:p.innerText,el:p})),r); return}
+  const p=e.target.closest('.reading .text p'); if(p){speakParts([{text:p.innerText,el:p}])}
+},true);
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),1600)}
+
+/* ---------- stars ---------- */
+const secs={}; let total=0; const won=new Set(), tried=new Set();
+function reg(sec){const id='q'+(++total); (secs[sec]=secs[sec]||[]).push(id); return id}
+const praise=['Well done! ★','Brilliant! ★','Lovely! ★','Super! ★','Excellent! ★','Perfect! ★'];
+function answer(id,ok){
+  if(ok){ if(!tried.has(id)&&!won.has(id)){won.add(id); toast(praise[won.size%praise.length]);} else toast('Yes! That\'s right.'); }
+  else { tried.add(id); toast('Try again 🙂'); }
+  updStars(); return ok;
+}
+const solved=new Set();
+function updStars(){
+  $('#stars').textContent='★ '+won.size+' / '+total; $('#certStars').textContent='★ '+won.size+' / '+total+' stars';
+  const p=total?won.size/total:0; $('#certRank').textContent=p>=.8?'👑 Royal English Star':p>=.5?'🛡️ Royal Explorer':'🌱 Royal Apprentice';
+  document.querySelectorAll('.mstar').forEach(m=>{const ids=secs[m.dataset.sec]; if(!ids){m.textContent='';return}
+    const w=ids.filter(i=>won.has(i)).length, f=ids.filter(i=>solved.has(i)).length; m.textContent='★ '+w+' / '+ids.length;
+    const a=document.querySelector('#jump a[href="#'+m.dataset.sec+'"]'); if(a)a.classList.toggle('done',f===ids.length);});
+}
+function markSolved(id){solved.add(id); updStars()}
+
+/* nav */
+$('#jump').innerHTML=[1,2,3,4,5,6,7,8,9,10].map(i=>'<a href="#m'+i+'">'+i+'</a>').join('')+'<a href="#cert">★</a>';
+const guessDone=new Set();
+
+/* name */
+const nameIn=$('#kidname');
+nameIn.addEventListener('input',()=>{const n=nameIn.value.trim(); $('#hello').textContent=n?'Nice to meet you, '+n+'! 👑':''; $('#certName').textContent=n||'Royal Guest'; $('#p7').placeholder=n||'your name';});
+
+/* ---------- generic option card ---------- */
+function optCard(container,sec,item,cls){
+  const id=reg(sec); const d=document.createElement('div'); d.className=cls||'q';
+  d.innerHTML=(item.head||'')+'<div class="qtext">'+item.q+'</div><div class="opts">'+item.o.map(o=>'<button class="opt">'+esc(o)+'</button>').join('')+'</div>';
+  d.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const ok=b.textContent===item.a; answer(id,ok);
+    if(ok){b.classList.add('ok'); d.classList.add('right'); d.querySelectorAll('.opt').forEach(x=>x.disabled=true); markSolved(id);
+      if(item.say) speak(item.say); if(item.after) item.after(d);} else b.classList.add('no');
+  });
+  container.appendChild(d); return d;
+}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+/* ---------- 1 warm-up (unscored) ---------- */
+[
+ ['Buckingham Palace has more than 700 rooms.',true,'TRUE! It has 775 rooms. (Mission 6)'],
+ ['The British flag is red, white and blue.',true,'TRUE! It is called the Union Flag. (Mission 3)'],
+ ['Queen Elizabeth II had more than 30 dogs called corgis.',true,'TRUE! Her first corgi was Susan. (Mission 6)'],
+ ['The King\'s guards wear green jackets and small hats.',false,'FALSE! They wear red jackets and tall black hats. (Mission 6)'],
+ ['Princess Charlotte has two sisters.',false,'FALSE! She has two brothers: George and Louis. (Mission 4)'],
+ ['The royal family has a pet dinosaur.',false,'FALSE, of course! 🦖 But they have dogs and horses.']
+].forEach((g,i)=>{const d=document.createElement('div'); d.className='line';
+  d.innerHTML='<span class="mini">'+ART[['palace','flag','corgi','guard','princess','dino'][i]]+'</span><span class="qtext"><span class="n">'+(i+1)+'</span> '+esc(g[0])+'</span><div class="opts"><button class="opt">I think TRUE</button><button class="opt">I think FALSE</button></div>';
+  d.querySelectorAll('.opt').forEach((b,k)=>b.onclick=()=>{const guess=k===0, right=guess===g[1];
+    d.querySelectorAll('.opt').forEach(x=>x.disabled=true); b.classList.add(right?'ok':'no');
+    const r=document.createElement('div'); r.className='reveal'; r.textContent=(right?'🎉 Good guess! ':'😮 Surprise! ')+g[2]; d.appendChild(r);
+    guessDone.add(i); if(guessDone.size===6){const a=document.querySelector('#jump a[href="#m1"]'); if(a)a.classList.add('done')}});
+  $('#guess').appendChild(d);});
+
+/* ---------- 2 vocab ---------- */
+const vocab=[
+ {w:'king',tr:'король',ex:'Charles is the King.',a:'king'},
+ {w:'queen',tr:'королева',ex:'Camilla is the Queen.',a:'queen'},
+ {w:'prince',tr:'принц',ex:'William is a prince.',a:'prince'},
+ {w:'princess',tr:'принцесса',ex:'Charlotte is a princess.',a:'princess'},
+ {w:'crown',tr:'корона',ex:'The King has a crown.',img:'Imperial_State_Crown.png',a:'crown',fb:'👑|crown'},
+ {w:'palace',tr:'дворец',ex:'The palace is in London.',img:'Buckingham_Palace_London_Morning_2020_01_(cropped).jpg',a:'palace',fb:'🏛️|palace'},
+ {w:'castle',tr:'замок',ex:'Windsor Castle is very old.',img:'Windsor_Castle_-_panoramio_(3).jpg',a:'castle',fb:'🏰|castle'},
+ {w:'guard',tr:'гвардеец, охранник',ex:'The guard has a tall hat.',svg:GUARD},
+ {w:'corgi',tr:'корги (собака)',ex:'The Queen loved corgis.',img:'Welchcorgipembroke.JPG',a:'corgi',fb:'🐕|corgi'},
+ {w:'flag',tr:'флаг',ex:'This is the Union Flag.',svg:FLAG},
+ {w:'horse',tr:'лошадь',ex:'The King has horses.',a:'horse'},
+ {w:'garden',tr:'сад',ex:'The palace has a big garden.',a:'garden'}
+];
+$('#vocab').innerHTML=vocab.map((v,i)=>'<div class="vcard" role="button" tabindex="0" aria-label="'+v.w+'"><div class="vin"><div class="vf"><div class="pic" style="width:120px;height:80px;border-radius:8px;overflow:hidden">'+pic(v)+'</div><div class="w">'+v.w+'</div><button class="say" data-say="'+v.w+'">🔊</button></div><div class="vb"><div class="tr">'+v.tr+'</div><div class="ex">'+v.ex+'</div><button class="say" data-say="'+esc(v.ex)+'">🔊 sentence</button></div></div></div>').join('');
+$('#vocab').addEventListener('click',e=>{const c=e.target.closest('.vcard'); if(c)c.classList.toggle('flip')});
+$('#vocab').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('vcard')){e.preventDefault();e.target.classList.toggle('flip')}});
+
+[
+ {o:['king','queen','horse','prince'],a:'horse',why:'A horse is an animal. The others are people.'},
+ {o:['palace','castle','crown','garden'],a:'crown',why:'A crown is a thing you wear. The others are places.'},
+ {o:['corgi','horse','guard','dog'],a:'guard',why:'A guard is a person. The others are animals.'},
+ {o:['mother','sister','brother','daughter'],a:'brother',why:'A brother is a boy. The others are girls.'},
+ {o:['red','blue','flag','gold'],a:'flag',why:'Flag is a thing. The others are colours.'},
+ {o:['son','father','uncle','wife'],a:'wife',why:'A wife is a woman. The others are men.'}
+].forEach((x,i)=>optCard($('#odd'),'m2',{q:'<span class="n">'+(i+1)+'</span> Which is different?',o:x.o,a:x.a,after:d=>{const r=document.createElement('div');r.className='reveal';r.textContent=x.why;d.appendChild(r)}}));
+
+/* ---------- 3 match ---------- */
+[
+ {p:{img:'Imperial_State_Crown.png',a:'crown',fb:'👑|?'},a:'crown',o:['crown','castle','horse']},
+ {p:{img:'Buckingham_Palace_London_Morning_2020_01_(cropped).jpg',a:'palace',fb:'🏛️|?'},a:'palace',o:['garden','palace','flag']},
+ {p:{svg:GUARD},a:'guard',o:['king','guard','corgi']},
+ {p:{img:'Welchcorgipembroke.JPG',a:'corgi',fb:'🐕|?'},a:'corgi',o:['horse','crown','corgi']},
+ {p:{svg:FLAG},a:'flag',o:['flag','garden','prince']},
+ {p:{img:'Windsor_Castle_-_panoramio_(3).jpg',a:'castle',fb:'🏰|?'},a:'castle',o:['castle','queen','guard']},
+ {p:{a:'horse'},a:'horse',o:['corgi','horse','princess']},
+ {p:{a:'garden'},a:'garden',o:['palace','crown','garden']}
+].forEach(m=>optCard($('#match'),'m3',{head:'<div class="qimg">'+pic(m.p)+'</div>',q:'What is it?',o:m.o,a:m.a,say:'It is a '+m.a+'.'}));
+
+/* ---------- 4 family ---------- */
+const P={
+ eliz:{n:'Elizabeth II',r:'Queen 1952–2022',c:'E',past:1,t:'Queen Elizabeth the Second was the Queen for 70 years. She was King Charles\'s mother. She loved corgis and horses.'},
+ phil:{n:'Philip',r:'Prince, 1921–2021',c:'P',past:1,t:'Prince Philip was Queen Elizabeth\'s husband. He was King Charles\'s father.'},
+ charles:{n:'Charles III',r:'the King',c:'C',t:'King Charles the Third is the King of the United Kingdom. He became King in 2022. He loves gardens and nature.'},
+ camilla:{n:'Camilla',r:'the Queen',c:'C',t:'Queen Camilla is King Charles\'s wife. She loves books and reading.'},
+ william:{n:'William',r:'Prince of Wales',c:'W',t:'Prince William is the King\'s older son. One day he will be King. He likes football.'},
+ catherine:{n:'Catherine',r:'Princess of Wales',c:'C',t:'Catherine is Prince William\'s wife. She likes sport and being outdoors.'},
+ harry:{n:'Harry',r:'Prince, Duke of Sussex',c:'H',t:'Prince Harry is the King\'s younger son. He is William\'s brother.'},
+ meghan:{n:'Meghan',r:'Duchess of Sussex',c:'M',t:'Meghan is Prince Harry\'s wife. She is from the USA.'},
+ george:{n:'George',r:'Prince, born 2013',c:'G',t:'Prince George is William and Catherine\'s oldest child. He was born in 2013. He is 13 years old.'},
+ charlotte:{n:'Charlotte',r:'Princess, born 2015',c:'C',t:'Princess Charlotte was born in 2015. She is 11 years old. She has two brothers, George and Louis.'},
+ louis:{n:'Louis',r:'Prince, born 2018',c:'L',t:'Prince Louis is the youngest child of William and Catherine. He was born in 2018. He is 8 years old.'},
+ archie:{n:'Archie',r:'Prince, born 2019',c:'A',t:'Prince Archie is Harry and Meghan\'s son. He was born in 2019.'},
+ lili:{n:'Lilibet',r:'Princess, born 2021',c:'L',t:'Princess Lilibet is Harry and Meghan\'s daughter. She was born in 2021. Her name comes from her great-grandmother, Queen Elizabeth.'}
+};
+const pb=k=>'<button class="person'+(P[k].past?' past':'')+'" data-p="'+k+'"><span class="av">'+ART.p(k)+'</span><span class="pn">'+P[k].n+'</span><span class="pr">'+P[k].r+'</span></button>';
+const cp=(a,b)=>'<div class="couple">'+pb(a)+'<span class="heart">♥</span>'+pb(b)+'</div>';
+$('#tree').innerHTML='<div class="gen">'+cp('eliz','phil')+'</div><div class="arrow">↓</div>'+
+ '<div class="gen">'+cp('charles','camilla')+'</div><div class="arrow">↓</div>'+
+ '<div class="gen">'+cp('william','catherine')+cp('harry','meghan')+'</div><div class="arrow">↓</div>'+
+ '<div class="gen"><div class="kids">'+pb('george')+pb('charlotte')+pb('louis')+'</div><div class="kids">'+pb('archie')+pb('lili')+'</div></div>';
+$('#tree').addEventListener('click',e=>{const b=e.target.closest('.person'); if(!b)return;
+  document.querySelectorAll('.person.sel').forEach(x=>x.classList.remove('sel')); b.classList.add('sel');
+  const p=P[b.dataset.p]; $('#info').innerHTML='<div class="info-row"><div class="big">'+ART.p(b.dataset.p)+'</div><div><h3>'+p.n+' · '+p.r+'</h3><p>'+esc(p.t)+'</p><button class="say" data-say="'+esc(p.t)+'">🔊 Listen again</button></div></div>';
+  speak(p.t);});
+
+const fw=['son','daughter','brother','sister','mother','father','wife','husband','grandmother','grandfather','uncle','cousin'];
+[
+ ['William is Charles\'s','son'],['Camilla is Charles\'s','wife'],['Charlotte is George\'s','sister'],['Louis is Charlotte\'s','brother'],
+ ['Charles is George\'s','grandfather'],['Catherine is Louis\'s','mother'],['Harry is George\'s','uncle'],['Archie is Charlotte\'s','cousin'],
+ ['Queen Elizabeth II was William\'s','grandmother'],['William is Catherine\'s','husband']
+].forEach((f,i)=>{const id=reg('m4'); const d=document.createElement('div'); d.className='line';
+  d.innerHTML='<span class="n">'+(i+1)+'</span><span>'+f[0]+'</span><select id="fam'+i+'" aria-label="answer '+(i+1)+'"><option value="">— choose —</option>'+fw.map(w=>'<option>'+w+'</option>').join('')+'</select><span>.</span><span class="fb"></span>';
+  const s=d.querySelector('select'), fb=d.querySelector('.fb');
+  s.onchange=()=>{ if(!s.value)return; const ok=s.value===f[1]; answer(id,ok); d.className='line '+(ok?'right':'wrong'); fb.className='fb '+(ok?'ok':'no'); fb.textContent=ok?'✓':'✗ Look at the tree';
+    if(ok){s.disabled=true; markSolved(id); speak(f[0].replace('II','the Second')+' '+f[1]+'.')} };
+  $('#family').appendChild(d);});
+
+[
+ {q:'I am 11 years old. I have two brothers.',o:['Lilibet','Charlotte','Camilla'],a:'Charlotte',k:'charlotte'},
+ {q:'I am the King\'s wife. I love books.',o:['Camilla','Catherine','Meghan'],a:'Camilla',k:'camilla'},
+ {q:'My father is William. I am the oldest child. I am 13.',o:['Louis','Archie','George'],a:'George',k:'george'},
+ {q:'My brother is William. My wife is Meghan.',o:['Harry','Charles','Philip'],a:'Harry',k:'harry'},
+ {q:'I was the Queen for 70 years. I loved corgis.',o:['Camilla','Elizabeth II','Charlotte'],a:'Elizabeth II',k:'eliz'},
+ {q:'I am the youngest child of William and Catherine.',o:['George','Louis','Archie'],a:'Louis',k:'louis'}
+].forEach((x,i)=>optCard($('#riddles'),'m4',{head:'<div class="rid-row"><div class="mini rid">'+ART.mystery+'</div><button class="say" data-say="'+esc(x.q)+' Who am I?">🔊</button></div>',q:'<span class="n">'+(i+1)+'</span> “'+esc(x.q)+'” Who am I?',o:x.o,a:x.a,after:d=>{d.querySelector('.rid').innerHTML=ART.p(x.k)}}));
+
+/* ---------- 5 grammar ---------- */
+[
+ ['The King','in London.',['live','lives'],'lives'],
+ ['The guards','red jackets.',['wear','wears'],'wear'],
+ ['Princess Charlotte','to school.',['go','goes'],'goes'],
+ ['The corgis','in the garden.',['play','plays'],'play'],
+ ['Prince William','football.',['like','likes'],'likes'],
+ ['I','the royal family!',['love','loves'],'love'],
+ ['Queen Camilla','books.',['read','reads'],'reads'],
+ ['We','Buckingham Palace in summer.',['visit','visits'],'visit'],
+ ['My mum','tea every morning.',['drink','drinks'],'drinks'],
+ ['George and Louis','football.',['play','plays'],'play']
+].forEach((g,i)=>optCard($('#grammar'),'m5',{head:'<span class="mini">'+ART[['king','guard','school','corgi','football','heart','books','palace','teacup','football'][i]]+'</span>',q:'<span class="n">'+(i+1)+'</span> '+g[0]+' ____ '+g[1],o:g[2],a:g[3],say:g[0]+' '+g[3]+' '+g[1],
+  after:d=>{d.querySelector('.qtext').innerHTML='<span class="n">'+(i+1)+'</span> '+g[0]+' <b>'+g[3]+'</b> '+g[1]}},'line'));
+
+function tileGame(container,sec,target,units,label,sep,onWin){
+  const id=reg(sec); const d=document.createElement('div'); d.className='q';
+  let items=shuffle(units); if(items.join(sep)===target) items=items.slice().reverse();
+  d.innerHTML='<div class="qtext">'+label+'</div><div class="slots"></div><div class="tiles"></div><span class="fb"></span>';
+  const slots=d.querySelector('.slots'), tiles=d.querySelector('.tiles'), fb=d.querySelector('.fb'); let pick=[];
+  function draw(){
+    slots.innerHTML=units.map((_,k)=>'<button class="slot'+(pick[k]!=null?' f':'')+'" data-k="'+k+'" aria-label="slot '+(k+1)+'">'+(pick[k]!=null?esc(items[pick[k]]):'')+'</button>').join('');
+    tiles.innerHTML=items.map((c,k)=>pick.includes(k)?'':'<button class="tile" data-t="'+k+'">'+esc(c)+'</button>').join('');
+  }
+  d.addEventListener('click',e=>{ if(d.classList.contains('right'))return;
+    const t=e.target.closest('.tile'), s=e.target.closest('.slot');
+    if(t){pick.push(+t.dataset.t);} else if(s && pick[+s.dataset.k]!=null){pick.splice(+s.dataset.k,1);} else return;
+    draw(); fb.textContent='';
+    if(pick.length===units.length){const got=pick.map(k=>items[k]).join(sep); const ok=got===target; answer(id,ok);
+      if(ok){d.classList.add('right'); fb.className='fb ok'; fb.textContent='✓ '+target; markSolved(id); onWin&&onWin()} else {fb.className='fb no'; fb.textContent='✗ Not quite. Tap the top row to change it.'}}
+  });
+  draw(); container.appendChild(d);
+}
+[
+ 'The King lives in London.','Charlotte has two brothers.','The guards wear red jackets.',
+ 'William is Charles\'s son.','The corgis play in the garden.','I like the royal family.'
+].forEach((s,i)=>{const words=s.replace(/\.$/,'').split(' '); words[words.length-1]+='.';
+  tileGame($('#build'),'m5',words.join(' '),words,'<span class="n">'+(i+1)+'</span> Make a sentence',' ',()=>speak(s));});
+
+/* ---------- 6 reading ---------- */
+[
+ ['Buckingham Palace is in Edinburgh.','False'],['The palace has 775 rooms.','True'],['There is a cinema in the palace.','True'],
+ ['The guards wear blue jackets.','False'],['When you see the Union Flag, the King is at home.','False'],['People can visit the State Rooms in summer.','True'],
+ ['The guards smile and talk to tourists.','False'],['The King has garden parties in May.','True']
+].forEach((t,i)=>optCard($('#tf'),'m6',{q:'<span class="n">'+(i+1)+'</span> '+t[0],o:['True','False'],a:t[1]},'line'));
+[
+ {q:'What are the guards\' tall hats called?',o:['crowns','bearskins','caps'],a:'bearskins'},
+ {q:'What time is the Changing of the Guard?',o:['9 o\'clock','11 o\'clock','5 o\'clock'],a:'11 o\'clock'},
+ {q:'What is behind the palace?',o:['a big garden','a river','a zoo'],a:'a big garden'},
+ {q:'What colours is the Royal Standard?',o:['green and white','red, gold and blue','black and yellow'],a:'red, gold and blue'}
+].forEach(x=>optCard($('#read-mcq'),'m6',x));
+
+function typeLine(container,sec,i,before,after,accept,extra){
+  const id=reg(sec); const d=document.createElement('div'); d.className='line';
+  d.innerHTML='<span class="n">'+(i+1)+'</span>'+(extra||'')+'<span>'+before+'</span><input id="'+sec+'_'+i+'" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" aria-label="answer '+(i+1)+'"><span>'+after+'</span><button class="check js-check" type="button">Check</button><span class="fb"></span>';
+  const inp=d.querySelector('input'), fb=d.querySelector('.fb');
+  const go=()=>{const v=inp.value.toLowerCase().replace(/[’‘`´]/g,"'").replace(/\s+/g,' ').trim().replace(/[.!?,]+$/,'').trim(); if(!v)return; const ok=accept.includes(v); answer(id,ok);
+    d.className='line '+(ok?'right':'wrong'); fb.className='fb '+(ok?'ok':'no'); fb.textContent=ok?'✓':'✗ Try again';
+    if(ok){inp.disabled=true;d.querySelector('.js-check').disabled=true;markSolved(id)}};
+  d.querySelector('.js-check').addEventListener('click',go); inp.addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+  container.appendChild(d); return d;
+}
+[
+ ['Elizabeth II was the Queen for','years.',['70','seventy']],
+ ['Her first corgi was called','.',['susan']],
+ ['Susan was a present for her','birthday.',['18th','18','eighteenth','eighteen']],
+ ['The Queen had more than','corgis.',['30','thirty']],
+ ['Her favourite animals were dogs and','.',['horses']],
+ ['Corgis are small dogs with short','.',['legs']]
+].forEach((r,i)=>typeLine($('#read2q'),'m6',i,r[0],r[1],r[2]));
+
+/* ---------- 7 listening ---------- */
+[
+ {s:'crown',o:['clown','crown','brown'],a:'crown'},
+ {s:'castle',o:['castle','cattle','candle'],a:'castle'},
+ {s:'The guard has a tall hat.',o:['The guard has a tall hat.','The guard has a small hat.','The guard has a tall cat.'],a:'The guard has a tall hat.'},
+ {s:'Charlotte is eleven years old.',o:['seven','eleven','twelve'],a:'eleven'},
+ {s:'The palace has seven hundred and seventy-five rooms.',o:['557','175','775'],a:'775'},
+ {s:'The King lives in London.',o:['The King loves London.','The King lives in London.','The King lives in Windsor.'],a:'The King lives in London.'},
+ {s:'The Queen had thirty corgis.',o:['13','30','33'],a:'30'},
+ {s:'Louis is Charlotte\'s brother.',o:['Louis is Charlotte\'s brother.','Louis is Charlotte\'s father.','Louis is George\'s mother.'],a:'Louis is Charlotte\'s brother.'}
+].forEach((l,i)=>{const d=optCard($('#listen'),'m7',{head:'<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="check" data-say="'+esc(l.s)+'">▶ Listen</button><button class="ghost js-show">Show text</button></div><div class="hint" hidden style="font-style:italic;color:var(--muted)">'+esc(l.s)+'</div>',q:'<span class="n">'+(i+1)+'</span> What did you hear?',o:l.o,a:l.a});
+  d.querySelector('.js-show').onclick=()=>{d.querySelector('.hint').hidden=false};});
+
+['palace','queen','garden','horse','crown','castle'].forEach((w,i)=>{
+  const d=typeLine($('#dict'),'m7',i,'','',[w],'<button class="check" type="button" data-say="'+w+'">▶ Listen</button>');
+  const h=document.createElement('button'); h.className='ghost'; h.textContent='Hint';
+  h.onclick=()=>{h.textContent=w[0].toUpperCase()+' _'.repeat(w.length-1)+'  ('+w.length+' letters)'};
+  d.insertBefore(h,d.querySelector('.fb'));});
+
+/* ---------- 8 spelling ---------- */
+['CROWN','QUEEN','PRINCE','CASTLE','PALACE','GUARD','GARDEN','PRINCESS'].forEach((w,i)=>{
+  const hint=vocab.find(v=>v.w===w.toLowerCase())||{tr:'',a:'guard'};
+  tileGame($('#scramble'),'m8',w,w.split(''),'<div class="sc-pic">'+pic(hint)+'</div><span class="n">'+(i+1)+'</span> '+hint.tr,'',()=>speak(w.toLowerCase()));});
+
+/* ---------- 9 speaking ---------- */
+['Good afternoon, Your Majesty.','How do you do?','Nice to meet you.','Thank you very much.','What a beautiful garden!','Goodbye, Your Majesty.'].forEach(p=>{
+  const b=document.createElement('button'); b.className='say'; b.style.fontSize='1rem'; b.dataset.say=p; b.textContent='🔊 '+p; $('#phrases').appendChild(b);});
+[
+ {k:'Good afternoon! What is your name?',o:['My name is … .','I am ten.','Yes, please.'],a:'My name is … .'},
+ {k:'How old are you?',o:['I\'m fine.','I\'m ten years old.','It\'s blue.'],a:'I\'m ten years old.'},
+ {k:'Where do you live?',o:['I live in … .','I like cake.','I am a girl.'],a:'I live in … .'},
+ {k:'Do you like the garden?',o:['Yes, I do! It\'s beautiful.','Yes, I am.','No, it isn\'t me.'],a:'Yes, I do! It\'s beautiful.'},
+ {k:'Have you got any pets?',o:['Yes, I have got a cat.','Yes, I am a cat.','I have got ten.'],a:'Yes, I have got a cat.'},
+ {k:'Would you like some cake?',o:['Yes, please. Thank you!','I like London.','Goodbye!'],a:'Yes, please. Thank you!'}
+].forEach((x,i)=>optCard($('#dialogue'),'m9',{head:'<div class="rid-row"><span class="mini">'+ART.king+'</span><div><b>The King:</b> “'+esc(x.k)+'” <button class="say" data-say="'+esc(x.k)+'">🔊</button></div></div>',q:'You say:',o:x.o,a:x.a},'q'));
+
+function postText(){const v=k=>$('#p'+k).value.trim()||$('#p'+k).placeholder;
+  return 'Dear '+v(1)+',\nI am in London! Today I saw '+v(2)+'.\nIt is very '+v(3)+'.\nThe guards wear '+v(4)+'.\nMy favourite royal is '+v(5)+', because '+v(6)+'.\nLove,\n'+v(7);}
+$('#makePost').onclick=()=>{$('#postOut').textContent=postText(); toast('Your postcard is ready ✉️')};
+$('#readPost').onclick=e=>{e.stopPropagation(); speak(postText().replace(/\n/g,' '),e.currentTarget)};
+
+/* ---------- 10 final quiz ---------- */
+[
+ {q:'Who is the King now?',o:['William','Charles III','George'],a:'Charles III'},
+ {q:'Where does the King live and work in London?',o:['Buckingham Palace','Windsor Castle','a garden'],a:'Buckingham Palace'},
+ {q:'Charlotte is George\'s …',o:['brother','sister','mother'],a:'sister'},
+ {q:'The guards … tall black hats.',o:['wear','wears','wearing'],a:'wear'},
+ {q:'Prince William … football.',o:['like','likes','liking'],a:'likes'},
+ {q:'What was the name of the Queen\'s first corgi?',o:['Susan','Lily','Bella'],a:'Susan'},
+ {q:'Which word is spelled right?',o:['prinsess','princess','prencess'],a:'princess'},
+ {q:'Which phrase is polite?',o:['Hey, King! Give me cake.','Thank you very much, Your Majesty.','Go away.'],a:'Thank you very much, Your Majesty.'}
+].forEach((x,i)=>optCard($('#final'),'m10',{q:'<span class="n">'+(i+1)+'</span> '+x.q,o:x.o,a:x.a}));
+
+document.querySelectorAll('[data-img]').forEach(fillImg);
+$('#fl-rs').innerHTML=ART.rstandard; $('#fl-uf').innerHTML=ART.flag; $('#guardpic').innerHTML=ART.guard; $('#stamp').innerHTML=ART.crown;
+$('#certArt').innerHTML='<span>'+ART.guard+'</span><span class="c">'+ART.crown+'</span><span>'+ART.guard+'</span>';
+updStars();
+})();
+</script>
